@@ -3,6 +3,9 @@ handlers:
 - url: /favicon.ico
   static_dir: static/imgs
 
+- url: /manifest.json
+  static_dir: static/files
+
 - url: /w3c
   static_dir: w3c/
 
