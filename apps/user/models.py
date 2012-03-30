@@ -1,13 +1,10 @@
 #!/usr/bin/python
 
-import hashlib
 import logging
 
-from django.utils           import simplejson as json
 from google.appengine.api   import memcache
 from google.appengine.ext   import db
 
-from util.consts            import *
 from util.helpers           import generate_uuid
 from util.model             import Model
 
@@ -15,13 +12,18 @@ from util.model             import Model
 # User Class Definition ------------------------------------------------
 # ------------------------------------------------------------------------------
 class User( Model ):
-    """A User"""
-    uuid    = db.StringProperty(indexed = True)
-    created = db.DateTimeProperty(auto_now_add = True, indexed=False)
+    """ The User Class
+        Denotes a User of the "Maitre 'Clik" app.
+        Properties:
+            name - a string of 'first last' names
+            img  - a url to an image of the User
+    """
     
-    # Owner Properties
-    full_name = db.StringProperty( indexed = False )
-    email     = db.StringProperty( indexed = True )
+    uuid    = db.StringProperty( indexed = True )
+    created = db.DateTimeProperty( auto_now_add = True, indexed=False )
+    
+    name = db.StringProperty( indexed = False )
+    img  = db.StringProperty( indexed = False )
 
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 
@@ -29,6 +31,21 @@ class User( Model ):
     
     @staticmethod
     def _get_from_datastore( uuid ):
-        """Datauser retrieval using memcache_key"""
+        """Datastore retrieval using memcache_key"""
         return db.Query(User).filter('uuid =', uuid).get()
     
+    @staticmethod
+    def create( name, img ):
+        """ Constructor for User class. 
+            Input: name & img should both be strings.
+            Output: returns the new User obj.
+        """
+        
+        uuid = generate_uuid( 10 )
+
+        user = User( key_name = "%s_%s" % (name, uuid),
+                     uuid     = uuid,
+                     name     = name, 
+                     img      = img )
+        user.put()
+        return user

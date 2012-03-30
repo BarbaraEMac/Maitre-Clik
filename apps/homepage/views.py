@@ -7,9 +7,11 @@ from google.appengine.ext import webapp
 from util.urihandler import URIHandler
 
 class ShowPhonePage(URIHandler):
-    def get(self):
+    def get(self, page):
         template_values = { }
         
+        logging.info(page)
+
         self.response.out.write(self.render_page('mobile/index.html', template_values))
 
 class ShowDesktopPage(URIHandler):

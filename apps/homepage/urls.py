@@ -5,6 +5,6 @@ from apps.homepage.views      import *
 
 urlpatterns = [
 
-    (r'/mobile/index.html',      ShowPhonePage), # Must be last
+    (r'/mobile(.*)',        ShowPhonePage), # Must be last
     (r'/()',             ShowDesktopPage) # Must be last
 ]
