@@ -1,0 +1,17 @@
+handlers:
+
+- url: /favicon.ico
+  static_dir: static/imgs
+
+- url: /w3c
+  static_dir: w3c/
+
+- url: /static
+  static_dir: static
+
+- url: /(.*)
+  script: urls.py
+
+- url: /
+  script: urls.py
+
