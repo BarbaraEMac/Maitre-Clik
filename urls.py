@@ -10,8 +10,6 @@ from google.appengine.dist import use_library
 from util.consts import *
 from util.helpers import *
 
-from apps.gae_bingo.middleware import GAEBingoWSGIMiddleware
-
 use_library('django', '0.96')
 
 # our intelligent uri router
@@ -67,9 +65,6 @@ def main():
             debug=USING_DEV_SERVER
         )
     
-        # insert GAEBingo middlewhere
-        application = GAEBingoWSGIMiddleware(application)
-
         run_wsgi_app(application)
     except:
         logging.error('There was an error running the application', exc_info=True)

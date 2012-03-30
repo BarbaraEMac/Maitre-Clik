@@ -9,5 +9,11 @@ class ShowLandingPage(URIHandler):
     def get(self, page):
         template_values = { }
         
-        self.response.out.write(self.render_page('landing.html', template_values))
+        html = ''
+        if 'mobile' in page:
+            html = 'mobile/'
+
+        html += 'index.html'
+
+        self.response.out.write(self.render_page(html, template_values))
 
