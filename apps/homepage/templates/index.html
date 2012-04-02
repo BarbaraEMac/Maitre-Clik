@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Clik SDK Example - Desktop</title>
+{% extends 'base.html' %}
 
-		<link rel="stylesheet" href="static/css/styles.css">
-	</head>
 
-	<body>
+{% block content %}
 		<div id="qrContainer"></div>
 
 		<div id="stage">
@@ -34,12 +29,10 @@
 			<h1>Messages</h1>
 			<div id="messageLog"></div>
 		</div>
+{% endblock content %}
 
-
-		<script src="http://v2.clikthis.com/js/latest/clik-desktop.min.js"></script>
-
-		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-		<script>
+{% block javascript %}
+        <script>
 			/*
 			 * We're making a simple chat app.
 			 */
@@ -115,5 +108,5 @@
 				);
 			});
 		</script>
-	</body>
-</html>
+
+{% endblock javascript %}
