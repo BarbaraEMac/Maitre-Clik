@@ -7,7 +7,10 @@ from google.appengine.ext        import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+from apps.user.models   import User
 from util.consts        import *
+from util.helpers       import read_user_cookie
+from util.helpers       import set_user_cookie
 from util.templates     import render 
 
 class URIHandler( webapp.RequestHandler ):
@@ -25,6 +28,9 @@ class URIHandler( webapp.RequestHandler ):
     def get_user(self):
         if self.db_user:
             return self.db_user
+        
+        # Try to fetch a User via cookie
+        self.db_user = User.get( read_user_cookie( self ) )
 
         return self.db_user
     
@@ -48,6 +54,10 @@ class URIHandler( webapp.RequestHandler ):
             path = os.path.join(template_path, path)
         elif app_path != None:
             path = os.path.join(app_path, path)
+
+        # Make sure the cookie is always set.
+        if user:
+            set_user_cookie( self, user.uuid )
 
         logging.info("Rendering %s" % path )
         self.response.headers.add_header('P3P', P3P_HEADER)

@@ -1,0 +1,19 @@
+{% extends "mobile/base.html" %}
+
+{% block content %}
+        <div class="span-24 last">
+            <h1 id="title">Who Are You?</h1>
+        </div>
+
+        <div class="span-24 last">
+            {% for u in unregistered_users %}
+                <a class="unregistered_user" href="{% url RegisterUser u.uuid %}"><img src="{{ u.img }}" /> </a>
+            {% endfor %}
+        </div>
+{% endblock content %}
+
+{% block javascript %}
+		<script>
+        
+        </script>
+{% endblock javascript %}

@@ -17,6 +17,7 @@ class User( Model ):
         Properties:
             name - a string of 'first last' names
             img  - a url to an image of the User
+            state - either 'unregistered' or 'registered'
     """
     
     uuid    = db.StringProperty( indexed = True )
@@ -24,6 +25,8 @@ class User( Model ):
     
     name = db.StringProperty( indexed = False )
     img  = db.StringProperty( indexed = False )
+
+    registration_state = db.StringProperty( default = 'unregistered', indexed = True )
 
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 

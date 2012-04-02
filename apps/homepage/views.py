@@ -4,11 +4,20 @@ import logging
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
 
+from util.helpers    import url
 from util.urihandler import URIHandler
 
 class ShowPhonePage(URIHandler):
     def get(self, page):
-        template_values = { }
+        # Attempt to get a User. 
+        user = self.get_user()
+
+        # If no User, force them to register so we know who they are!
+        if not user:
+            self.redirect( url( 'ShowUnregisteredUser' ) )
+            return
+
+        template_values = { 'user' : user }
         
         logging.info(page)
 
