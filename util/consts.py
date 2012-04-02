@@ -24,8 +24,6 @@ P3P_HEADER = 'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND C
 # LilCookies (secure cookies) Stuff
 COOKIE_SECRET = 'f54eb793d727492e99601446aa9b06bab504c3d37bc54c8391f385f0dde03732'
 
-APP_NAME = "SocialPlus"
-
 # number of seconds to memcache an item
 # see: http://stackoverflow.com/questions/2793366/what-is-the-maximum-length-in-seconds-to-store-a-value-in-memcache
 # TODO: Try 2591999 instead
@@ -41,6 +39,9 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = [
     'admin',
     'analytics',
+    'checkin',
     'homepage',
+    'meal',
     'user',
+    'vote'
 ]
