@@ -1,46 +1,19 @@
 {% extends 'mobile/base.html' %}
 
 {% block content %}
-		<div id="stage">
-			<div>
-				<div class="label">Conference</div>
-				<input id="conferenceId" readonly>
+    <h1>Bon Appetit, {{ first_name }}</h1>
 
-				<div class="label">Participant</div>
-				<input id="participantId" readonly>
-			</div>
+    <h1>Like the meal?</h1>
 
-			<hr>
-
-			<div>
-				<div class="label">Say:</div>
-				<input id="textInput" value="Hello world">
-
-				<div class="label">&nbsp;</div>
-				<input type="button" id="say" value="Say">
-			</div>
-
-			<h1>Participants</h1>
-			<ul id="parts"></ul>
-
-			<h1>Messages</h1>
-			<div id="messageLog"></div>
-		</div>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn" >No</button>
+    
 {% endblock content %}
 
 {% block javascript %}
 		<script>
-			// When Clik is ready to serve events..
-			clik.ready(function () {
-				$('#messageLog').append('Clik API reports ready<hr>');
-
-				// Populate the conference ID
-				$('#conferenceId').val( clik.id );
-
-				// Populate your user ID
-				$('#participantId').val( clik.client.id );
-			});
-
+            $("#yesBtn").click( foo );
+            $("#noBtn").click( foo );
 					
         </script>
 

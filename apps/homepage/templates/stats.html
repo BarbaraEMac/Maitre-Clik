@@ -1,18 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <div id="audio"></div>
         <div id="qrContainer"></div>
 
         <div class="span-8">
             <img src="/static/imgs/waiter.jpg" />
 
-            <a href="{% url ShowStats %}">Stats</a>
+            <a href="{% url ShowDesktopPage %}">Back</a>
         </div>
 
-		<div class="span-16 last">
-            <h1 id="title">Bonjour</h1>
-        </div>
+        <h1>Stats</h1>
 {% endblock content %}
 
 {% block javascript %}
@@ -21,7 +18,7 @@
         <script>
 
             var welcome = function( name ) {
-                speak( "Bonne Jooooure  " + name, { wordgap : 5 } );
+                speak( "Bonjour " + name );
             };
     
 			// When Clik is ready to serve events..
@@ -67,7 +64,7 @@
 
 			// Populate with current users when connection established
 			clik.on('connect', function () {
-			    speak("Bonne Joooure. Juh map elle Fran swoi");
+			    speak("HELLLLLLO");
             });
 
 			// A user has joined the conference
