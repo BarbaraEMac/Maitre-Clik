@@ -8,6 +8,6 @@ urlpatterns = [
     (r'/user/unregistered',        ShowUnregisteredUser),
 
     # Processes
-    (r'/user/register(.*)',        RegisterUser),
+    (r'/user/register/(.*)',       RegisterUser),
     
 ]

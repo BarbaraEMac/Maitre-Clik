@@ -7,7 +7,7 @@ from google.appengine.ext import webapp
 from util.helpers    import url
 from util.urihandler import URIHandler
 
-class ShowPhonePage(URIHandler):
+class ShowMobileApp(URIHandler):
     def get(self, page):
         # Attempt to get a User. 
         user = self.get_user()

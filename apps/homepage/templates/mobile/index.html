@@ -1,6 +1,5 @@
 {% extends 'mobile/base.html' %}
 
-
 {% block content %}
 		<div id="stage">
 			<div>
@@ -42,64 +41,7 @@
 				$('#participantId').val( clik.client.id );
 			});
 
-			// Maintain a graphical version of the participant list.
-			function renderClientList () {
-				var $parts = $('#parts');
-
-				$parts.html('');
-
-				$.each(clik.clients, function (i, client) {
-					$parts.append(
-						'<li id="'+client.id+'">' + client.id + '</li>'
-					);
-				});
-			}
-
-			// Send a message
-			function sendMessage (message) {
-				var time        = new Date(),
-					timeString  = time.toTimeString().split(' ')[0],
-					chatMessage = {
-						message : message,
-						time    : timeString
-					};
-
-				// Send message to everyone else
-				clik.send('chat', chatMessage);
-
-				// Send message to yourself
-				clik.trigger('chat', chatMessage, clik.client);
-			}
-
-			// Populate with current users when connection established
-			clik.on('connect', function () {
-				renderClientList();
-			});
-
-			// A user has joined the conference
-			clik.on('join', function () {
-				renderClientList();
-
-				// Say hello to the new user (and nobody else)
-				sendMessage('Hello '+this.id+', I\'m ' + clik.client.id);
-			});
-
-			// A user has left the conference
-			clik.on('leave', function () {
-				renderClientList();
-			});
-
-			// Send the message in the input
-			$('#say').click(function () {
-				sendMessage( $("#textInput").val() );
-			});
-
-			// Receive chat messages and print them to the screen
-			clik.on('chat', function (chatMsg) {
-				$('#messageLog').prepend(
-					'(' + chatMsg.time + ') ' + this.id + ': ' + chatMsg.message + '<hr>'
-				);
-			});
-		</script>
+					
+        </script>
 
 {% endblock javascript %}

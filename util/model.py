@@ -72,7 +72,7 @@ class Model(db.Model):
                 memcache.set(key, db.model_to_protobuf(entity).Encode(), time=MEMCACHE_TIMEOUT)
             return entity
         else:
-            logging.debug('Model::get(): %s found in memcache!' % key)
+            logging.debug('Model::get(): %s found in memcache %s!' % (key, data))
             return db.model_from_protobuf(entity_pb.EntityProto(data))
 # end class
 

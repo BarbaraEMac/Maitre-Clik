@@ -15,13 +15,11 @@ class ShowUnregisteredUser( URIHandler ):
 
         # If we do, then redirect bakc to main app
         if user:
-            self.redirect( url( 'ShowPhonePage' ) )
+            self.redirect( url( 'ShowMobileApp', '/user/%s' % user.uuid ) )
             return
 
         # Otherwise, show a list of unregistered Users.
-        users = User.all().filter( 'registration_state =', 'unregistered' )
-
-        template_values = { 'users' : users }
+        template_values = { 'unregistered_users' : User.get_unregistered() }
 
         self.response.out.write(self.render_page('unregistered.html', template_values))
 

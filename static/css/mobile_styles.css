@@ -11,6 +11,15 @@ wrapper {
     width: 100%;
 }
 
+.title {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#unregistered_wrapper {
+    width: 100%;
+}
 
 input{display:block;width:240px;font-size:.8em}
 

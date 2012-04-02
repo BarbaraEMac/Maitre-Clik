@@ -52,3 +52,14 @@ class User( Model ):
                      img      = img )
         user.put()
         return user
+
+    def register( self ):
+        """ Register a new User. """
+        
+        logging.info("Resgistering %s %s" % (self.name, self.uuid ))
+        self.registration_state = 'registered'
+        self.put()
+
+    @staticmethod
+    def get_unregistered( ):
+        return User.all().filter( 'registration_state =', 'unregistered' ).order( 'name ' )
