@@ -23,7 +23,7 @@ class User( Model ):
     uuid    = db.StringProperty( indexed = True )
     created = db.DateTimeProperty( auto_now_add = True, indexed=False )
     
-    name = db.StringProperty( indexed = False )
+    name = db.StringProperty( indexed = True )
     img  = db.StringProperty( indexed = False )
 
     registration_state = db.StringProperty( default = 'unregistered', indexed = True )
@@ -46,7 +46,7 @@ class User( Model ):
         
         uuid = generate_uuid( 10 )
 
-        user = User( key_name = "%s_%s" % (name, uuid),
+        user = User( key_name = "%s_%s" % (name.strip(), uuid),
                      uuid     = uuid,
                      name     = name, 
                      img      = img )
@@ -62,4 +62,4 @@ class User( Model ):
 
     @staticmethod
     def get_unregistered( ):
-        return User.all().filter( 'registration_state =', 'unregistered' ).order( 'name ' )
+        return User.all().filter( 'registration_state =', 'unregistered' )

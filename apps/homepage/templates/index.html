@@ -27,8 +27,9 @@
                     });
 
                     // A user has joined the conference
-                    clik.on('join', function () {
-                        welcome( 'Barbara' );
+                    clik.on('join', function ( name ) {
+
+                        welcome( name );
 
                     });
 
@@ -48,7 +49,7 @@
 
                 this.run = function( ) {
 
-                    speak("Bonne Joooure. Juh map elle Fran swa a");
+                    speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:5} );
                     
                     // When Clik is ready to serve events..
                     clik.ready(function () {
@@ -66,7 +67,15 @@
                 };
 
                 this.welcome = function( name ) {
-                    speak( "Bonne Jooooure  " + name, { wordgap : 5 } );
+                    var date = new Date();
+
+                    // If dinner time,
+                    if( date.getHours() >= 16 ) { 
+                        speak( "Bonne Swar" + name, {wordgap:5} );
+
+                    } else { // If lunch time
+                        speak( "Bonne Jooooure" + name, {wordgap:5 } );
+                    }
                 };
 
                 // Maintain a graphical version of the participant list.

@@ -25,3 +25,19 @@ class RegisterUser( URIHandler ):
         # Return back to main app!
         self.redirect( url( 'ShowMobileApp', '/user/%s' % uuid ) )
         
+class CreateUser( URIHandler ):
+    def post( self, name ):
+        user = User.create( name, 'as' )
+
+        # Cache the User
+        self.db_user = user
+
+        # Register the User
+        user.register()
+
+        # Have to do this here to avoid a circular reference
+        set_user_cookie( self, uuid )
+
+        # Return back to main app!
+        self.redirect( url( 'ShowMobileApp', '/user/%s' % uuid ) )
+

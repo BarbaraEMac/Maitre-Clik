@@ -6,10 +6,13 @@
         <div id="unregistered_wrapper">
             {% for u in unregistered_users %}
                 <a class="unregistered_user" href="{% url RegisterUser u.uuid %}">
-                    <img src="{{ u.img }}" />
-                    <p>{{ u.name }}</p>    
+                    <img class="profile_pic" src="{{ u.img }}" />
+                    <p class="profile_name">{{ u.name }}</p>    
                 </a>
             {% endfor %}
+        </div>
+        <div>
+            <a href="{% url ShowNewUser %}">Not here?</a>
         </div>
 {% endblock content %}
 

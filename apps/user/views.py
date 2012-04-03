@@ -18,8 +18,20 @@ class ShowUnregisteredUser( URIHandler ):
             self.redirect( url( 'ShowMobileApp', '/user/%s' % user.uuid ) )
             return
 
+        k = User.get_unregistered()
+        logging.info("Got %d %s" % (k.count(), k))
+        
         # Otherwise, show a list of unregistered Users.
         template_values = { 'unregistered_users' : User.get_unregistered() }
 
         self.response.out.write(self.render_page('unregistered.html', template_values))
+
+
+class ShowNewUser( URIHandler ):
+    def get( self ):
+        template_values = {  }
+
+        self.response.out.write(self.render_page('newuser.html', template_values))
+
+ 
 

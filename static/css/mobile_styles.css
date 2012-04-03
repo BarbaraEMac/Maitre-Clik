@@ -19,8 +19,16 @@ wrapper {
 
 #unregistered_wrapper {
     width: 100%;
+    text-align: center;
 }
 
+.profile_pic {
+    margin-left: auto;
+    margin-right: center;
+    max-width: 60%;
+    min-width: 50%;
+    border-radius: 5px;
+}
 input{display:block;width:240px;font-size:.8em}
 
 
