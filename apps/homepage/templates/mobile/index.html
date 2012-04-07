@@ -1,20 +1,179 @@
 {% extends 'mobile/base.html' %}
 
 {% block content %}
-    <h1>Bon Appetit, {{ first_name }}</h1>
+    <!-- Unregistered User View -->
+    <div id="unregisteredUserView" style="display: none">
+        <h1 id="title">Who Are You?</h1>
 
-    <h1>Like the meal?</h1>
+        <div id="unregistered_wrapper">
+        </div>
+    </div>
 
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn" >No</button>
-    
+    <!-- New User View -->
+    <div id="newUserView" style="display: none">
+        <h1 id="title">Welcome!</h1>
+
+        <div id="newuser_wrapper">
+            <form method="POST" action="{% url CreateUser %}">
+                <label for="name">Enter Your Full Name:</label>
+                <input type="text" name="name" id="name" />
+                <input type="submit" />
+            </form>
+        
+        </div>
+    </div>
+
+    <!-- Vote View -->
+    <div id="voteView" style="display: none">
+        <h1>Bon Appetit, </h1>
+
+        <h1>Like the meal?</h1>
+
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn" >No</button>
+    </div>
 {% endblock content %}
 
 {% block javascript %}
-		<script>
-            $("#yesBtn").click( foo );
-            $("#noBtn").click( foo );
-					
+     <script>
+            var MaitreMobile = new function() {
+                // Views for the Mobile App
+                this.unregisteredUserView = $("#unregisteredUserView");
+                this.newUserView          = $("#newUserView");
+                this.voteView             = $("#voteView");
+
+                this.init = function( ) {
+                    // Use server logic to determine which view to display.
+                    {% if ShowUnregisteredUserView %}
+                        this.showUnregisteredUserView();
+                    {% endif %}
+                    
+                    {% if ShowVoteView %}
+                        this.showVoteView();
+                    {% endif %}
+
+                    // Populate with current users when connection established
+                    clik.on('connect', function () {
+                        return;
+                    });
+
+                    // A user has joined the conference
+                    clik.on('join', function ( name ) {
+
+                        welcome( name );
+
+                    });
+
+                    // A user has left the conference
+                    clik.on('leave', function () {
+                        // Update view
+                        return;
+                    });
+
+                    // Receive chat messages and print them to the screen
+                    clik.on('chat', function (chatMsg) {
+                        $('#messageLog').prepend(
+                            '(' + chatMsg.time + ') ' + this.id + ': ' + chatMsg.message + '<hr>'
+                        );
+                    });
+                };
+
+                this.showUnregisteredUserView = function( ) {
+                    var uuids   = [];
+                    var wrapper = $("#unregistered_wrapper");
+                    var html = "";
+
+                    {% for u in unregistered_users %}
+                        html += '<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
+                                '\t<img class="profile_pic" src="{{ u.img }}" /> \n\r' +
+                                '\t<p class="profile_name">{{ u.name }}</p>\n\r' + 
+                                '</div>';
+
+                        uuids.push( "{{u.uuid}}" ); // Store for later
+                   {% endfor %}
+                    
+                    // Add new user registration div.
+                    html += '<div class="unregistered_user" id="new_user_div">\n\r' + 
+                            'Not Here?</div>';
+
+                    // Now set the HTML
+                    wrapper.html( html );
+
+                    // Attach onClicks to all divs
+                    uuids.forEach( function(x, i) {
+                        $("#" + x).click( function() {
+                            MaitreMobile.registerUser( x );
+                        });
+                    });
+                    
+                    $("#new_user_div").click( function() { MaitreMobile.showNewUserView(); } );
+
+                    // Now, show the view div!
+                    this.unregisteredUserView.show();
+                };
+                
+                this.registerUser = function( user_uuid ) {
+                     $.ajax({
+                            url: "{% url RegisterUser %}",
+                            type: "POST",
+                            data: ({ user_uuid : user_uuid } ),
+                            success: function(response) {
+                                alert( 'registered ' + response );
+                            },
+                        });
+
+                     this.showVoteView();
+
+                };
+
+                this.showNewUserView = function( ) {
+                    // Hide all views.
+                    this.unregisteredUserView.hide();
+                    this.voteView.hide();
+                    
+                    // Show new user view
+                    this.newUserView.show();
+                };
+
+                this.showVoteView = function() {
+                    // Hide all views.
+                    this.unregisteredUserView.hide();
+                    this.newUserView.hide();
+                    
+                    // Show vote view
+                    this.voteView.hide();
+                };
+
+                this.run = function( ) {
+
+                    // When Clik is ready to serve events..
+                    clik.ready(function () {
+                        return;
+                    });
+
+
+                };
+
+                // Send a message
+                function sendMessage (message) {
+                    var time        = new Date(),
+                        timeString  = time.toTimeString().split(' ')[0],
+                        chatMessage = {
+                            message : message,
+                            time    : timeString
+                        };
+
+                    // Send message to everyone else
+                    clik.send('chat', chatMessage);
+
+                    // Send message to yourself
+                    clik.trigger('chat', chatMessage, clik.client);
+                };
+
+            };
+
+            MaitreMobile.init();
+            MaitreMobile.run();
         </script>
 
 {% endblock javascript %}
