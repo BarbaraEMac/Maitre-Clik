@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from apps.user.processes import *
-from apps.user.views     import *
+from apps.vote.processes import *
 
 urlpatterns = [
+    (r'/vote/createVote',       DoVote),
     
 ]

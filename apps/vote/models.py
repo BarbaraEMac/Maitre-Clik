@@ -17,7 +17,7 @@ class Vote( Model ):
         Properties:
             meal - The Meal that this Vote is associated with. 
             user - The User who placed this Vote.
-            vote - True iff the User voted Yes; False otherwise.
+            value - In range [1, 10], with 10 = best, 1 = worst
     """
     
     uuid    = db.StringProperty( indexed = True )
@@ -29,8 +29,8 @@ class Vote( Model ):
     # The User who placed this Vote.
     user = db.ReferenceProperty(db.Model, collection_name='user_votes', indexed=True) 
 
-    # True iff the User voted Yes; False otherwise.
-    vote = db.BooleanProperty( indexed=False, default=False )
+    # In range [1, 10], with 10 = best, 1 = worst
+    value = db.IntegerProperty( indexed=False )
     
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 
@@ -42,9 +42,9 @@ class Vote( Model ):
         return db.Query(Vote).filter('uuid =', uuid).get()
     
     @staticmethod
-    def create( meal, user, vote ):
+    def create( meal, user, value ):
         """ Constructor for Vote class. 
-            Input: meal & user should be Obj refs & vote should be a string
+            Input: meal & user should be Obj refs & value should be an int
             Output: returns the new Vote obj.
         """
         
@@ -54,6 +54,6 @@ class Vote( Model ):
                      uuid     = uuid,
                      meal     = meal,
                      user     = user,
-                     vote     = vote )
+                     value    = value )
         vote.put()
         return vote
