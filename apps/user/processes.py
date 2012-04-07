@@ -10,24 +10,23 @@ from util.helpers           import url
 from util.urihandler        import URIHandler
 
 class RegisterUser( URIHandler ):
-    def get( self, uuid ):
-        user = User.get( uuid )
-
-        # Cache the User
-        self.db_user = user
-
-        # Register the User
-        user.register()
-
-        # Have to do this here to avoid a circular reference
-        set_user_cookie( self, uuid )
-
-        # Return back to main app!
-        self.redirect( url( 'ShowMobileApp', '/user/%s' % uuid ) )
+    def post( self ):
+        user = User.get( self.request.get( 'user_uuid') )
         
+        # Cache the User
+        self.db_user = user
+
+        # Register the User
+        user.register()
+
+        # Have to do this here to avoid a circular reference
+        set_user_cookie( self, user.uuid )
+
+        self.response.out.write( { 'name' : user.name, 'uuid' : user.uuid } )
+
 class CreateUser( URIHandler ):
-    def post( self, name ):
-        user = User.create( name, 'as' )
+    def post( self ):
+        user = User.create( self.request.get( 'name' ) )
 
         # Cache the User
         self.db_user = user
@@ -36,8 +35,7 @@ class CreateUser( URIHandler ):
         user.register()
 
         # Have to do this here to avoid a circular reference
-        set_user_cookie( self, uuid )
+        set_user_cookie( self, user.uuid )
 
-        # Return back to main app!
-        self.redirect( url( 'ShowMobileApp', '/user/%s' % uuid ) )
+        self.response.out.write( { 'name' : user.name, 'uuid' : user.uuid } )
 

@@ -10,6 +10,6 @@ urlpatterns = [
 
     # Processes
     (r'/user/create',         CreateUser),
-    (r'/user/register/(.*)',       RegisterUser),
+    (r'/user/register',       RegisterUser),
     
 ]
