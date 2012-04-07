@@ -156,7 +156,6 @@
                     
                     // Show new user view
                     this.newUserView.show();
-
                 };
 
                 this.showVoteView = function() {
@@ -176,7 +175,6 @@
                     
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
 
-
                     // Hide all other views.
                     this.unregisteredUserView.hide();
                     this.newUserView.hide();
@@ -184,6 +182,10 @@
                     
                     // Show vote view
                     this.voteView.show();
+
+                    // Checkin
+                    clik.send( 'checkin', { name: this.user.name, 
+                                            uuid: this.user.uuid } );
                 };
 
                 this.showThanksView = function() {
@@ -194,7 +196,6 @@
                     
                     // Show thanks view
                     this.thanksView.show();
-
                 };
 
                 // Ajax Functions ----------------------------------------------
@@ -245,24 +246,12 @@
                         });
 
                      this.showThanksView();
+
+                    // Tell Desktop about the vote
+                    clik.send( 'vote', { name : this.user.name,
+                                         uuid : this.user.uuid,
+                                         value: value } );
                 };
-
-                // Send a message
-                function sendMessage (message) {
-                    var time        = new Date(),
-                        timeString  = time.toTimeString().split(' ')[0],
-                        chatMessage = {
-                            message : message,
-                            time    : timeString
-                        };
-
-                    // Send message to everyone else
-                    clik.send('chat', chatMessage);
-
-                    // Send message to yourself
-                    clik.trigger('chat', chatMessage, clik.client);
-                };
-
             };
 
             MaitreMobile.init();
