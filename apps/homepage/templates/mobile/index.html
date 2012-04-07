@@ -5,7 +5,7 @@
     <div id="unregisteredUserView" style="display: none">
         <h1 id="title">Who Are You?</h1>
 
-        <div id="unregistered_wrapper">
+        <div id="unregisteredUser_wrapper">
         </div>
     </div>
 
@@ -13,45 +13,64 @@
     <div id="newUserView" style="display: none">
         <h1 id="title">Welcome!</h1>
 
-        <div id="newuser_wrapper">
-            <form method="POST" action="{% url CreateUser %}">
-                <label for="name">Enter Your Full Name:</label>
-                <input type="text" name="name" id="name" />
-                <input type="submit" />
+        <div id="newUser_wrapper">
+            <form>
+                <label for="newUser_name">Enter Your Full Name:</label>
+                <input type="text" name="newUser_name" id="newUser_name" />
             </form>
+            <input type="submit" id="newUser_submit" />
         
         </div>
     </div>
 
     <!-- Vote View -->
     <div id="voteView" style="display: none">
-        <h1>Bon Appetit, </h1>
+        <h1 class="title" id="voteView_title">Bon Appetit</h1>
 
-        <h1>Like the meal?</h1>
+        <h1>How much do you enjoy this meal?</h1>
+        
+	    <input type="text" id="voteView_amount" style="border:0; color:#f6931f; font-weight:bold;" />
 
-        <button id="yesBtn">Yes</button>
-        <button id="noBtn" >No</button>
+        <div id="voteView_slider" style="max-width: 400px"> </div>
+            
+        <input type="submit" id="voteView_submit" />
     </div>
+
+    <!-- Thanks View -->
+    <div id="thanksView" style="display: none">
+        <h1 class="title" id="thanksView_title">Merci</h1>
+    </div>
+
 {% endblock content %}
 
 {% block javascript %}
      <script>
             var MaitreMobile = new function() {
+                // User obj for current user. 
+                this.user = new function () {
+                    this.uuid = "{{user.uuid}}";
+                    this.name = "{{user.name}}";
+                };
                 // Views for the Mobile App
                 this.unregisteredUserView = $("#unregisteredUserView");
                 this.newUserView          = $("#newUserView");
                 this.voteView             = $("#voteView");
+                this.thanksView           = $("#thanksView");
 
                 this.init = function( ) {
+                    // Add name and uuid to Client Obj
+                    //Client.prototype.name = "";
+                    //Client.prototype.uuid = "";
+
                     // Use server logic to determine which view to display.
                     {% if ShowUnregisteredUserView %}
                         this.showUnregisteredUserView();
                     {% endif %}
-                    
                     {% if ShowVoteView %}
                         this.showVoteView();
                     {% endif %}
 
+                    this.showVoteView();
                     // Populate with current users when connection established
                     clik.on('connect', function () {
                         return;
@@ -77,18 +96,27 @@
                         );
                     });
                 };
+                
+                this.run = function( ) {
 
+                    // When Clik is ready to serve events..
+                    clik.ready(function () {
+                        return;
+                    });
+                };
+
+                // View Functions ----------------------------------------------
                 this.showUnregisteredUserView = function( ) {
                     var uuids   = [];
                     var wrapper = $("#unregistered_wrapper");
                     var html = "";
 
+                    // Build html for unregistered users
                     {% for u in unregistered_users %}
                         html += '<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
                                 '\t<img class="profile_pic" src="{{ u.img }}" /> \n\r' +
                                 '\t<p class="profile_name">{{ u.name }}</p>\n\r' + 
                                 '</div>';
-
                         uuids.push( "{{u.uuid}}" ); // Store for later
                    {% endfor %}
                     
@@ -99,59 +127,124 @@
                     // Now set the HTML
                     wrapper.html( html );
 
-                    // Attach onClicks to all divs
+                    // Attach onClicks to all divs AFTER html has been added to page
                     uuids.forEach( function(x, i) {
                         $("#" + x).click( function() {
                             MaitreMobile.registerUser( x );
                         });
                     });
-                    
                     $("#new_user_div").click( function() { MaitreMobile.showNewUserView(); } );
-
+                    
+                    // Hide all other views.
+                    this.newUserView.hide();
+                    this.voteView.hide();
+                    this.thanksView.hide();
+                    
                     // Now, show the view div!
                     this.unregisteredUserView.show();
                 };
-                
+                 
+                this.showNewUserView = function( ) {
+                    /* Show the "New User" View */
+                    // Assign the onClick for the submit button
+                    $("#newUser_submit").click( function() { MaitreMobile.createUser(); } );
+                    
+                    // Hide all other views.
+                    this.unregisteredUserView.hide();
+                    this.voteView.hide();
+                    this.thanksView.hide();
+                    
+                    // Show new user view
+                    this.newUserView.show();
+
+                };
+
+                this.showVoteView = function() {
+                    $("#voteView_title").val("Bon Appetite, " + this.user.name);
+
+                    /* Show the "Vote" View */
+                    $( "#voteView_slider" ).slider( { value: 5,
+                                                      min: 1,
+                                                      max: 10,
+                                                      step: 1,
+                                                      slide: function( event, ui ) {
+                                                            $( "#voteView_amount" ).val( "$" + ui.value );
+                                                        }
+                                                    });
+
+                    $( "#voteView_amount" ).val( $( "#voteView_slider" ).slider( "value" ) );
+                    
+                    $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
+
+
+                    // Hide all other views.
+                    this.unregisteredUserView.hide();
+                    this.newUserView.hide();
+                    this.thanksView.hide();
+                    
+                    // Show vote view
+                    this.voteView.show();
+                };
+
+                this.showThanksView = function() {
+                    // Hide all other views.
+                    this.unregisteredUserView.hide();
+                    this.newUserView.hide();
+                    this.voteView.hide();
+                    
+                    // Show thanks view
+                    this.thanksView.show();
+
+                };
+
+                // Ajax Functions ----------------------------------------------
                 this.registerUser = function( user_uuid ) {
+                    /* Register an existing user */
                      $.ajax({
                             url: "{% url RegisterUser %}",
                             type: "POST",
                             data: ({ user_uuid : user_uuid } ),
                             success: function(response) {
-                                alert( 'registered ' + response );
+                                MaitreMobile.user.name = response.name;
+                                MaitreMobile.user.uuid = response.uuid;
                             },
                         });
 
                      this.showVoteView();
-
                 };
 
-                this.showNewUserView = function( ) {
-                    // Hide all views.
-                    this.unregisteredUserView.hide();
-                    this.voteView.hide();
-                    
-                    // Show new user view
-                    this.newUserView.show();
+                this.createUser = function( user_uuid ) {
+                    var nameField = $("#newUser_name");
+
+                    /* Register an existing user */
+                     $.ajax({
+                            url: "{% url CreateUser %}",
+                            type: "POST",
+                            data: ({ name : nameField.val() } ),
+                            success: function(response) {
+                                MaitreMobile.user.name = response.name;
+                                MaitreMobile.user.uuid = response.uuid;
+                            },
+                        });
+
+                     this.showVoteView();
                 };
 
-                this.showVoteView = function() {
-                    // Hide all views.
-                    this.unregisteredUserView.hide();
-                    this.newUserView.hide();
-                    
-                    // Show vote view
-                    this.voteView.hide();
-                };
+                this.vote = function( vote ) {
+                    var value =  $( "#voteView_slider" ).slider( "value" );
 
-                this.run = function( ) {
+                    /* Register an existing user */
+                     $.ajax({
+                            url: "{% url DoVote %}",
+                            type: "POST",
+                            data: ({ value : value } ),
+                            success: function(response) {
+                                MaitreMobile.user.name = response.name;
+                                MaitreMobile.user.uuid = response.uuid;
+                            },
+                        });
 
-                    // When Clik is ready to serve events..
-                    clik.ready(function () {
-                        return;
-                    });
-
-
+                     this.showThanksView();
                 };
 
                 // Send a message
