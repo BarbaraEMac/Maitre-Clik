@@ -71,34 +71,9 @@
                     {% endif %}
 
                     this.showVoteView();
-                    // Populate with current users when connection established
-                    clik.on('connect', function () {
-                        return;
-                    });
-
-                    // A user has joined the conference
-                    clik.on('join', function ( name ) {
-
-                        welcome( name );
-
-                    });
-
-                    // A user has left the conference
-                    clik.on('leave', function () {
-                        // Update view
-                        return;
-                    });
-
-                    // Receive chat messages and print them to the screen
-                    clik.on('chat', function (chatMsg) {
-                        $('#messageLog').prepend(
-                            '(' + chatMsg.time + ') ' + this.id + ': ' + chatMsg.message + '<hr>'
-                        );
-                    });
                 };
                 
                 this.run = function( ) {
-
                     // When Clik is ready to serve events..
                     clik.ready(function () {
                         return;
