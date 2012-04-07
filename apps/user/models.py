@@ -38,7 +38,7 @@ class User( Model ):
         return db.Query(User).filter('uuid =', uuid).get()
     
     @staticmethod
-    def create( name, img ):
+    def create( name ):
         """ Constructor for User class. 
             Input: name & img should both be strings.
             Output: returns the new User obj.
@@ -48,8 +48,7 @@ class User( Model ):
 
         user = User( key_name = "%s_%s" % (name.strip(), uuid),
                      uuid     = uuid,
-                     name     = name, 
-                     img      = img )
+                     name     = name )
         user.put()
         return user
 
