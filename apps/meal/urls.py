@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
-from apps.user.processes import *
-from apps.user.views     import *
+from apps.meal.processes import *
+from apps.meal.views     import *
 
 urlpatterns = [
+
+    (r'/meal/generateLunch',    LunchGenerator),
+    (r'/meal/generateDinner',   DinnerGenerator),
     
 ]

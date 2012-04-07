@@ -1,34 +1,115 @@
+@font-face {
+ font-family: duchat;
+ src: url("/static/files/DuChat.eot") /* EOT file for IE */
+}
+@font-face {
+ font-family: duchat;
+ src: url("/static/files/DuChat.ttf") /* TTF file for CSS3 browsers */
+}
+
 html {
 
 }
 
 body {
-    background-color: yellow;
+	background-color: white;
+    background-image: url(/static/imgs/background6_light2.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 100%;
+    font-family: duchat, Arial;
+}
+
+.wrapper {
     width: 100%;
 }
 
-wrapper {
+#title {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
     width: 100%;
-}
-
-.title {
-    width: 100%;
+    margin: 0px;
+    padding: 50px 0px 0px 0px;
+    
+    box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
+    -moz-box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
+    -webkit-box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
+    
+    color: #031BA3;
+    background-color: white;
+    
+    font-size: 5.0em;
+    line-height: 1.0em;
     text-align: center;
-    margin-top: 20px;
 }
 
-#unregistered_wrapper {
-    width: 100%;
+#newuser_wrapper, #unregistered_wrapper {
     text-align: center;
+    margin-top: 135px;
+    font-size: 3.0em;
+    line-height: 2.0em;
+}
+
+.unregistered_user {
+    background-color: white;
+    width: 50%;
+    text-align: center;
+    margin-left: 25%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    -webkit-box-shadow: inset 0px 1px 10px black;
+    -moz-box-shadow: inset 0px 1px 10px black;
+    box-shadow: inset 0px 1px 10px black;
+}
+
+.unregistered_user a {
+    text-decoration: none;
 }
 
 .profile_pic {
     margin-left: auto;
-    margin-right: center;
-    max-width: 60%;
-    min-width: 50%;
-    border-radius: 5px;
+    margin-right: auto;
+    width: 75%;
+    max-width: 75%;
+    border-radius: 20px;
 }
+
+.profile_name {
+    color: #031BA3;
+    margin: -20px 0px -20px 0px;
+    padding: 0px;
+}
+
+#newUser {
+    font-size: 4.0em;
+    line-height: 2.0em;
+    margin: 0px;
+    padding: 0px;
+    color: #031BA3;
+}
+
 input{display:block;width:240px;font-size:.8em}
 
+#newuser_wrapper form {
+    padding: 10px;
+}
+
+#newuser_wrapper #name {
+    width: 60%;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#newuser_wrapper form > input[type="submit"] {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
 

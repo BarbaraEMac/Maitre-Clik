@@ -9,7 +9,7 @@ urlpatterns = [
     (r'/user/unregistered',        ShowUnregisteredUser),
 
     # Processes
-    (r'/user/create/(.*)',         CreateUser),
+    (r'/user/create',         CreateUser),
     (r'/user/register/(.*)',       RegisterUser),
     
 ]

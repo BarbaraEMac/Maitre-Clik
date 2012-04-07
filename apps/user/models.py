@@ -24,7 +24,7 @@ class User( Model ):
     created = db.DateTimeProperty( auto_now_add = True, indexed=False )
     
     name = db.StringProperty( indexed = True )
-    img  = db.StringProperty( indexed = False )
+    img  = db.StringProperty( indexed = False, default = '/static/imgs/DefaultProfile.jpg' )
 
     registration_state = db.StringProperty( default = 'unregistered', indexed = True )
 

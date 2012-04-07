@@ -5,14 +5,16 @@
 
         <div id="unregistered_wrapper">
             {% for u in unregistered_users %}
-                <a class="unregistered_user" href="{% url RegisterUser u.uuid %}">
-                    <img class="profile_pic" src="{{ u.img }}" />
-                    <p class="profile_name">{{ u.name }}</p>    
-                </a>
+                <div class="unregistered_user">
+                    <a href="{% url RegisterUser u.uuid %}">
+                        <img class="profile_pic" src="{{ u.img }}" />
+                        <p class="profile_name">{{ u.name }}</p>    
+                    </a>
+                </div>
             {% endfor %}
-        </div>
-        <div>
-            <a href="{% url ShowNewUser %}">Not here?</a>
+            <div class="unregistered_user">
+                <a id="newUser" href="{% url ShowNewUser %}">Not Here?</a>
+            </div>
         </div>
 {% endblock content %}
 

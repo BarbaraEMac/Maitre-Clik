@@ -18,18 +18,24 @@ class Meal( Model ):
             date  - A day timestamp (no time)
             meal  - Either 'LUNCH' or 'DINNER'
             items - List of items in the meal. Used to pull out contextual meal data in the future.
+            status - Flag to grab the current meal quickly from the DB; 
+                     Either "current_meal" or "past_meal".
     """
     
-    uuid = db.StringProperty( indexed= True )
+    uuid   = db.StringProperty( indexed= True )
     
     # A day timestamp (no time)
-    date = db.DateProperty( auto_now_add=True, indexed=False )
+    date   = db.DateProperty( auto_now_add=True, indexed=False )
     
     # Either 'LUNCH' or 'DINNER'
-    meal = db.CategoryProperty( indexed=False )
+    meal   = db.CategoryProperty( indexed=False )
 
     # List of items in the meal. Used to pull out contextual meal data in the future.
-    items = db.StringListProperty( indexed=False )
+    items  = db.StringListProperty( indexed=False )
+
+    # Flag to grab the current meal quickly from the DB.
+    # Will either hold "current_meal" or "past_meal" 
+    status = db.StringProperty( indexed=True, default='current_meal' )
 
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 
@@ -55,3 +61,8 @@ class Meal( Model ):
                      items    = items.split(',') )
         meal.put()
         return meal
+
+
+    @staticmethod
+    def get_current( ):
+        return Meal.all().filter( 'status =', 'current_meal' ).get()
