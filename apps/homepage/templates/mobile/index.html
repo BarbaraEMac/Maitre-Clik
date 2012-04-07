@@ -69,8 +69,6 @@
                     {% if ShowVoteView %}
                         this.showVoteView();
                     {% endif %}
-
-                    this.showVoteView();
                 };
                 
                 this.run = function( ) {
@@ -82,32 +80,23 @@
 
                 // View Functions ----------------------------------------------
                 this.showUnregisteredUserView = function( ) {
-                    var uuids   = [];
-                    var wrapper = $("#unregistered_wrapper");
-                    var html = "";
+                    var wrapper = $("#unregisteredUser_wrapper");
+                    wrapper.html('');
 
                     // Build html for unregistered users
                     {% for u in unregistered_users %}
-                        html += '<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
+                        wrapper.append('<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
                                 '\t<img class="profile_pic" src="{{ u.img }}" /> \n\r' +
                                 '\t<p class="profile_name">{{ u.name }}</p>\n\r' + 
-                                '</div>';
-                        uuids.push( "{{u.uuid}}" ); // Store for later
+                                '</div>');
+                        
+                        $("#{{u.uuid}}").click( function() { MaitreMobile.registerUser( x ); });
                    {% endfor %}
                     
                     // Add new user registration div.
-                    html += '<div class="unregistered_user" id="new_user_div">\n\r' + 
-                            'Not Here?</div>';
+                    wrapper.append('<div class="unregistered_user" id="new_user_div">\n\r' + 
+                            'Not Here?</div>');
 
-                    // Now set the HTML
-                    wrapper.html( html );
-
-                    // Attach onClicks to all divs AFTER html has been added to page
-                    uuids.forEach( function(x, i) {
-                        $("#" + x).click( function() {
-                            MaitreMobile.registerUser( x );
-                        });
-                    });
                     $("#new_user_div").click( function() { MaitreMobile.showNewUserView(); } );
                     
                     // Hide all other views.
