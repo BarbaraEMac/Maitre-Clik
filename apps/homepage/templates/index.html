@@ -10,7 +10,6 @@
 
         <!-- CSS -->
 		<link rel="stylesheet" href="/static/css/styles.css">
-		<link rel="stylesheet" href="/static/css/webticker.css">
     </head>
 
     <body>
@@ -21,17 +20,24 @@
                     <div id="qrContainer"></div>
 
                     <!-- Main View -->
-                    <div class="span-16 last" id="mainView">
-                        <div class="span-8">
-                            <img src="/static/imgs/waiter.jpg" />
+                    <div class="span-24 last" id="mainView">
+                        <div class="span-12">
+                            <img id="waiter" src="/static/imgs/waiter2.png" />
+                            <button id="mainView_showStatsView">Stats</button>
                         </div>
 
-                        <h1 class="title">Bonjour</h1>
-
-                        <ul id="mainView_webticker">
-                        </ul>
+                        <div class="span-12 last">
+                            <h1 class="span-12 last title">Bonjour</h1>
                             
-                        <button id="mainView_showStatsView">Stats</button>
+                            <div class="span-12 last" id="mainView_barContainer">
+                                <div id="mainView_yes"> Yes </div>
+                                <div id="mainView_no"></div>
+                            </div>
+                            
+                            <div class="prepend-top span-12 last" id="mainView_msg">
+                            </div>
+                        </div>
+                            
                     </div>
 
                     <!-- Stats View -->
@@ -50,7 +56,6 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
 		<script type="text/javascript" src="/static/js/speakClient.js"></script>
-        <script type="text/javascript" src="/static/js/jquery.webticker.js"></script>
 
 
         <script>
@@ -58,54 +63,90 @@
 
                 this.mainView  = $("#mainView");
                 this.statsView = $("#statsView");
-                this.ticker    = $("#mainView_webticker");
+                this.msg       = $("#mainView_msg");
+                this.votes     = new function() 
+                    {
+                        this.sum      = 0;
+                        this.numVotes = 0;
+
+                        this.percent = function() {
+                            return 100 * (this.sum / this.num_votes);
+                        };
+                    };
 
                 this.init = function( ) {
 
                     // Init Views
-                    //this.ticker.webTicker();
-
                     $("#mainView_showStatsView").click( function() { MaitreDesktop.showStatsView(); } );
                     $("#statsView_showMainView").click( function() { MaitreDesktop.showMainView(); } );
 
+                    $("#mainView_yes").width( "100%" );
+                    $("#mainView_no").width( "0%" );
+
                     clik.on('connect', function () {
-                        var li = "<li>Hello World!</li>";
-                        $("#mainView_webticker").append( li );
+                        var msg = "Hello World!";
+                        MaitreDesktop.updateMsg( msg );
                     });
 
                     clik.on('checkin', function ( user ) {
                         alert('name: ' + user.name );
-                        welcome( user.name );
+                        MaitreDesktop.welcome( user.name );
                         
-                        var li = "<li>" + user.name.split(' ')[0] + " is eating.</li>";
-                        $("#mainView_webticker").append( li );
+                        var msg = "" + user.name.split(' ')[0] + " is eating.";
+                        MaitreDesktop.updateMsg( msg );
                     });
 
                     clik.on('vote', function ( msg ) {
-                        var li = "<li>" + msg.name.split(' ')[0] + " voted! " + msg.value + "/10!!</li>";
-                        $("#mainView_webticker").append( li );
+                        var msg = "" + msg.name.split(' ')[0] + " voted! " + msg.value + "/10!!";
+                        MaitreDesktop.updateMsg( msg );
+
+                        // Increment votes
+                        MaitreDesktop.votes.sum       += parseInt( msg.value );
+                        MaitreDesktop.votes.num_votes += 1;
+
+                        var per = MaitreDesktop.votes.percent();
+                        $("#mainView_yes").width("" + per + "%" );
+                        $("#mainView_no").width("" + 100-per + "%" );
+
                     });
 
                     // A user has left the conference
                     clik.on('leave', function () {
-                        var li = "<li>Someone has left the building.</li>";
-                        $("#mainView_webticker").append( li );
+                        var msg = "Someone has left the building.";
+                        MaitreDesktop.updateMsg( msg );
                     });
+                };
+
+                this.updateMsg = function( msg ) {
+                    this.msg.html( "" + msg );
                 };
 
                 this.run = function( ) {
                     speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:5} );
                     
-                    // When Clik is ready to serve events..
+                    // When Cmsgk is ready to serve events..
                     clik.ready(function () {
-                        // Populate ClikCode
+                        // Populate CmsgkCode
                         $("#qrContainer").css('background-image', 'url(' + clik.clikCodeURL() + ')');
         
                     });
                 };
+                this.welcome = function( name ) {
+                    var date = new Date();
+
+                    // If dinner time,
+                    if( date.getHours() >= 16 ) { 
+                        speak( "Bonne Swar" + name, {wordgap:5} );
+
+                    } else { // If lunch time
+                        speak( "Bonne Jooooure" + name, {wordgap:5} );
+                    }
+                };
 
                 // View Toggles ------------------------------------------------
                 this.showStatsView = function() {
+                    this.fetchStats();
+
                     this.mainView.hide();
                     this.statsView.fadeIn();
                 };
@@ -113,24 +154,24 @@
                     this.statsView.hide();
                     this.mainView.fadeIn();
                 };
+                
+                // Ajax Functions ----------------------------------------------
+                this.fetchStats = function( ) {
+                     $.ajax({
+                            url: "{% url FetchStats %}",
+                            type: "GET",
+                            data: ({ } ),
+                            success: function(response) {
+                            },
+                        });
+                };
 
             };
 
             MaitreDesktop.init();
             MaitreDesktop.run();
 
-            var welcome = function( name ) {
-                var date = new Date();
-
-                // If dinner time,
-                if( date.getHours() >= 16 ) { 
-                    speak( "Bonne Swar" + name, {wordgap:5} );
-
-                } else { // If lunch time
-                    speak( "Bonne Jooooure" + name, {wordgap:5} );
-                }
-            };
-
+            
         </script>
     </body>
 </html>

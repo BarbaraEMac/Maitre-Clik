@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'checkin',
     'homepage',
     'meal',
+    'stats',
     'user',
     'vote'
 ]

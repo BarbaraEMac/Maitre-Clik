@@ -113,3 +113,7 @@ input{display:block;width:240px;font-size:.8em}
     padding: 10px;
 }
 
+.title {
+    width: 100%;
+    font-size: 5.0em;
+}

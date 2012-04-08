@@ -1,12 +1,104 @@
+@font-face {
+ font-family: duchat;
+ src: url("/static/files/DuChat.eot") /* EOT file for IE */
+}
+@font-face {
+ font-family: duchat;
+ src: url("/static/files/DuChat.ttf") /* TTF file for CSS3 browsers */
+}
+
 html {
 
 }
 
 body {
-    background-color: white;
+	background-color: white;
+    background-image: url(/static/imgs/background6_light2.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center; 
+    width: 100%;
+    font-family: duchat, Arial;
+    
+    text-align: center;
 }
 
+.container {
+    background-color: white;
+    padding: 10px;
+    height: 100%;
+}
 
-input{display:block;width:240px;font-size:.8em}
+#mainView_barContainer {
+    width: 100%;
+    float: left;
+}
 
+#mainView_yes {
+    background-color: red;
+    float: left;
+}
+
+#mainView_no {
+    background-color: blue;
+    float: left;
+}
+
+#waiter {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    height: 70%;
+}
+
+.title {
+    width: 100%;
+    font-size: 10.0em;
+    margin-top: 60px;
+    text-align: center;
+}
+
+#mainView_msg {
+    width: 100%;
+    text-align: center;
+    
+    font-size: 5.0em;
+}
+
+#mainView_barContainer {
+    margin: 10px;
+    width: 90%;
+    border: 1px solid black;
+    border-radius: 20px;
+
+    font-size: 3.0em;
+    line-height: 2.0em;
+}
+
+#mainView_yes, #mainView_no {
+    text-align: center;
+    border-radius: 20px;
+}
+
+button {
+    background-color: #32a0ed;
+    color: #0414a5;
+    
+    font-size: 3.0em;
+    line-height: 2.0em;
+    padding-top: 20px;
+    border-radius: 20px;
+
+    -webkit-box-shadow: inset 0px 1px 10px black;
+    -moz-box-shadow: inset 0px 1px 10px black;
+    box-shadow: inset 0px 1px 10px black;
+
+    font-family: duchat, Arial;
+
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 
