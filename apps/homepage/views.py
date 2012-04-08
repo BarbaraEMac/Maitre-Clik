@@ -45,10 +45,3 @@ class ShowDesktopPage(URIHandler):
         template_values = { }
         
         self.response.out.write(self.render_page('index.html', template_values))
-
-class ShowStats(URIHandler):
-    def get(self):
-        template_values = { }
-        
-        self.response.out.write(self.render_page('stats.html', template_values))
-
