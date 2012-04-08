@@ -1,89 +1,136 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<title>Maitre 'Clik - Desktop</title>
+        
+        <!-- Blueprint CSS -->
+        <link rel="stylesheet" href="/static/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+        <link rel="stylesheet" href="/static/css/blueprint/print.css" type="text/css" media="print" />
+        <!--[if IE]><link rel="stylesheet" href="blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 
-{% block content %}
-        <div id="audio"></div>
-        <div id="qrContainer"></div>
+        <!-- CSS -->
+		<link rel="stylesheet" href="/static/css/styles.css">
+		<link rel="stylesheet" href="/static/css/webticker.css">
+    </head>
 
-        <div class="span-8">
-            <img src="/static/imgs/waiter.jpg" />
+    <body>
+        <div id='wrap'>
+            <div id='main' class='container'>
+                <div class="span-24 append-bottom last">
+                    <div id="audio"></div>
+                    <div id="qrContainer"></div>
 
-            <a href="{% url ShowStats %}">Stats</a>
+                    <!-- Main View -->
+                    <div class="span-16 last" id="mainView">
+                        <div class="span-8">
+                            <img src="/static/imgs/waiter.jpg" />
+                        </div>
+
+                        <h1 class="title">Bonjour</h1>
+
+                        <ul id="mainView_webticker">
+                        </ul>
+                            
+                        <button id="mainView_showStatsView">Stats</button>
+                    </div>
+
+                    <!-- Stats View -->
+                    <div class="span-16 last" id="statsView" style="display: none">
+                        <h1 class="title">Stats</h1>
+                        
+                        <button id="statsView_showMainView">Back</button>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
+        
+        <!-- JS -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
+		<script type="text/javascript" src="/static/js/speakClient.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.webticker.js"></script>
 
-		<div class="span-16 last" id="mainView">
-            <h1 id="title">Bonjour</h1>
-        </div>
-		<div class="span-16 last" id="statsView" style="display: none">
-            <h1 id="title">Stats</h1>
-        </div>
-
-{% endblock content %}
-
-{% block javascript %}
-		<script src="/static/js/speakClient.js"></script>
 
         <script>
             var MaitreDesktop = new function() {
+
+                this.mainView  = $("#mainView");
+                this.statsView = $("#statsView");
+                this.ticker    = $("#mainView_webticker");
+
                 this.init = function( ) {
-                    // Populate with current users when connection established
+
+                    // Init Views
+                    //this.ticker.webTicker();
+
+                    $("#mainView_showStatsView").click( function() { MaitreDesktop.showStatsView(); } );
+                    $("#statsView_showMainView").click( function() { MaitreDesktop.showMainView(); } );
+
                     clik.on('connect', function () {
-                        return;
+                        var li = "<li>Hello World!</li>";
+                        $("#mainView_webticker").append( li );
                     });
 
-                    // A user has joined the conference
-                    clik.on('checkin', function ( name, uuid ) {
-                        welcome( name );
+                    clik.on('checkin', function ( user ) {
+                        alert('name: ' + user.name );
+                        welcome( user.name );
+                        
+                        var li = "<li>" + user.name.split(' ')[0] + " is eating.</li>";
+                        $("#mainView_webticker").append( li );
                     });
-                    clik.on('vote', function ( name, uuid, value ) {
-                        alert( name + " " + uuid + " " + value );
+
+                    clik.on('vote', function ( msg ) {
+                        var li = "<li>" + msg.name.split(' ')[0] + " voted! " + msg.value + "/10!!</li>";
+                        $("#mainView_webticker").append( li );
                     });
 
                     // A user has left the conference
                     clik.on('leave', function () {
-                        // Update view
-                        return;
+                        var li = "<li>Someone has left the building.</li>";
+                        $("#mainView_webticker").append( li );
                     });
                 };
 
                 this.run = function( ) {
-
                     speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:5} );
                     
                     // When Clik is ready to serve events..
                     clik.ready(function () {
                         // Populate ClikCode
                         $("#qrContainer").css('background-image', 'url(' + clik.clikCodeURL() + ')');
+        
                     });
                 };
 
-                this.welcome = function( name ) {
-                    var date = new Date();
-
-                    // If dinner time,
-                    if( date.getHours() >= 16 ) { 
-                        speak( "Bonne Swar" + name, {wordgap:5} );
-
-                    } else { // If lunch time
-                        speak( "Bonne Jooooure" + name, {wordgap:5 } );
-                    }
+                // View Toggles ------------------------------------------------
+                this.showStatsView = function() {
+                    this.mainView.hide();
+                    this.statsView.fadeIn();
+                };
+                this.showMainView = function() {
+                    this.statsView.hide();
+                    this.mainView.fadeIn();
                 };
 
-                // Maintain a graphical version of the participant list.
-                function renderClientList () {
-                    var $parts = $('#parts');
-
-                    $parts.html('');
-
-                    $.each(clik.clients, function (i, client) {
-                        $parts.append(
-                            '<li id="'+client.id+'">' + client.id + '</li>'
-                        );
-                    });
-                };
             };
 
             MaitreDesktop.init();
             MaitreDesktop.run();
-        </script>
 
-{% endblock javascript %}
+            var welcome = function( name ) {
+                var date = new Date();
+
+                // If dinner time,
+                if( date.getHours() >= 16 ) { 
+                    speak( "Bonne Swar" + name, {wordgap:5} );
+
+                } else { // If lunch time
+                    speak( "Bonne Jooooure" + name, {wordgap:5} );
+                }
+            };
+
+        </script>
+    </body>
+</html>

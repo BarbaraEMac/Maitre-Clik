@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import logging
+from django.utils import simplejson as json
 
 from apps.user.models       import User
 
@@ -22,7 +23,9 @@ class RegisterUser( URIHandler ):
         # Have to do this here to avoid a circular reference
         set_user_cookie( self, user.uuid )
 
-        self.response.out.write( { 'name' : user.name, 'uuid' : user.uuid } )
+        self.response.headers['Content-Type'] = "application/json"
+        self.response.out.write( json.dumps( { 'name' : user.name, 
+                                               'uuid' : user.uuid } ) )
 
 class CreateUser( URIHandler ):
     def post( self ):
@@ -37,5 +40,6 @@ class CreateUser( URIHandler ):
         # Have to do this here to avoid a circular reference
         set_user_cookie( self, user.uuid )
 
-        self.response.out.write( { 'name' : user.name, 'uuid' : user.uuid } )
-
+        self.response.headers['Content-Type'] = "application/json"
+        self.response.out.write( json.dumps( { 'name' : user.name, 
+                                               'uuid' : user.uuid } ) )

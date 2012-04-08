@@ -90,7 +90,7 @@
                                 '\t<p class="profile_name">{{ u.name }}</p>\n\r' + 
                                 '</div>');
                         
-                        $("#{{u.uuid}}").click( function() { MaitreMobile.registerUser( x ); });
+                        $("#{{u.uuid}}").click( function() { MaitreMobile.registerUser( "{{u.uuid}}" ); });
                    {% endfor %}
                     
                     // Add new user registration div.
@@ -153,6 +153,11 @@
                 };
 
                 this.showThanksView = function() {
+                    // Tell Desktop about the vote
+                    clik.send( 'vote', { name : this.user.name,
+                                         uuid : this.user.uuid,
+                                         value: $( "#voteView_slider" ).slider( "value" )} );
+
                     // Hide all other views.
                     this.unregisteredUserView.hide();
                     this.newUserView.hide();
@@ -172,10 +177,10 @@
                             success: function(response) {
                                 MaitreMobile.user.name = response.name;
                                 MaitreMobile.user.uuid = response.uuid;
+                                
+                                MaitreMobile.showVoteView();
                             },
                         });
-
-                     this.showVoteView();
                 };
 
                 this.createUser = function( user_uuid ) {
@@ -189,10 +194,10 @@
                             success: function(response) {
                                 MaitreMobile.user.name = response.name;
                                 MaitreMobile.user.uuid = response.uuid;
+                                
+                                MaitreMobile.showVoteView();
                             },
                         });
-
-                     this.showVoteView();
                 };
 
                 this.vote = function( vote ) {
@@ -204,17 +209,9 @@
                             type: "POST",
                             data: ({ value : value } ),
                             success: function(response) {
-                                MaitreMobile.user.name = response.name;
-                                MaitreMobile.user.uuid = response.uuid;
+                                MaitreMobile.showThanksView();
                             },
                         });
-
-                     this.showThanksView();
-
-                    // Tell Desktop about the vote
-                    clik.send( 'vote', { name : this.user.name,
-                                         uuid : this.user.uuid,
-                                         value: value } );
                 };
             };
 
