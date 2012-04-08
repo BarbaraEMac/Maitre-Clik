@@ -66,7 +66,7 @@ def set_user_cookie(request_handler, user_uuid):
     logging.info("Setting a user cookie: %s" % user_uuid)
     cookieutil = LilCookies(request_handler, COOKIE_SECRET)
     cookieutil.set_secure_cookie(
-            name = 'appsy_user_uuid', 
+            name = 'maitre_clik_user_uuid', 
             value = user_uuid,
             expires_days= 365*10,
             domain = '.%s' % APP_DOMAIN)
@@ -74,7 +74,7 @@ def set_user_cookie(request_handler, user_uuid):
 def read_user_cookie( request_handler ):
     """Sets a cookie to identify a user"""
     cookieutil = LilCookies(request_handler, COOKIE_SECRET)
-    user_uuid = cookieutil.get_secure_cookie(name = 'appsy_user_uuid')
+    user_uuid = cookieutil.get_secure_cookie(name = 'maitre_clik_user_uuid')
     logging.info("Reading a user cookie: %s" % user_uuid)
     return user_uuid
 

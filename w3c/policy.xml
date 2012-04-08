@@ -1,6 +1,6 @@
  <POLICY name="sample" 
-   discuri="http://appsy-daisy.appspot.com/cookiepolicy.html"
-   opturi="http://appsy-daisy.appspot.com/opt.html">
+   discuri="http://clik-app.appspot.com/cookiepolicy.html"
+   opturi="http://clik-app.appspot.com/opt.html">
    <ENTITY>
      <DATA-GROUP>
        <DATA ref="#business.name">Clik App</DATA>
