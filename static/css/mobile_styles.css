@@ -8,47 +8,57 @@
 }
 
 html {
-
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
 }
 
 body {
+    color: #031BA3;
 	background-color: white;
     background-image: url(/static/imgs/background6_light2.jpg);
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center; 
+    
     width: 100%;
+    height: 100%;
+    
     font-family: duchat, Arial;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
 }
 
-.wrapper {
-    width: 100%;
+#wrapper {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+
+	background-color: white;
+
+    padding: 10px;
 }
 
-#title {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    right: 0px;
+.title {
     width: 100%;
     margin: 0px;
-    padding: 50px 0px 0px 0px;
-    
-    box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
-    -moz-box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
-    -webkit-box-shadow: inset 0 8px 10px -5px #32a0ed, inset 0 -8px 20px -5px #32a0ed;
-    
-    color: #031BA3;
-    background-color: white;
-    
-    font-size: 5.0em;
-    line-height: 1.0em;
-    text-align: center;
+    padding: 35px 0px;
+
+    font-size: 9.0em;
+    line-height: 1.5em;
 }
 
-#newuser_wrapper, #unregistered_wrapper {
+#unregisteredUserView {
+    height: 100%;
+    width: 100%;
+}
+
+#newUser_wrapper, #unregisteredUser_wrapper {
     text-align: center;
-    margin-top: 135px;
+    margin-top: -120px;
     font-size: 3.0em;
     line-height: 2.0em;
 }
@@ -94,26 +104,21 @@ body {
 
 input{display:block;width:240px;font-size:.8em}
 
-#newuser_wrapper form {
+#newUser_wrapper form {
     padding: 10px;
 }
 
-#newuser_wrapper #name {
+#newUser_wrapper #name {
     width: 60%;
     margin: 10px;
     margin-left: auto;
     margin-right: auto;
 }
 
-#newuser_wrapper form > input[type="submit"] {
+#newUser_wrapper form > input[type="submit"] {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
-}
-
-.title {
-    width: 100%;
-    font-size: 5.0em;
 }

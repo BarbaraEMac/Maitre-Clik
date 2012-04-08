@@ -15,5 +15,5 @@ class DoVote( URIHandler ):
         meal = Meal.get_current()
         
         # Create the Vote.
-        vote = Vote.create( meal, user, int(self.request.get('value') )
+        vote = Vote.create( meal, user, int(self.request.get('value') ) )
 

@@ -9,8 +9,13 @@ from util.urihandler import URIHandler
 
 class UserMaker( URIHandler ):
     def get( self ):
-        return
+        users = User.all()
+        for u in users:
+            u.registration_state = "unregistered"
+            u.put()
 
+        return
+        
         # Don't run this again!
         names = [ 'Yuriy Blokhin', 'Mike Roberts', 'Andrei Skarine', 'Chris Best', 'Chris Fairles', 'Daniel Hendry', 'Jonathan Meyer', 'Nick Belyaev',
         'Adam Allidina', 'Peter Heinke', 'Julian Haldenby', 'Michael MacKenzie', 'Angela Watkins', 'Peter Wagner', 'Vick Yao', 'Erika Podlovics', 'Christine Thayer', 'Heather Galt',
