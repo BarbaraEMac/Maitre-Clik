@@ -154,9 +154,11 @@
 
                 this.showThanksView = function() {
                     // Tell Desktop about the vote
+                    var vote_val = $( "#voteView_slider" ).slider( "value" );
+
                     clik.send( 'vote', { name : this.user.name,
                                          uuid : this.user.uuid,
-                                         value: $( "#voteView_slider" ).slider( "value" )} );
+                                         vote_value : vote_val } );
 
                     // Hide all other views.
                     this.unregisteredUserView.hide();

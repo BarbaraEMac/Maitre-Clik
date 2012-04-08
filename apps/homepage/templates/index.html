@@ -30,8 +30,7 @@
                             <h1 class="span-12 last title">Bonjour</h1>
                             
                             <div class="span-12 last" id="mainView_barContainer">
-                                <div id="mainView_yes"> Yes </div>
-                                <div id="mainView_no"></div>
+                                <div id="mainView_yes"> 100% </div>
                             </div>
                             
                             <div class="prepend-top span-12 last" id="mainView_msg">
@@ -70,7 +69,7 @@
                         this.numVotes = 0;
 
                         this.percent = function() {
-                            return 100 * (this.sum / this.num_votes);
+                            return Math.round( 10 * (this.sum / this.numVotes) );
                         };
                     };
 
@@ -81,7 +80,6 @@
                     $("#statsView_showMainView").click( function() { MaitreDesktop.showMainView(); } );
 
                     $("#mainView_yes").width( "100%" );
-                    $("#mainView_no").width( "0%" );
 
                     clik.on('connect', function () {
                         var msg = "Hello World!";
@@ -89,7 +87,6 @@
                     });
 
                     clik.on('checkin', function ( user ) {
-                        alert('name: ' + user.name );
                         MaitreDesktop.welcome( user.name );
                         
                         var msg = "" + user.name.split(' ')[0] + " is eating.";
@@ -97,16 +94,16 @@
                     });
 
                     clik.on('vote', function ( msg ) {
-                        var msg = "" + msg.name.split(' ')[0] + " voted! " + msg.value + "/10!!";
-                        MaitreDesktop.updateMsg( msg );
+                        var text = "" + msg.name.split(' ')[0] + " voted! " + msg.vote_value + "/10!!";
+                        MaitreDesktop.updateMsg( text );
 
                         // Increment votes
-                        MaitreDesktop.votes.sum       += parseInt( msg.value );
-                        MaitreDesktop.votes.num_votes += 1;
+                        MaitreDesktop.votes.sum      += parseInt( msg.vote_value );
+                        MaitreDesktop.votes.numVotes += 1;
 
                         var per = MaitreDesktop.votes.percent();
                         $("#mainView_yes").width("" + per + "%" );
-                        $("#mainView_no").width("" + 100-per + "%" );
+                        $("#mainView_yes").html("" + per + "%" );
 
                     });
 
