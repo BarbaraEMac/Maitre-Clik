@@ -35,13 +35,12 @@ body {
 }
 
 #mainView_yes {
-    background-color: red;
-    float: left;
-}
+    background-color: #031ba3;
+    color: white;
 
-#mainView_no {
-    background-color: blue;
     float: left;
+    text-align: center;
+    border-radius: 20px;
 }
 
 #waiter {
@@ -61,22 +60,17 @@ body {
     width: 100%;
     text-align: center;
     
-    font-size: 5.0em;
+    font-size: 4.0em;
 }
 
 #mainView_barContainer {
     margin: 10px;
     width: 90%;
-    border: 1px solid black;
+    border: 2px solid #0414a5;
     border-radius: 20px;
 
     font-size: 3.0em;
     line-height: 2.0em;
-}
-
-#mainView_yes, #mainView_no {
-    text-align: center;
-    border-radius: 20px;
 }
 
 button {

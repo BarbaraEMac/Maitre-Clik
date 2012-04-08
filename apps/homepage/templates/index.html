@@ -106,6 +106,10 @@
                         $("#mainView_yes").html("" + per + "%" );
 
                     });
+                    
+                    clik.on('join', function() {
+                        $("#qrContainer").css('background-image', 'url(' + clik.clikCodeURL() + ')');
+                    });
 
                     // A user has left the conference
                     clik.on('leave', function () {
