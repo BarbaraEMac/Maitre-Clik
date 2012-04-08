@@ -1,50 +1,62 @@
-{% extends 'mobile/base.html' %}
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<title>Maitre 'Clik</title>
+        <!-- CSS -->
+		<link rel="stylesheet" href="/static/css/mobile_styles.css">
+		<link rel="stylesheet" href="/static/css/jquery-ui-1.8.18.custom.css">
+    </head>
 
-{% block content %}
-    <!-- Unregistered User View -->
-    <div id="unregisteredUserView" style="display: none">
-        <h1 class="title">Who Are You?</h1>
+    <body>
+        <div id="wrapper">
 
-        <div id="unregisteredUser_wrapper">
+            <!-- Unregistered User View -->
+            <div id="unregisteredUserView" style="display: none">
+                <h1 class="title">Who Are You?</h1>
+
+                <div id="unregisteredUser_wrapper">
+                </div>
+            </div>
+
+            <!-- New User View -->
+            <div id="newUserView" style="display: none">
+                <h1 class="title">Welcome!</h1>
+
+                <div id="newUser_wrapper">
+                    <form>
+                        <label for="newUser_name">Enter Your Full Name:</label>
+                        <input type="text" name="newUser_name" id="newUser_name" />
+                    </form>
+                    <input type="submit" id="newUser_submit" />
+                
+                </div>
+            </div>
+
+            <!-- Vote View -->
+            <div id="voteView" style="display: none">
+                <h1 class="title" id="voteView_title">Bon Appetit</h1>
+
+                <h1>How much do you enjoy this meal?</h1>
+                
+                <input type="text" id="voteView_amount" style="border:0; color:#f6931f; font-weight:bold;" />
+
+                <div id="voteView_slider" style="max-width: 400px"> </div>
+                    
+                <input type="submit" id="voteView_submit" />
+            </div>
+
+            <!-- Thanks View -->
+            <div id="thanksView" style="display: none">
+                <h1 class="title" id="thanksView_title">Merci</h1>
+            </div>
         </div>
-    </div>
 
-    <!-- New User View -->
-    <div id="newUserView" style="display: none">
-        <h1 class="title">Welcome!</h1>
+        <!-- JS -->
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
 
-        <div id="newUser_wrapper">
-            <form>
-                <label for="newUser_name">Enter Your Full Name:</label>
-                <input type="text" name="newUser_name" id="newUser_name" />
-            </form>
-            <input type="submit" id="newUser_submit" />
-        
-        </div>
-    </div>
-
-    <!-- Vote View -->
-    <div id="voteView" style="display: none">
-        <h1 class="title" id="voteView_title">Bon Appetit</h1>
-
-        <h1>How much do you enjoy this meal?</h1>
-        
-	    <input type="text" id="voteView_amount" style="border:0; color:#f6931f; font-weight:bold;" />
-
-        <div id="voteView_slider" style="max-width: 400px"> </div>
-            
-        <input type="submit" id="voteView_submit" />
-    </div>
-
-    <!-- Thanks View -->
-    <div id="thanksView" style="display: none">
-        <h1 class="title" id="thanksView_title">Merci</h1>
-    </div>
-
-{% endblock content %}
-
-{% block javascript %}
-     <script>
+        <script>
             var MaitreMobile = new function() {
                 // User obj for current user. 
                 this.user = new function () {
@@ -220,5 +232,5 @@
             MaitreMobile.init();
             MaitreMobile.run();
         </script>
-
-{% endblock javascript %}
+    </body>
+</html>
