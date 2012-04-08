@@ -42,7 +42,7 @@ class Vote( Model ):
         return db.Query(Vote).filter('uuid =', uuid).get()
     
     @staticmethod
-    def create( meal, user, value ):
+    def create( meal, user, val ):
         """ Constructor for Vote class. 
             Input: meal & user should be Obj refs & value should be an int
             Output: returns the new Vote obj.
@@ -50,10 +50,23 @@ class Vote( Model ):
         
         uuid = generate_uuid( 10 )
 
-        vote = Vote( key_name = uuid,
-                     uuid     = uuid,
-                     meal     = meal,
-                     user     = user,
-                     value    = value )
-        vote.put()
+        # Error check the val. it must be in range [1, 10]
+        if val < 1:
+            val = 1
+        elif val > 10:
+            val = 10
+
+        # Only 1 Vote per {user, meal} allowed!
+        if Vote.get_by_user_and_meal( user, meal ) is None:
+            
+            vote = Vote( key_name = uuid,
+                         uuid     = uuid,
+                         meal     = meal,
+                         user     = user,
+                         value    = val )
+            vote.put()
         return vote
+
+    @staticmethod
+    def get_by_user_and_meal( user, meal ):
+        return Vote.all().filter('meal =', meal).filter('user =', user).get()

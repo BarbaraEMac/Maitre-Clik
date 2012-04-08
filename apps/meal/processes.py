@@ -2,9 +2,8 @@
 
 import logging
 
-from urlparse               import urlparse
-
 from apps.meal.models       import Meal
+
 from util.consts            import *
 from util.urihandler        import URIHandler
 

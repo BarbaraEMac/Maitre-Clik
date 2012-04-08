@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 import logging
-from django.utils import simplejson as json
-from urlparse               import urlparse
+from django.utils       import simplejson as json
 
-from util.consts            import *
-from util.urihandler        import URIHandler
+from util.urihandler    import URIHandler
 
 class FetchStats( URIHandler ):
     def get( self ):

@@ -46,11 +46,13 @@ class Checkin( Model ):
         
         uuid = generate_uuid( 10 )
 
-        checkin = Checkin( key_name = uuid,
-                           uuid     = uuid,
-                           meal     = meal,
-                           user     = user )
-        checkin.put()
+        # Only 1 Checkin per {user, meal} allowed!
+        if Checkin.get_by_user_and_meal( user, meal ) is None:
+            checkin = Checkin( key_name = uuid,
+                               uuid     = uuid,
+                               meal     = meal,
+                               user     = user )
+            checkin.put()
         return checkin
 
     @staticmethod

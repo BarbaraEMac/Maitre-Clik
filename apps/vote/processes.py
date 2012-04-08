@@ -2,8 +2,6 @@
 
 import logging
 
-from urlparse               import urlparse
-
 from apps.meal.models       import Meal
 from apps.vote.models       import Vote
 
@@ -12,9 +10,10 @@ from util.urihandler        import URIHandler
 
 class DoVote( URIHandler ):
     def post( self ):
+        """ Let's a User assign a [1, 10] value for the current Meal. """
         user = self.get_user()
-
-        vote = Vote.create( Meal.get_current(), 
-                            user, 
-                            int(self.request.get('value')) )
+        meal = Meal.get_current()
+        
+        # Create the Vote.
+        vote = Vote.create( meal, user, int(self.request.get('value') )
 
