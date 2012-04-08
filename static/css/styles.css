@@ -39,6 +39,7 @@ body {
     color: white;
 
     float: left;
+    width: 100%;
     text-align: center;
     border-radius: 16px;
 }
