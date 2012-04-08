@@ -3,7 +3,7 @@
 {% block content %}
     <!-- Unregistered User View -->
     <div id="unregisteredUserView" style="display: none">
-        <h1 id="title">Who Are You?</h1>
+        <h1 class="title">Who Are You?</h1>
 
         <div id="unregisteredUser_wrapper">
         </div>
@@ -11,7 +11,7 @@
 
     <!-- New User View -->
     <div id="newUserView" style="display: none">
-        <h1 id="title">Welcome!</h1>
+        <h1 class="title">Welcome!</h1>
 
         <div id="newUser_wrapper">
             <form>
@@ -105,7 +105,7 @@
                     this.thanksView.hide();
                     
                     // Now, show the view div!
-                    this.unregisteredUserView.show();
+                    this.unregisteredUserView.fadeIn();
                 };
                  
                 this.showNewUserView = function( ) {
@@ -119,7 +119,7 @@
                     this.thanksView.hide();
                     
                     // Show new user view
-                    this.newUserView.show();
+                    this.newUserView.fadeIn();
                 };
 
                 this.showVoteView = function() {
@@ -145,7 +145,7 @@
                     this.thanksView.hide();
                     
                     // Show vote view
-                    this.voteView.show();
+                    this.voteView.fadeIn();
 
                     // Checkin
                     clik.send( 'checkin', { name: this.user.name, 
@@ -159,7 +159,7 @@
                     this.voteView.hide();
                     
                     // Show thanks view
-                    this.thanksView.show();
+                    this.thanksView.fadeIn();
                 };
 
                 // Ajax Functions ----------------------------------------------
