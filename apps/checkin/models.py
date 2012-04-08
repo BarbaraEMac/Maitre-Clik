@@ -13,10 +13,10 @@ from util.model             import Model
 # ------------------------------------------------------------------------------
 class Checkin( Model ):
     """ The Checkin Class
-        Denotes a Checkin (Yes or No) for a Meal from a User.
+        Denotes a Checkin for a Meal from a User.
         Properties:
             meal - The Meal that this Checkin is associated with. 
-            checkin - The User who placed this Checkin.
+            user - The User who placed this Checkin.
     """
     
     uuid    = db.StringProperty( indexed=True )
@@ -52,3 +52,10 @@ class Checkin( Model ):
                            user     = user )
         checkin.put()
         return checkin
+
+    @staticmethod
+    def get_by_user_and_meal( user, meal ):
+        """ Given a user and a meal, return the corresponding Checkin.
+            If none exist, None is returned.
+        """
+        return Checkin.all().filter( 'meal =', meal ).filter( 'user =', user ).get()

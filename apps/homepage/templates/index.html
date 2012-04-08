@@ -88,6 +88,7 @@
 
                     clik.on('checkin', function ( user ) {
                         MaitreDesktop.welcome( user.name );
+                        MaitreDesktop.checkin( user.uuid );
                         
                         var msg = "" + user.name.split(' ')[0] + " is eating.";
                         MaitreDesktop.updateMsg( msg );
@@ -162,6 +163,15 @@
                             url: "{% url FetchStats %}",
                             type: "GET",
                             data: ({ } ),
+                            success: function(response) {
+                            },
+                        });
+                };
+                this.checkinUser = function( user_uuid ) {
+                     $.ajax({
+                            url: "{% url CreateCheckin %}",
+                            type: "POST",
+                            data: ({ user_uuid : user_uuid } ),
                             success: function(response) {
                             },
                         });
