@@ -108,3 +108,26 @@ button {
 a {
     font-size: 2.0em;
 }
+
+.statsView_wrapper {
+    margin-top: -50px;
+}
+
+.statsView_wrapper img {
+    width: 50%;
+    border: 1px solid #0414a5;
+    border-radius: 20px;
+    -moz-box-shadow:    3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow:         3px 3px 5px 6px #ccc;
+    margin-bottom: 30px;
+}
+
+.statsView_wrapper p {
+    font-family: arial;
+    font-size: 2.0em;
+}
+
+.statsView_wrapper hr {
+    width: 80%;
+}
