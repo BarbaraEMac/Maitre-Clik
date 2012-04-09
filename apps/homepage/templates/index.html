@@ -88,13 +88,15 @@
 
                     clik.on('checkin', function ( user ) {
                         MaitreDesktop.welcome( user.name );
-                        MaitreDesktop.checkin( user.uuid );
+                        MaitreDesktop.checkinUser( user.uuid );
                         
                         var msg = "" + user.fname + " is eating.";
                         MaitreDesktop.updateMsg( msg );
                     });
 
                     clik.on('vote', function ( msg ) {
+                        speak("Mair see" + msg.name,  {wordgap: 5});
+
                         var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
                         MaitreDesktop.updateMsg( text );
 
@@ -105,7 +107,6 @@
                         var per = MaitreDesktop.votes.percent();
                         $("#mainView_yes").width("" + per + "%" );
                         $("#mainView_yes").html("" + per + "%" );
-
                     });
                     
                     clik.on('join', function() {
