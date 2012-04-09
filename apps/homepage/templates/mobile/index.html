@@ -36,13 +36,15 @@
             <div id="voteView" style="display: none">
                 <h1 class="title" id="voteView_title">Bon Appetit</h1>
 
-                <h1>How much do you enjoy this meal?</h1>
-                
-                <input type="text" id="voteView_amount" style="border:0; color:#f6931f; font-weight:bold;" />
-
-                <div id="voteView_slider" style="max-width: 400px"> </div>
+                <div id="voteView_wrapper">
+                    <h1>How awesome is this meal?</h1>
                     
-                <input type="submit" id="voteView_submit" />
+                    <p id="voteView_amount">5/10</p>
+                    
+                    <div id="voteView_slider" style="max-width: 80%;"> </div>
+                    
+                    <button id="voteView_submit"> Submit </button>
+                </div>
             </div>
 
             <!-- Thanks View -->
@@ -145,11 +147,11 @@
                                                       max: 10,
                                                       step: 1,
                                                       slide: function( event, ui ) {
-                                                            $( "#voteView_amount" ).val( ui.value );
+                                                            $("#voteView_amount").html( ui.value + "/10" );
                                                         }
                                                     });
 
-                    $( "#voteView_amount" ).val( $( "#voteView_slider" ).slider( "value" ) );
+                    $( "#voteView_amount" ).html( $( "#voteView_slider" ).slider( "value" ) + "/10");
                     
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
 
