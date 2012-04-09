@@ -36,7 +36,8 @@ class RegisterUser( URIHandler ):
 
 class CreateUser( URIHandler ):
     def post( self ):
-        user = User.create( self.request.get( 'name' ) )
+        name = self.request.get( 'name' ).strip()
+        user = User.create( name )
 
         # Cache the User
         self.db_user = user

@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
-		<title>Maitre 'Clik</title>
+		<title>Maitre 'Clik - Mobile</title>
+        
         <!-- CSS -->
 		<link rel="stylesheet" href="/static/css/mobile_styles.css">
 		<link rel="stylesheet" href="/static/css/jquery-ui-1.8.18.custom.css">
+
+        <!-- JS -->
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
     </head>
 
     <body>
@@ -56,20 +62,17 @@
             </div>
         </div>
 
-        <!-- JS -->
-        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <script src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
-
         <script>
             var MaitreMobile = new function() {
+                
                 // User obj for current user. 
                 this.user = new function () {
-                    this.uuid  = "{{user.uuid}}";
-                    this.name  = "{{user.name}}";
-                    this.fname = "{{user_first_name}}";
-                    this.img   = "{{user.img}}";
+                    this.uuid  = "{{user.uuid}}";       // Unique # to id User on Server
+                    this.name  = "{{user.name}}";       // Full name ie. Foo Bar
+                    this.fname = "{{user_first_name}}"; // First name ie. Foo
+                    this.img   = "{{user.img}}";        // URL to img of User
                 };
+                
                 // Views for the Mobile App
                 this.unregisteredUserView = $("#unregisteredUserView");
                 this.newUserView          = $("#newUserView");
@@ -84,6 +87,21 @@
                     // Don't let people refresh the page if they hit Enter!
                     $("#newUser_wrapper > form").submit(function(){ return false; }); 
 
+                    // Attach click handlers.
+                    $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
+                    $("#newUser_submit").click( function() { MaitreMobile.createUser(); } );
+                    $("#thanksView_closeBtn").click( function() { MaitreMobile.quit(); } ); 
+                    
+                    // Initialize the voting slider.
+                    $( "#voteView_slider" ).slider( { value: 5,
+                                                      min: 1,
+                                                      max: 10,
+                                                      step: 1,
+                                                      slide: function( event, ui ) {
+                                                            $("#voteView_amount").html( ui.value + "/10" );
+                                                        }
+                                                    });
+
                     // Use server logic to determine which view to display.
                     {% if ShowUnregisteredUserView %}
                         this.showUnregisteredUserView();
@@ -94,18 +112,30 @@
                 };
                 
                 this.run = function( ) {
+                    /* Call this fcn to start running the App. */
+                    this.init(); // Initialize the app.
+
                     // When Clik is ready to serve events..
                     clik.ready(function () {
                         return;
                     });
                 };
 
+                this.quit = function() {
+                    /* Close the Clik connection. */
+
+                    clik.close();
+                };
+
+
                 // View Functions ----------------------------------------------
                 this.showUnregisteredUserView = function( ) {
+                    /* Show the "Unregistered User" View */
+                    
+                    // Build html for unregistered users
                     var wrapper = $("#unregisteredUser_wrapper");
                     wrapper.html('');
 
-                    // Build html for unregistered users
                     {% for u in unregistered_users %}
                         wrapper.append('<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
                                 '\t<img class="profile_pic" src="{{ u.img }}" /> \n\r' +
@@ -132,8 +162,6 @@
                  
                 this.showNewUserView = function( ) {
                     /* Show the "New User" View */
-                    // Assign the onClick for the submit button
-                    $("#newUser_submit").click( function() { MaitreMobile.createUser(); } );
                     
                     // Hide all other views.
                     this.unregisteredUserView.hide();
@@ -145,21 +173,9 @@
                 };
 
                 this.showVoteView = function() {
-                    $("#voteView_title").html("Bon Appetit, " + this.user.fname);
-
                     /* Show the "Vote" View */
-                    $( "#voteView_slider" ).slider( { value: 5,
-                                                      min: 1,
-                                                      max: 10,
-                                                      step: 1,
-                                                      slide: function( event, ui ) {
-                                                            $("#voteView_amount").html( ui.value + "/10" );
-                                                        }
-                                                    });
-
-                    $("#voteView_amount").html( $("#voteView_slider").slider("value") + "/10");
-                    
-                    $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
+                    // Update the title.
+                    $("#voteView_title").html("Bon Appetit, " + this.user.fname);
 
                     // Hide all other views.
                     this.unregisteredUserView.hide();
@@ -177,16 +193,6 @@
                 };
 
                 this.showThanksView = function() {
-                    // Tell Desktop about the vote
-                    var vote_val = $( "#voteView_slider" ).slider( "value" );
-
-                    clik.send( 'vote', { name       : this.user.name,
-                                         fname      : this.user.fname,
-                                         img        : this.user.img,
-                                         vote_value : vote_val } );
-
-                    $("#thanksView_closeBtn").click( function() { MaitreMobile.quit(); } );
-
                     // Hide all other views.
                     this.unregisteredUserView.hide();
                     this.newUserView.hide();
@@ -196,46 +202,53 @@
                     this.thanksView.fadeIn();
                 };
 
-                this.quit = function() {
-                    clik.close();
-                };
+
 
                 // Ajax Functions ----------------------------------------------
                 this.registerUser = function( user_uuid ) {
                     /* Register an existing user */
+
                      $.ajax({
                             url: "{% url RegisterUser %}",
                             type: "POST",
                             data: ({ user_uuid : user_uuid } ),
                             success: function(response) {
+                                // Store User info for future use.
                                 MaitreMobile.user.name  = response.name;
                                 MaitreMobile.user.fname = response.first_name;
                                 MaitreMobile.user.img   = response.img;
                                 MaitreMobile.user.uuid  = response.uuid;
                                 
+                                // Go to Vote View.
                                 MaitreMobile.showVoteView();
                             },
                         });
                 };
 
                 this.createUser = function( user_uuid ) {
+                    /* Create a new User obj on the Server. */
+
                     var nameVal = $("#newUser_name").val();
 
+                    // Full name must be of form "Foo Bar".
+                    // Show error if not in correct form.
                     if ( !(/\w+ \w+/.test(nameVal)) ) {
                        $("#newUser_wrapper > form > label").css('color', 'red');
                     }
                     else {
-                        /* Register an existing user */
+                         // Tell the Server to make a new User.
                          $.ajax({
                                 url: "{% url CreateUser %}",
                                 type: "POST",
                                 data: ({ name : nameVal } ),
                                 success: function(response) {
-                                    MaitreMobile.user.name = response.name;
-                                    MaitreMobile.user.uuid = response.uuid;
+                                    // Store User info for future use.
+                                    MaitreMobile.user.name  = response.name;
+                                    MaitreMobile.user.uuid  = response.uuid;
                                     MaitreMobile.user.fname = response.first_name;
                                     MaitreMobile.user.img   = response.img;
                                     
+                                    // Go to Vote View.
                                     MaitreMobile.showVoteView();
                                 },
                             });
@@ -243,21 +256,28 @@
                 };
 
                 this.vote = function( vote ) {
-                    var value =  $( "#voteView_slider" ).slider( "value" );
+                    /* Assign a numerical value in range [1, 10] to the
+                       current meal. 1 = bad, 10 = best. */
 
-                    /* Register an existing user */
-                     $.ajax({
-                            url: "{% url DoVote %}",
-                            type: "POST",
-                            data: ({ value : value } ),
-                            success: function(response) {
-                                MaitreMobile.showThanksView();
-                            },
-                        });
+                    var vote_val = $( "#voteView_slider" ).slider( "value" );
+
+                    // Tell Clik Desktop about the vote
+                    clik.send( 'vote', { name       : this.user.name,
+                                         fname      : this.user.fname,
+                                         img        : this.user.img,
+                                         vote_value : vote_val } );
+                    // Tell server
+                    $.ajax({ url: "{% url DoVote %}",
+                             type: "POST",
+                             data: ({ value : vote_val } ),
+                             success: function(response) {
+                                 // Go to Thanks View on successful vote.
+                                 MaitreMobile.showThanksView();
+                             },
+                          });
                 };
             };
 
-            MaitreMobile.init();
             MaitreMobile.run();
         </script>
     </body>
