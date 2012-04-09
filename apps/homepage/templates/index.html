@@ -22,7 +22,7 @@
                     <div class="span-24 last" id="mainView">
                         <div class="span-12">
                             <img id="qrContainer" src="" style="display: none" />
-                            <img id="waiter" src="/static/imgs/waiter2.png" />
+                            <img id="waiter" src="/static/imgs/waiter3.png" />
 
                             <br />
                             <a href="#" id="mainView_showStatsView">Stats</a>
@@ -131,7 +131,7 @@
                     });
 
                     clik.on('vote', function ( msg ) {
-                        speak("Mair see" + msg.name,  {wordgap: 5});
+                        speak("Mair see" + msg.name,  {wordgap: 3});
 
                         var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
                         MaitreDesktop.updateMsg( text );
@@ -196,7 +196,7 @@
                 };
 
                 this.run = function( ) {
-                    speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:5} );
+                    speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:3} );
                     
                     // When Cmsgk is ready to serve events..
                     clik.ready(function () {
@@ -208,10 +208,10 @@
 
                     // If dinner time,
                     if( date.getHours() >= 16 ) { 
-                        speak( "Bonne Swar" + name, {wordgap:5} );
+                        speak( "Bonne Swar" + name, {wordgap:3} );
 
                     } else { // If lunch time
-                        speak( "Bonne Jooooure" + name, {wordgap:5} );
+                        speak( "Bonne Jooooure" + name, {wordgap:3} );
                     }
                 };
 
