@@ -1,7 +1,38 @@
 Hi Kik Team!
 
+Here's a demo Clik app to track people as they eat meals around the office.
+
+Goals:
+- To reduce the cost of meals.
+    Since meals are ordered from WildCraft on a per-person basis,
+    it stands to reason that the company can save money by reducing
+    the amount of ordered portions.
+
+    If there are X employees at Kik but at most Y, for Y < X, eat
+    a particular meal (either of Lunch or Dinner) on average,
+    then the number of ordered portions should be reduced to Y.
+
+- To optimize the time meals are delivered.
+    If meals are delivered at time T1 but employees are not ready to 
+    eat meals until time T2, for T2 > T1, then meals should
+    be delivered at time T2.
+    
+    No one wants to eat a cold meal!
+
+- To test to daily build of Clik code DAILY.
+    What better way to test the builds of both the Clik
+    mobile app AND the Clik JS code than to get the whole office
+    to use them twice / day.
+
+- To expose non-dev employees to Clik on a regular basis.
+    People who are not developing on the platform
+    should be thoroughly familiar with the benefits
+    of the platform + system. Hence, they should use
+    the app and platform as often as possible to see
+    new changes are they are implemented.
+
 Possible titles:
-- Foodik
-- Lunchik
 - Maitre 'Clik
 - MealClik
+- Francois
+- Pierre
