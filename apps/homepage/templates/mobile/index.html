@@ -60,8 +60,10 @@
             var MaitreMobile = new function() {
                 // User obj for current user. 
                 this.user = new function () {
-                    this.uuid = "{{user.uuid}}";
-                    this.name = "{{user.name}}";
+                    this.uuid  = "{{user.uuid}}";
+                    this.name  = "{{user.name}}";
+                    this.fname = "{{user_first_name}}";
+                    this.img   = "{{user.img}}";
                 };
                 // Views for the Mobile App
                 this.unregisteredUserView = $("#unregisteredUserView");
@@ -135,7 +137,7 @@
                 };
 
                 this.showVoteView = function() {
-                    $("#voteView_title").val("Bon Appetite, " + this.user.name);
+                    $("#voteView_title").html("Bon Appetit, " + this.user.fname);
 
                     /* Show the "Vote" View */
                     $( "#voteView_slider" ).slider( { value: 5,
@@ -143,7 +145,7 @@
                                                       max: 10,
                                                       step: 1,
                                                       slide: function( event, ui ) {
-                                                            $( "#voteView_amount" ).val( "$" + ui.value );
+                                                            $( "#voteView_amount" ).val( ui.value );
                                                         }
                                                     });
 
@@ -160,16 +162,19 @@
                     this.voteView.fadeIn();
 
                     // Checkin
-                    clik.send( 'checkin', { name: this.user.name, 
-                                            uuid: this.user.uuid } );
+                    clik.send( 'checkin', { name  : this.user.name,
+                                            fname : this.user.fname,
+                                            uuid  : this.user.uuid,
+                                            img   : this.user.img } );
                 };
 
                 this.showThanksView = function() {
                     // Tell Desktop about the vote
                     var vote_val = $( "#voteView_slider" ).slider( "value" );
 
-                    clik.send( 'vote', { name : this.user.name,
-                                         uuid : this.user.uuid,
+                    clik.send( 'vote', { name       : this.user.name,
+                                         fname      : this.user.fname,
+                                         img        : this.user.img,
                                          vote_value : vote_val } );
 
                     // Hide all other views.
@@ -189,8 +194,10 @@
                             type: "POST",
                             data: ({ user_uuid : user_uuid } ),
                             success: function(response) {
-                                MaitreMobile.user.name = response.name;
-                                MaitreMobile.user.uuid = response.uuid;
+                                MaitreMobile.user.name  = response.name;
+                                MaitreMobile.user.fname = response.first_name;
+                                MaitreMobile.user.img   = response.img;
+                                MaitreMobile.user.uuid  = response.uuid;
                                 
                                 MaitreMobile.showVoteView();
                             },
@@ -212,6 +219,8 @@
                                 success: function(response) {
                                     MaitreMobile.user.name = response.name;
                                     MaitreMobile.user.uuid = response.uuid;
+                                    MaitreMobile.user.fname = response.first_name;
+                                    MaitreMobile.user.img   = response.img;
                                     
                                     MaitreMobile.showVoteView();
                                 },

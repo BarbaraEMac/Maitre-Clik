@@ -35,8 +35,14 @@ class ShowMobileApp(URIHandler):
 
     def vote_view( self, user ):
         # Otherwise, show a list of unregistered Users.
-        new_values = { 'user' : user,
-                       'ShowVoteView' : 1 }
+        try:
+            first_name = user.name.split(' ')[0]
+        except:
+            first_name = user.name
+
+        new_values = { 'user'            : user,
+                       'user_first_name' : first_name,
+                       'ShowVoteView'    : 1 }
                         
         return new_values
 

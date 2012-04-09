@@ -23,9 +23,16 @@ class RegisterUser( URIHandler ):
         # Have to do this here to avoid a circular reference
         set_user_cookie( self, user.uuid )
 
+        try:
+            first_name = user.name.split(' ')[0]
+        except:
+            first_name = user.name
+    
         self.response.headers['Content-Type'] = "application/json"
-        self.response.out.write( json.dumps( { 'name' : user.name, 
-                                               'uuid' : user.uuid } ) )
+        self.response.out.write( json.dumps( { 'name'       : user.name, 
+                                               'first_name' : first_name,
+                                               'uuid'       : user.uuid,
+                                               'img'        : user.img } ) )
 
 class CreateUser( URIHandler ):
     def post( self ):
@@ -40,6 +47,14 @@ class CreateUser( URIHandler ):
         # Have to do this here to avoid a circular reference
         set_user_cookie( self, user.uuid )
 
+        try:
+            first_name = user.name.split(' ')[0]
+        except:
+            first_name = user.name
+
         self.response.headers['Content-Type'] = "application/json"
-        self.response.out.write( json.dumps( { 'name' : user.name, 
-                                               'uuid' : user.uuid } ) )
+        self.response.out.write( json.dumps( { 'name'       : user.name, 
+                                               'first_name' : first_name,
+                                               'uuid'       : user.uuid,
+                                               'img'        : user.img } ) )
+

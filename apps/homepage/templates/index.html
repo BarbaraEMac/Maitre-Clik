@@ -90,12 +90,12 @@
                         MaitreDesktop.welcome( user.name );
                         MaitreDesktop.checkin( user.uuid );
                         
-                        var msg = "" + user.name.split(' ')[0] + " is eating.";
+                        var msg = "" + user.fname + " is eating.";
                         MaitreDesktop.updateMsg( msg );
                     });
 
                     clik.on('vote', function ( msg ) {
-                        var text = "" + msg.name.split(' ')[0] + " voted! " + msg.vote_value + "/10!!";
+                        var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
                         MaitreDesktop.updateMsg( text );
 
                         // Increment votes
