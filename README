@@ -34,6 +34,37 @@ Goals:
     the app and platform as often as possible to see
     new changes are they are implemented.
 
+TODOs:
+1. Error check input better.
+    - Server side
+    - Client side
+
+2. Reduce # of ajax calls from client.
+    - Can aggregate calls by storing data in JS
+
+3. Update UI.
+    - Desktop UI can be beautified.
+    - Mobile UI needs to look more like a native app.
+    - CSS should be cleaned up.
+    - Make entire app look professional.
+
+4. Attach User data (name, uuid, img) to Client obj via prototype.
+    - On an event trigger, does the client who triggered the event
+    get passed to the listener? 
+
+5. Use memcache more.
+    - Memcache Stats obj.
+    - Memcache current Meal.
+
+6. Stop default QR code from displaying instead of removing it after in DOM.
+
+7. Write better JS.
+    - Encapsulate private fcns & vars.
+    - Handle view / state switching better.
+
+8. Complete analytics.
+    - Add weekly emailer too so you don't need to view dashboard.
+
 Possible titles:
 - Maitre 'Clik
 - MealClik
