@@ -96,3 +96,11 @@ button {
     margin-right: auto;
     text-align: center;
 }
+
+#qrContainer {
+    height: 30%;
+    position: absolute;
+    z-index: 1;
+    top: 3%;
+    left: 29%;
+}

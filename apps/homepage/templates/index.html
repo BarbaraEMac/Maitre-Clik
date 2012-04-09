@@ -17,11 +17,11 @@
             <div id='main' class='container'>
                 <div class="span-24 append-bottom last">
                     <div id="audio"></div>
-                    <div id="qrContainer"></div>
 
                     <!-- Main View -->
                     <div class="span-24 last" id="mainView">
                         <div class="span-12">
+                            <img id="qrContainer" src="" style="display: none" />
                             <img id="waiter" src="/static/imgs/waiter2.png" />
                             <button id="mainView_showStatsView">Stats</button>
                         </div>
@@ -29,11 +29,12 @@
                         <div class="span-12 last">
                             <h1 class="span-12 last title">Bonjour</h1>
                             
-                            <div class="span-12 last" id="mainView_barContainer">
+                            <div class="span-12 last" id="mainView_barContainer" style="display: none">
                                 <div id="mainView_yes"> 100% </div>
                             </div>
                             
                             <div class="prepend-top span-12 last" id="mainView_msg">
+                                Loading ....
                             </div>
                         </div>
                             
@@ -75,15 +76,24 @@
 
                 this.init = function( ) {
 
-                    // Init Views
+                    // Init Views -------------------------
                     $("#mainView_showStatsView").click( function() { MaitreDesktop.showStatsView(); } );
                     $("#statsView_showMainView").click( function() { MaitreDesktop.showMainView(); } );
 
                     $("#mainView_yes").width( "100%" );
 
+                    // Setup timed resets to match cron update on server.
+                    this.initReset();
+                    
+                    setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
+
+                    // Init clik event handlers ------------
                     clik.on('connect', function () {
                         var msg = "Hello World!";
                         MaitreDesktop.updateMsg( msg );
+
+                        $("#qrContainer").attr( 'src', clik.clikCodeURL() );
+                        $("#qrContainer").fadeIn();
                     });
 
                     clik.on('checkin', function ( user ) {
@@ -105,12 +115,13 @@
                         MaitreDesktop.votes.numVotes += 1;
 
                         var per = MaitreDesktop.votes.percent();
+                        $("#mainView_barContainer").show();
                         $("#mainView_yes").width("" + per + "%" );
                         $("#mainView_yes").html("" + per + "%" );
                     });
                     
                     clik.on('join', function() {
-                        $("#qrContainer").css('background-image', 'url(' + clik.clikCodeURL() + ')');
+                        return;
                     });
 
                     // A user has left the conference
@@ -118,6 +129,38 @@
                         var msg = "Someone has left the building.";
                         MaitreDesktop.updateMsg( msg );
                     });
+                };
+
+                this.removeClikOverlay = function() {
+                    var el = $("#clik-paper"); 
+                    
+                    if( el != undefined ) {
+                        el.remove();
+                    } else {
+                        setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
+                    }
+                };
+
+                this.initReset = function() {
+                    // Setup timed resets to match cron update on server.
+                    var now = new Date();
+                    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
+                    if (millisTill10 < 0) {
+                         millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+                    }
+                    var millisTill16 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 16, 0, 0, 0) - now;
+                    if (millisTill16 < 0) {
+                         millisTill16 += 86400000; // it's after 4pm, try 4pm tomorrow.
+                    }
+                    setTimeout( function(){ MaitreDesktop.reset(); }, Math.min(millisTill10, millisTill16) );
+                };
+
+                this.reset = function() {
+                    // Reset the votes for the next meal.
+                    this.votes.sum      = 0;
+                    this.votes.numVotes = 0;
+    
+                    this.initReset();
                 };
 
                 this.updateMsg = function( msg ) {
@@ -129,9 +172,7 @@
                     
                     // When Cmsgk is ready to serve events..
                     clik.ready(function () {
-                        // Populate CmsgkCode
-                        $("#qrContainer").css('background-image', 'url(' + clik.clikCodeURL() + ')');
-        
+                        $("#qrContainer").attr( 'src', clik.clikCodeURL() );
                     });
                 };
                 this.welcome = function( name ) {
