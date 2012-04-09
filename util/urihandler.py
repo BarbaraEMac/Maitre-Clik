@@ -39,7 +39,7 @@ class URIHandler( webapp.RequestHandler ):
         user = self.get_user()
 
         template_values = {
-            'URL'   : URL,
+            'URL'  : URL,
             'user' : user
         }
         merged_values = dict(template_values)
