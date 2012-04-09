@@ -65,7 +65,9 @@ class Vote( Model ):
                          user     = user,
                          value    = val )
             vote.put()
-        return vote
+            return vote
+        
+        return None
 
     @staticmethod
     def get_by_user_and_meal( user, meal ):

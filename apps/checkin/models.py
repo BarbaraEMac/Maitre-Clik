@@ -53,7 +53,9 @@ class Checkin( Model ):
                                meal     = meal,
                                user     = user )
             checkin.put()
-        return checkin
+            return checkin
+
+        return None
 
     @staticmethod
     def get_by_user_and_meal( user, meal ):

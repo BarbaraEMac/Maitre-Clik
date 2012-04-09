@@ -49,7 +49,9 @@
 
             <!-- Thanks View -->
             <div id="thanksView" style="display: none">
-                <h1 class="title" id="thanksView_title">Merci</h1>
+                <h1 class="title">Merci!</h1>
+
+                <button id="thanksView_closeBtn">Until your next meal ...</button>
             </div>
         </div>
 
@@ -151,7 +153,7 @@
                                                         }
                                                     });
 
-                    $( "#voteView_amount" ).html( $( "#voteView_slider" ).slider( "value" ) + "/10");
+                    $("#voteView_amount").html( $("#voteView_slider").slider("value") + "/10");
                     
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
 
@@ -179,6 +181,8 @@
                                          img        : this.user.img,
                                          vote_value : vote_val } );
 
+                    $("#thanksView_closeBtn").click( function() { MaitreMobile.quit(); } );
+
                     // Hide all other views.
                     this.unregisteredUserView.hide();
                     this.newUserView.hide();
@@ -186,6 +190,10 @@
                     
                     // Show thanks view
                     this.thanksView.fadeIn();
+                };
+
+                this.quit = function() {
+                    clik.close();
                 };
 
                 // Ajax Functions ----------------------------------------------
