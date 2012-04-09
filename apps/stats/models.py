@@ -17,6 +17,13 @@ class Stats( Model ):
     """
     
     uuid    = db.StringProperty( indexed = True )
+
+    # Count of the total # of checkins that have
+    # occurred at Lunch
+    lunch_checkin_count = db.IntegerProperty( indexed=False, default=0 )
+
+    # Count of the total number of lunches we've been tracking
+    lunch_checkin_days  = db.IntegerProperty( indexed=False, default=0 )
     
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 

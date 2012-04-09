@@ -63,3 +63,10 @@ class Checkin( Model ):
             If none exist, None is returned.
         """
         return Checkin.all().filter( 'meal =', meal ).filter( 'user =', user ).get()
+
+    @staticmethod
+    def get_by_meal( meal ):
+        """ Given a  meal, return the corresponding Checkins.
+            If none exist, None is returned.
+        """
+        return Checkin.all().filter( 'meal =', meal ).get()
