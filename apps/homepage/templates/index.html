@@ -15,6 +15,15 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
 		<script type="text/javascript" src="/static/js/speakClient.js"></script>
+        <script>
+            // Common JS fcns.
+            Array.prototype.has=function(v){
+                for (i=0; i<this.length; i++){
+                    if (this[i]==v) return true;
+                }
+                return false;
+            }
+        </script>
     </head>
 
     <body>
@@ -100,8 +109,9 @@
                 // A 'vote' struct to keep track of the votes for current meal
                 this.votes     = new function() 
                     {
-                        this.sum      = 0; // Sum total of the votes
-                        this.numVotes = 0; // Number of votes cast
+                        this.voters   = []; // List of uuids for people who have already voted.
+                        this.sum      = 0;  // Sum total of the votes
+                        this.numVotes = 0;  // Number of votes cast
 
                         this.percent = function() {
                             // Returns an Int of the percentage of votes for current meal
@@ -141,12 +151,18 @@
                     });
 
                     clik.on('vote', function ( msg ) {
+                        // Only let eaters vote ONCE per meal.
+                        if ( MaitreDesktop.votes.voters.has( msg.uuid ) ) {
+                            return;
+                        }
+
                         speak("Mair see" + msg.name,  {wordgap: 3});
 
                         var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
                         MaitreDesktop.updateStatusMsg( text );
 
                         // Increment votes
+                        MaitreDesktop.votes.voters.push( msg.uuid );
                         MaitreDesktop.votes.sum      += parseInt( msg.vote_value );
                         MaitreDesktop.votes.numVotes += 1;
 
@@ -213,6 +229,7 @@
 
                 this.reset = function() {
                     /* Reset the votes for the next meal. */
+                    this.votes.voters   = [];
                     this.votes.sum      = 0;
                     this.votes.numVotes = 0;
 

@@ -264,6 +264,7 @@
                     // Tell Clik Desktop about the vote
                     clik.send( 'vote', { name       : this.user.name,
                                          fname      : this.user.fname,
+                                         uuid       : this.user.uuid,
                                          img        : this.user.img,
                                          vote_value : vote_val } );
                     // Tell server
