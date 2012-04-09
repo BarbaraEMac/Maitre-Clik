@@ -38,7 +38,6 @@ TEMPLATE_DIRS = (
 # the apps we are using
 INSTALLED_APPS = [
     'admin',
-    'analytics',
     'checkin',
     'homepage',
     'meal',
