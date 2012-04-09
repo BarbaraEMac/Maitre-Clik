@@ -1,10 +1,12 @@
 handlers:
 
 - url: /favicon.ico
-  static_dir: static/imgs
+  static_files: static/imgs/favicon.ico
+  upload: static/imgs/favicon.ico
 
 - url: /manifest.json
-  static_dir: static/files
+  static_files: static/files/manifest.json
+  upload: static/files/manifest.json
 
 - url: /w3c
   static_dir: w3c/
