@@ -94,18 +94,15 @@ body {
     padding: 0px;
 }
 
-#newUser {
-    font-size: 4.0em;
-    line-height: 2.0em;
-    margin: 0px;
-    padding: 0px;
-    color: #031BA3;
-}
-
-input{display:block;width:240px;font-size:.8em}
-
 #newUser_wrapper form {
     padding: 10px;
+}
+
+#newUser_wrapper input[type="text"] {
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.0em;
 }
 
 #newUser_wrapper #name {
@@ -115,10 +112,12 @@ input{display:block;width:240px;font-size:.8em}
     margin-right: auto;
 }
 
-#newUser_wrapper form > input[type="submit"] {
+#newUser_wrapper input[type="submit"] {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
+    width: 60%;
+    font-size: 4.0em;
 }

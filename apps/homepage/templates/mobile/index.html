@@ -198,20 +198,25 @@
                 };
 
                 this.createUser = function( user_uuid ) {
-                    var nameField = $("#newUser_name");
+                    var nameVal = $("#newUser_name").val();
 
-                    /* Register an existing user */
-                     $.ajax({
-                            url: "{% url CreateUser %}",
-                            type: "POST",
-                            data: ({ name : nameField.val() } ),
-                            success: function(response) {
-                                MaitreMobile.user.name = response.name;
-                                MaitreMobile.user.uuid = response.uuid;
-                                
-                                MaitreMobile.showVoteView();
-                            },
-                        });
+                    if ( !(/\w+ \w+/.test(nameVal)) ) {
+                       $("#newUser_wrapper > form > label").css('color', 'red');
+                    }
+                    else {
+                        /* Register an existing user */
+                         $.ajax({
+                                url: "{% url CreateUser %}",
+                                type: "POST",
+                                data: ({ name : nameVal } ),
+                                success: function(response) {
+                                    MaitreMobile.user.name = response.name;
+                                    MaitreMobile.user.uuid = response.uuid;
+                                    
+                                    MaitreMobile.showVoteView();
+                                },
+                            });
+                    }
                 };
 
                 this.vote = function( vote ) {
