@@ -4,6 +4,7 @@ import logging
 
 from apps.checkin.models    import Checkin
 from apps.meal.models       import Meal
+from apps.user.models       import User
 
 from util.urihandler        import URIHandler
 
