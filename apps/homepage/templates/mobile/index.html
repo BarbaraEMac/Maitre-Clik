@@ -25,9 +25,10 @@
                 <div id="newUser_wrapper">
                     <form>
                         <label for="newUser_name">Enter Your Full Name:</label>
+                        <br />
                         <input type="text" name="newUser_name" id="newUser_name" />
                     </form>
-                    <input type="submit" id="newUser_submit" />
+                    <button id="newUser_submit"> Submit </button>
                 
                 </div>
             </div>
@@ -80,6 +81,9 @@
                     //Client.prototype.name = "";
                     //Client.prototype.uuid = "";
 
+                    // Don't let people refresh the page if they hit Enter!
+                    $("#newUser_wrapper > form").submit(function(){ return false; }); 
+
                     // Use server logic to determine which view to display.
                     {% if ShowUnregisteredUserView %}
                         this.showUnregisteredUserView();
@@ -112,7 +116,7 @@
                    {% endfor %}
                     
                     // Add new user registration div.
-                    wrapper.append('<div class="unregistered_user" id="new_user_div">\n\r' + 
+                    wrapper.append('<div class="unregistered_user profile_name" id="new_user_div">\n\r' + 
                             'Not Here?</div>');
 
                     $("#new_user_div").click( function() { MaitreMobile.showNewUserView(); } );
