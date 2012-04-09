@@ -8,6 +8,10 @@ handlers:
   static_files: static/files/manifest.json
   upload: static/files/manifest.json
 
+- url: /version.json
+  static_files: static/files/version.json
+  upload: static/files/version.json
+
 - url: /w3c
   static_dir: w3c/
 
