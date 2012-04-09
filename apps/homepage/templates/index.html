@@ -10,6 +10,11 @@
 
         <!-- CSS -->
 		<link rel="stylesheet" href="/static/css/styles.css">
+
+        <!-- JS -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
+		<script type="text/javascript" src="/static/js/speakClient.js"></script>
     </head>
 
     <body>
@@ -21,11 +26,8 @@
                     <!-- Main View -->
                     <div class="span-24 last" id="mainView">
                         <div class="span-12">
-                            <img id="qrContainer" src="" style="display: none" />
+                            <img id="qrContainer" src="" style="display: none;" />
                             <img id="waiter" src="/static/imgs/waiter3.png" />
-
-                            <br />
-                            <a href="#" id="mainView_showStatsView">Stats</a>
                         </div>
 
                         <div class="span-12 last">
@@ -35,8 +37,12 @@
                                 <div id="mainView_yes"> 100% </div>
                             </div>
                             
-                            <div class="prepend-top span-12 last" id="mainView_msg">
+                            <div class="prepend-top span-12 append-bottom last" id="mainView_statusMsg">
                                 Loading ....
+                            </div>
+                            
+                            <div class="prepend-top span-12 last">
+                                <a href="#" id="mainView_showStatsView">Stats</a>
                             </div>
                         </div>
                             
@@ -78,45 +84,49 @@
             </div>
         </div>
         
-        <!-- JS -->
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
-		<script type="text/javascript" src="/static/js/speakClient.js"></script>
-
-
         <script>
             var MaitreDesktop = new function() {
+                /* MaitreDesktop
+                   A Clik application to track people while they eat
+                   their meals at Kik.
+                */
 
-                this.mainView  = $("#mainView");
-                this.statsView = $("#statsView");
-                this.msg       = $("#mainView_msg");
+                // The main view for this app
+                this.mainView  = $("#mainView");  
+                // A view of the statistics for this app
+                this.statsView = $("#statsView"); 
+                // Div accessor for the current status msg
+                this.statusMsg = $("#mainView_statusMsg"); 
+                // A 'vote' struct to keep track of the votes for current meal
                 this.votes     = new function() 
                     {
-                        this.sum      = 0;
-                        this.numVotes = 0;
+                        this.sum      = 0; // Sum total of the votes
+                        this.numVotes = 0; // Number of votes cast
 
                         this.percent = function() {
+                            // Returns an Int of the percentage of votes for current meal
                             return Math.round( 10 * (this.sum / this.numVotes) );
                         };
                     };
 
                 this.init = function( ) {
+                    /* Initialize the App. */
 
                     // Init Views -------------------------
                     $("#mainView_showStatsView").click( function() { MaitreDesktop.showStatsView(); } );
                     $("#statsView_showMainView").click( function() { MaitreDesktop.showMainView(); } );
 
-                    $("#mainView_yes").width( "100%" );
-
                     // Setup timed resets to match cron update on server.
-                    this.initReset();
+                    this.reset();
                     
+                    // Remove that pesky Clik overlay ...
+                    // TODO: Stop pesky overlay from running in the first place ..
                     setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
 
                     // Init clik event handlers ------------
                     clik.on('connect', function () {
                         var msg = "Hello World!";
-                        MaitreDesktop.updateMsg( msg );
+                        MaitreDesktop.updateStatusMsg( msg );
 
                         $("#qrContainer").attr( 'src', clik.clikCodeURL() );
                         $("#qrContainer").fadeIn();
@@ -127,14 +137,14 @@
                         MaitreDesktop.checkinUser( user.uuid );
                         
                         var msg = "" + user.fname + " is eating.";
-                        MaitreDesktop.updateMsg( msg );
+                        MaitreDesktop.updateStatusMsg( msg );
                     });
 
                     clik.on('vote', function ( msg ) {
                         speak("Mair see" + msg.name,  {wordgap: 3});
 
                         var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
-                        MaitreDesktop.updateMsg( text );
+                        MaitreDesktop.updateStatusMsg( text );
 
                         // Increment votes
                         MaitreDesktop.votes.sum      += parseInt( msg.vote_value );
@@ -147,17 +157,36 @@
                     });
                     
                     clik.on('join', function() {
-                        return;
+                        return; // 'checkin' will be triggered instead
                     });
 
                     // A user has left the conference
                     clik.on('leave', function () {
                         var msg = "Someone has left the building.";
-                        MaitreDesktop.updateMsg( msg );
+                        MaitreDesktop.updateStatusMsg( msg );
+                    });
+                };
+
+                this.run = function( ) {
+                    /* The main fcn to run the application. 
+                       Call this when you're ready to start! */
+
+                    speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:3} );
+
+                    // Initialize the app.
+                    this.init();
+                    
+                    // When Clik is ready to serve events..
+                    clik.ready(function () {
+                        return; // Nothing to do here ..
                     });
                 };
 
                 this.removeClikOverlay = function() {
+                    /* When Clik loads, it triggers an overlay to display by default.
+                       I don't want this to show, so let's remove it when it's in the 
+                       DOM. */
+
                     var el = $("#clik-paper"); 
                     
                     if( el != undefined ) {
@@ -168,7 +197,8 @@
                 };
 
                 this.initReset = function() {
-                    // Setup timed resets to match cron update on server.
+                    /* Initialize timed resets to match cron update on server. */
+
                     var now = new Date();
                     var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
                     if (millisTill10 < 0) {
@@ -182,7 +212,7 @@
                 };
 
                 this.reset = function() {
-                    // Reset the votes for the next meal.
+                    /* Reset the votes for the next meal. 8?
                     this.votes.sum      = 0;
                     this.votes.numVotes = 0;
 
@@ -191,19 +221,15 @@
                     this.initReset();
                 };
 
-                this.updateMsg = function( msg ) {
-                    this.msg.html( "" + msg );
+                this.updateStatusMsg = function( msg ) {
+                    /* Given an input string representing a new status,
+                       update the status msg divs contents. */
+                    this.statusMsg.html( "" + msg );
                 };
 
-                this.run = function( ) {
-                    speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:3} );
-                    
-                    // When Cmsgk is ready to serve events..
-                    clik.ready(function () {
-                        $("#qrContainer").attr( 'src', clik.clikCodeURL() );
-                    });
-                };
+
                 this.welcome = function( name ) {
+                    /* Welcome a new User to the app. */
                     var date = new Date();
 
                     // If dinner time,
@@ -229,19 +255,21 @@
                 
                 // Ajax Functions ----------------------------------------------
                 this.fetchStats = function( ) {
+                    /* Grab the most recent stats obj from the server. */
                      $.ajax({
                             url: "{% url FetchStats %}",
                             type: "GET",
-                            data: ({ } ),
+                            data: ( { } ),
                             success: function(response) {
                             },
                         });
                 };
                 this.checkinUser = function( user_uuid ) {
+                    /* Create a Checkin obj on the server for the given user. */
                      $.ajax({
                             url: "{% url CreateCheckin %}",
                             type: "POST",
-                            data: ({ user_uuid : user_uuid } ),
+                            data: ( { user_uuid : user_uuid } ),
                             success: function(response) {
                             },
                         });
@@ -249,9 +277,7 @@
 
             };
 
-            MaitreDesktop.init();
             MaitreDesktop.run();
-
             
         </script>
     </body>
