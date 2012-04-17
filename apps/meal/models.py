@@ -16,7 +16,7 @@ class Meal( Model ):
         Denotes a Meal of the "Maitre 'Clik" app.
         Properties:
             date  - A day timestamp (no time)
-            meal  - Either 'LUNCH' or 'DINNER'
+            type  - Either 'LUNCH' or 'DINNER'
             items - List of items in the meal. Used to pull out contextual meal data in the future.
             status - Flag to grab the current meal quickly from the DB; 
                      Either "current_meal" or "past_meal".
@@ -28,7 +28,7 @@ class Meal( Model ):
     date   = db.DateProperty( auto_now_add=True, indexed=False )
     
     # Either 'LUNCH' or 'DINNER'
-    meal   = db.CategoryProperty( indexed=False )
+    type   = db.CategoryProperty( indexed=False )
 
     # List of items in the meal. Used to pull out contextual meal data in the future.
     items  = db.StringListProperty( indexed=False )
@@ -47,7 +47,7 @@ class Meal( Model ):
         return db.Query(Meal).filter('uuid =', uuid).get()
     
     @staticmethod
-    def create( meal, items ):
+    def create( type, items ):
         """ Constructor for Meal class. 
             Input: 
             Output: returns the new Meal obj.
@@ -57,7 +57,7 @@ class Meal( Model ):
 
         meal = Meal( key_name = uuid,
                      uuid     = uuid,
-                     meal     = meal,
+                     type     = type,
                      items    = items.split(',') )
         meal.put()
         return meal

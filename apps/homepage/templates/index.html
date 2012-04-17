@@ -356,10 +356,10 @@
                     var textElem = $("#newMealText");
                     var meal     = textElem.val();
 
-                    textElem.val( "Thanks! Everyone's been notified! Until next meal ..." );
+                    textElem.val( "Thanks! Everyone's been notified!\r\n\r\nUntil next meal ..." );
 
                     $.ajax({
-                            url: "{% url CreateCheckin %}",
+                            url: "{% url CreateMeal %}",
                             type: "POST",
                             data: ( { meal : meal } ),
                             success: function(response) {
