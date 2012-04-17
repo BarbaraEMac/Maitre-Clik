@@ -1,9 +1,6 @@
 /** CSS for the Desktop portion of the app **/
 
-html {
-
-}
-
+/** Whole Page Stuff **/
 body {
 	background-color: white;
     background-image: url(/static/imgs/bg1_thin.jpg);
@@ -12,14 +9,15 @@ body {
     background-position: center; 
 }
 
-.title {
-    font-size: 6.0em;
-    margin: 10px;
-    padding: 0px;
-}
-
 #container {
     width: 100%;
+    height: 100%;
+    float: left;
+}
+
+/** Left-Hand Side Stuff **/
+#leftSide {
+    width: 40%;
     height: 100%;
     float: left;
 }
@@ -27,83 +25,80 @@ body {
 #qrContainer {
     width: 100%;
     height: 70%;
-    margin-top: 15%;
-    margin-bottom: 15%;
+    margin-top: 10%;
+    margin-bottom: 20%;
 }
 
-#leftSide {
-    width: 40%;
-    height: 100%;
-    float: left;
-}
-
+/** Right-Hand Stuff **/
 .rightSide {
     width: 60%;
     height: 100%;
     float: left;
 }
-
-#list {
-    height: 500px;
-    padding: 10px;
+.title {
+    font-size: 6.0em;
+    margin: 10px;
+    padding: 0px;
 }
-#list li {
-    width: 100%;
-    height: 55px;
-    float: left;
-    padding: 10px;
-}
-#list img {
-    height: 55px;
-    float: left;
-}
-#list p {
-    float: left;
-    font-size: 2.0em;
-    padding-left: 10px;
-}
-
-#mainView_barContainer {
-    width: 100%;
-    float: left;
-}
-
-#mainView_yes {
-    background-color: #031ba3;
-    color: white;
-
-    float: left;
-    width: 100%;
-    text-align: center;
-    border-radius: 16px;
-}
-
 .navButtons {
     width: 100%;
-    float: left;
+    margin: 0px;
+    padding: 0px;
+    text-align: right;
 }
 
-#mainView_statusMsg {
-    width: 100%;
-    text-align: center;
-    
-    font-size: 4.0em;
-}
+/** Main View **/
+    #list {
+        height: 500px;
+        padding: 10px;
+    }
+    #list li {
+        width: 100%;
+        height: 55px;
+        float: left;
+        padding: 10px;
+    }
+    #list img {
+        height: 55px;
+        float: left;
+    }
+    #list p {
+        float: left;
+        font-size: 1.5em;
+        padding-left: 10px;
+    }
 
-#mainView_barContainer {
-    margin: 10px;
-    width: 90%;
-    border: 2px solid #0414a5;
-    border-radius: 20px;
+    #mainView_barContainer {
+        width: 90%;
+        margin: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        float: none;
 
-    font-size: 3.0em;
-    line-height: 2.0em;
-}
+        border: 2px solid #006D8D;
+        border-radius: 5px;
 
-a {
-    font-size: 3.5em;
-}
+        font-size: 3.0em;
+        line-height: 2.0em;
+        height: 96px;
+    }
 
+    #mainView_yes {
+        background-color: #0089c5;
+        color: white;
+
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+    }
+
+    #mainView_msgContainer {
+        width: 100%;
+        float: none;
+    }
+
+
+/** Stats Views **/
 .statsView_wrapper {
     margin-top: -50px;
 }
@@ -111,7 +106,7 @@ a {
 .statsView_wrapper img {
     width: 50%;
     border: 1px solid #0414a5;
-    border-radius: 20px;
+    border-radius: 5px;
     -moz-box-shadow:    3px 3px 5px 6px #ccc;
     -webkit-box-shadow: 3px 3px 5px 6px #ccc;
     box-shadow:         3px 3px 5px 6px #ccc;

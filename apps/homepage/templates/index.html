@@ -39,12 +39,12 @@
 
             <!-- Main View -->
             <div class="rightSide" id="mainView">
-                <h1 class="title">Bon Appetit!</h1>
-                
-                <div id="navButtons">
+                <div class="navButtons">
                     <button class="darkBlueBtn statsViewBtn">Stats</button>
                     <button class="darkBlueBtn eatingViewBtn">Who's Eating?</button>
                 </div>
+                
+                <h1 class="title">Bon Appetit!</h1>
 
                 <div id="mainView_barContainer" style="display: none">
                     <div id="mainView_yes"> 100% </div>
@@ -60,55 +60,57 @@
                 </div>
             </div>
                         
-                <!-- Stats View -->
-                <div class="rightSide" id="statsView" style="display: none">
-                    <h1 class="title">Statistics</h1>
+            <!-- Stats View -->
+            <div class="rightSide" id="statsView" style="display: none">
+                
+                <div class="navButtons">
+                    <button class="lightBlueBtn mainViewBtn">Main</button>
+                    <button class="darkBlueBtn eatingViewBtn">Who's Eating?</button>
+                </div>
+                
+                <h1 class="title">Statistics</h1>
+
+                <div class="statsView_wrapper span-10">
+                    <img src="/static/imgs/ChrisBest.jpg" />
+                    <p>Most Satisfied: Chris Best</p>
+
+                    <hr />
                     
-                    <div id="navButtons">
-                        <button class="lightBlueBtn mainViewBtn">Main</button>
-                        <button class="darkBlueBtn eatingViewBtn">Who's Eating?</button>
-                    </div>
-
-                    <div class="statsView_wrapper span-10">
-                        <img src="/static/imgs/ChrisBest.jpg" />
-                        <p>Most Satisfied: Chris Best</p>
-
-                        <hr />
-                        
-                        <img src="/static/imgs/pizzaTaco.jpg" />
-                        <p>Best Meal: Pizza Tacos</p>
-                    </div>
-
-                    <div class="statsView_wrapper span-14 last">
-                        <p>Optimal Lunch Time: 12:26pm</p>
-                        <p>Optimal Dinner Time: 6:03pm</p>
-                        <hr />
-
-                        <p>Average Lunches #: 19</p>
-                        <p>Average Dinners #: 16</p>
-                        <hr />
-                        
-                        <p>Average Lunches Rating: 6.11/10</p>
-                        <p>Average Dinners Rating: 8.34/10</p>
-                        <hr />
-                    </div>
+                    <img src="/static/imgs/pizzaTaco.jpg" />
+                    <p>Best Meal: Pizza Tacos</p>
                 </div>
 
-                <!-- Who's Eating View -->
-                <div class="rightSide" id="eatingView" style="display: none">
-                    <h1 class="title">Who's Eating?</h1>
+                <div class="statsView_wrapper span-14 last">
+                    <p>Optimal Lunch Time: 12:26pm</p>
+                    <p>Optimal Dinner Time: 6:03pm</p>
+                    <hr />
+
+                    <p>Average Lunches #: 19</p>
+                    <p>Average Dinners #: 16</p>
+                    <hr />
                     
-                    <div id="navButtons">
-                        <button class="lightBlueBtn mainViewBtn">Main</button>
-                        <button class="darkBlueBtn statsViewBtn">Stats</button>
-                    </div>
-
-                    <div>
-                        lotsa people eating
-                    </div>
+                    <p>Average Lunches Rating: 6.11/10</p>
+                    <p>Average Dinners Rating: 8.34/10</p>
+                    <hr />
                 </div>
-
             </div>
+
+            <!-- Who's Eating View -->
+            <div class="rightSide" id="eatingView" style="display: none">
+                
+                <div id="navButtons">
+                    <button class="lightBlueBtn mainViewBtn">Main</button>
+                    <button class="darkBlueBtn statsViewBtn">Stats</button>
+                </div>
+                
+                <h1 class="title">Who's Eating?</h1>
+
+                <div>
+                    lotsa people eating
+                </div>
+            </div>
+
+        </div>
             
             <script>
                 var MaitreDesktop = new function() {
@@ -155,6 +157,7 @@
                         // Remove that pesky Clik overlay ...
                         // TODO: Stop pesky overlay from running in the first place ..
                         setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
+                        setTimeout( function() { MaitreDesktop.waitForURL(); }, 300 );
 
                         // Init clik event handlers ------------
                         clik.on('connect', function () {
@@ -274,8 +277,17 @@
 
                         // Now, update the CSS animation for each li.
                         Stroll.bind( document.getElementById( 'list' ) );
-                };
+                    };
 
+                this.waitForURL = function() {
+                    var url = clik.clikCodeURL();
+
+                    if ( url == undefined ) {
+                        setTimeout( function(){ MaitreDesktop.waitForURL(); }, 300 );
+                    } else {
+                            $("#qrContainer").attr( 'src', clik.clikCodeURL() );
+                    }
+                };
 
                 this.welcome = function( name ) {
                     /* Welcome a new User to the app. */
