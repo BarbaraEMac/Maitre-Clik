@@ -176,7 +176,7 @@
 
                         // Setup timed resets to match cron update on server.
                         this.reset();
-                        
+
                         // Remove that pesky Clik overlay ...
                         // TODO: Stop pesky overlay from running in the first place ..
                         setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
@@ -342,6 +342,7 @@
                     $("#rightSide").hide();
                     
                     this.currentView.hide();
+                    $("#"+this.currentView.attr('id')+"Btn").show();
                     this.currentView = $("#newMealView");
                     this.currentView.fadeIn();
                 };
