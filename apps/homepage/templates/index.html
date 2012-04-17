@@ -170,7 +170,7 @@
                         $("#statsViewBtn").click( function() { MaitreDesktop.showStatsView(); } );
                         $("#mainViewBtn").click( function() { MaitreDesktop.showMainView(); } );
                         $("#eatingViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
-                        $("#newMealViewBtn").click( function() { MaitreDesktop.showMealView(); } );
+                        $("#newMealViewBtn").click( function() { MaitreDesktop.showNewMealView(); } );
                         $("#newMealSubmit").click( function() { MaitreDesktop.submitMeal(); } );
                         $("#newMealCancel").click( function() { MaitreDesktop.showMainView(); } );
 
@@ -331,7 +331,7 @@
                     $("#"+this.currentView.attr('id')+"Btn").hide();
                     this.currentView.fadeIn();
                 };
-                this.showMealView = function() {
+                this.showNewMealView = function() {
                     $("#newMealText").val("");
                     $("#newMealText").show("");
                     $("#newMealThanks").hide("");
