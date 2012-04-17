@@ -30,10 +30,35 @@ html {
         margin-left: auto;
         margin-right: auto;
     }
-    #newMealViewBtn {
-        position: fixed;
+    #navButtons {
+        margin: 0px;
+        padding: 0px;
+        text-align: left;
+        position:fixed;
         bottom: 10px;
         right: 10px;
+        float: right;
+    }
+    .list {
+        height: 395px;
+        padding: 0px;
+    }
+    .list li {
+        width: 96%;
+        height: 55px;
+        float: left;
+        padding: 10px;
+        margin: 3px;
+        border-radius: 5px;
+    }
+    .list img {
+        height: 55px;
+        float: left;
+    }
+    .list p {
+        float: left;
+        font-size: 1.5em;
+        padding-left: 10px;
     }
 
 /** Left-Hand Side Stuff **/
@@ -48,36 +73,8 @@ html {
         margin: 10px 0px 20px 0px;
         padding: 0px;
     }
-    .navButtons {
-        width: 100%;
-        margin: 0px;
-        padding: 0px;
-        text-align: left;
-    }
-
+    
 /** Main View **/
-    #list {
-        height: 395px;
-        padding: 0px;
-    }
-    #list li {
-        width: 96%;
-        height: 55px;
-        float: left;
-        padding: 10px;
-        margin: 3px;
-        border-radius: 5px;
-    }
-    #list img {
-        height: 55px;
-        float: left;
-    }
-    #list p {
-        float: left;
-        font-size: 1.5em;
-        padding-left: 10px;
-    }
-
     #mainView_barContainer {
         width: 90%;
         margin: 10px;

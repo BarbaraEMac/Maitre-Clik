@@ -36,11 +36,6 @@
 
             <!-- Main View -->
             <div class="leftSide" id="mainView">
-                <div class="navButtons">
-                    <button class="limeBtn statsViewBtn">Stats</button>
-                    <button class="limeBtn eatingViewBtn">Who's Eating?</button>
-                </div>
-                
                 <h1 class="title">Bon Appetit!</h1>
 
                 <div id="mainView_barContainer" style="display: none">
@@ -48,10 +43,10 @@
                 </div>
                 
                 <div id="mainView_msgContainer">
-                    <ul id="list" class="flip">
+                    <ul class="list flip" id="mainFeed">
                         <li>
                             <img src="/static/imgs/cliklogo.jpg" />
-                            <p>Clik-In</p>
+                            <p>Clik-In before grabbing your food!</p>
                         </li>
                     </ul>
                 </div>
@@ -59,47 +54,47 @@
                         
             <!-- Stats View -->
             <div class="leftSide" id="statsView" style="display: none">
-                
-                <div class="navButtons">
-                    <button class="lightBlueBtn mainViewBtn">Main</button>
-                    <button class="limeBtn eatingViewBtn">Who's Eating?</button>
-                </div>
-                
                 <h1 class="title">Statistics</h1>
 
-                <div class="statsView_wrapper span-10">
-                    <img src="/static/imgs/ChrisBest.jpg" />
-                    <p>Most Satisfied: Chris Best</p>
+                <ul class="list flip" id="statsFeed">
+                    <li>
+                        <img src="/static/imgs/ChrisBest.jpg" />
+                        <p>Most Satisfied: Chris Best</p>
+                    </li>
 
-                    <hr />
-                    
-                    <img src="/static/imgs/pizzaTaco.jpg" />
-                    <p>Best Meal: Pizza Tacos</p>
-                </div>
-
-                <div class="statsView_wrapper span-14 last">
-                    <p>Optimal Lunch Time: 12:26pm</p>
-                    <p>Optimal Dinner Time: 6:03pm</p>
-                    <hr />
-
-                    <p>Average Lunches #: 19</p>
-                    <p>Average Dinners #: 16</p>
-                    <hr />
-                    
-                    <p>Average Lunches Rating: 6.11/10</p>
-                    <p>Average Dinners Rating: 8.34/10</p>
-                    <hr />
-                </div>
+                    <li>
+                        <img src="/static/imgs/pizzaTaco.jpg" />
+                        <p>Best Meal: Pizza Tacos</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/clock.png" />
+                        <p>Optimal Lunch Time: 12:26pm</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/clock.png" />
+                        <p>Optimal Dinner Time: 6:03pm</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/number.jpg" />
+                        <p>Average Lunches #: 19</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/number.jpg" />
+                        <p>Average Dinners #: 16</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/ballot.jpg" />
+                        <p>Average Lunches Rating: 6.11/10</p>
+                    </li>
+                    <li>
+                        <img src="/static/imgs/ballot.jpg" />
+                        <p>Average Dinners Rating: 8.34/10</p>
+                    </li>
+                </ul>
             </div>
 
             <!-- Who's Eating View -->
             <div class="leftSide" id="eatingView" style="display: none">
-                
-                <div class="navButtons">
-                    <button class="lightBlueBtn mainViewBtn">Main</button>
-                    <button class="limeBtn statsViewBtn">Stats</button>
-                </div>
-                
                 <h1 class="title">Who's Eating?</h1>
 
                 <div>
@@ -109,13 +104,12 @@
 
             <!-- New Meal View -->
             <div id="mealView" style="display: none">
-                
                 <h1 class="title">New Meal</h1>
                 
                 <p>Please enter a brief description of the meal here and press 'Submit'. Everyone will be
                 emailed to let them know the food has arrived.</p>
 
-                <br /><br />
+                <br />
 
                 <p class="error" id="newMealError" style="display: none;">
                     Please enter today's menu.
@@ -128,15 +122,20 @@
                 </p>
 
                 <textarea name="newMealText" id="newMealText"></textarea>
-            
+
                 <button class="limeBtn" id="newMealCancel"> Cancel </button>
                 <button class="limeBtn" id="newMealSubmit"> Submit Meal </button>
             </div>
 
             <div id="rightSide" >
                 <img id="qrContainer" src="" style="display: inline" />
-
-                <button class="darkBlueBtn2" id="newMealViewBtn"> New Meal </button>
+ 
+                <div id="navButtons">
+                    <button class="lightBlueBtn" id="mainViewBtn">    Main </button>
+                    <button class="limeBtn"      id="statsViewBtn">   Statistics </button>
+                    <button class="limeBtn"      id="eatingViewBtn">  Who's Eating? </button>
+                    <button class="darkBlueBtn2" id="newMealViewBtn"> New Meal </button>
+                </div>
             </div>
 
         </div>
@@ -148,20 +147,9 @@
                        their meals at Kik.
                     */
 
-                    // The main view for this app
-                    this.mainView  = $("#mainView");  
-                    // A view of the statistics for this app
-                    this.statsView = $("#statsView"); 
-                    // A view of the people who are currently eating for this app
-                    this.eatingView = $("#eatingView"); 
-                    // A view used by caterers to enter the new meal 
-                    this.mealView = $("#mealView"); 
-
                     // The view that is curently being displayed
-                    this.currentView = this.mainView;
+                    this.currentView = $("#mainView");
                     
-                    // Div accessor for the current status msg
-                    this.statusMsg = $("#mainView_statusMsg"); 
                     // A 'vote' struct to keep track of the votes for current meal
                     this.votes     = new function() 
                         {
@@ -179,9 +167,9 @@
                         /* Initialize the App. */
 
                         // Init Views -------------------------
-                        $(".statsViewBtn").click( function() { MaitreDesktop.showStatsView(); } );
-                        $(".mainViewBtn").click( function() { MaitreDesktop.showMainView(); } );
-                        $(".eatingViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
+                        $("#statsViewBtn").click( function() { MaitreDesktop.showStatsView(); } );
+                        $("#mainViewBtn").click( function() { MaitreDesktop.showMainView(); } );
+                        $("#eatingViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
                         $("#newMealViewBtn").click( function() { MaitreDesktop.showMealView(); } );
                         $("#newMealSubmit").click( function() { MaitreDesktop.submitMeal(); } );
                         $("#newMealCancel").click( function() { MaitreDesktop.showMainView(); } );
@@ -288,7 +276,7 @@
                         foo.insertBefore( "#list :first" );
 
                         // Now, update the CSS animation for each li.
-                        Stroll.bind( document.getElementById( 'list' ) );
+                        Stroll.bind( document.getElementById( 'mainFeed' ) );
                     };
 
                 this.waitForURL = function() {
@@ -319,27 +307,31 @@
                     this.fetchStats();
 
                     this.currentView.hide();
-                    this.currentView = this.statsView;
-                    this.currentView.fadeIn();
+                    $("#"+this.currentView.attr('id')+"Btn").show();
                     
-                    $("#rightSide").show();
+                    this.currentView = $("#statsView");
+                    $("#"+this.currentView.attr('id')+"Btn").hide();
+                    this.currentView.fadeIn();
                 };
                 this.showMainView = function() {
                     this.currentView.hide();
-                    this.currentView = this.mainView;
+                    $("#"+this.currentView.attr('id')+"Btn").show();
+                    this.currentView = $("#mainView");
+                    
+                    $("#"+this.currentView.attr('id')+"Btn").hide();
                     this.currentView.fadeIn();
                     
                     $("#rightSide").show();
                 };
                 this.showEatingView = function() {
                     this.currentView.hide();
-                    this.currentView = this.eatingView;
-                    this.currentView.fadeIn();
+                    $("#"+this.currentView.attr('id')+"Btn").show();
                     
-                    $("#rightSide").show();
+                    this.currentView = $("#eatingView");
+                    $("#"+this.currentView.attr('id')+"Btn").hide();
+                    this.currentView.fadeIn();
                 };
                 this.showMealView = function() {
-  
                     $("#newMealText").val("");
                     $("#newMealText").show("");
                     $("#newMealThanks").hide("");
@@ -350,7 +342,7 @@
                     $("#rightSide").hide();
                     
                     this.currentView.hide();
-                    this.currentView = this.mealView;
+                    this.currentView = $("#mealView");
                     this.currentView.fadeIn();
                 };
 
