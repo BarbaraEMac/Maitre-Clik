@@ -1,0 +1,128 @@
+/** CSS for the Desktop portion of the app **/
+
+html {
+
+}
+
+body {
+	background-color: white;
+    background-image: url(/static/imgs/bg1_thin.jpg);
+    background-attachment: fixed;
+    background-repeat: repeat-y;
+    background-position: center; 
+}
+
+.title {
+    font-size: 6.0em;
+    margin: 10px;
+    padding: 0px;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+#qrContainer {
+    width: 100%;
+    height: 70%;
+    margin-top: 15%;
+    margin-bottom: 15%;
+}
+
+#leftSide {
+    width: 40%;
+    height: 100%;
+    float: left;
+}
+
+.rightSide {
+    width: 60%;
+    height: 100%;
+    float: left;
+}
+
+#list {
+    height: 500px;
+    padding: 10px;
+}
+#list li {
+    width: 100%;
+    height: 55px;
+    float: left;
+    padding: 10px;
+}
+#list img {
+    height: 55px;
+    float: left;
+}
+#list p {
+    float: left;
+    font-size: 2.0em;
+    padding-left: 10px;
+}
+
+#mainView_barContainer {
+    width: 100%;
+    float: left;
+}
+
+#mainView_yes {
+    background-color: #031ba3;
+    color: white;
+
+    float: left;
+    width: 100%;
+    text-align: center;
+    border-radius: 16px;
+}
+
+.navButtons {
+    width: 100%;
+    float: left;
+}
+
+#mainView_statusMsg {
+    width: 100%;
+    text-align: center;
+    
+    font-size: 4.0em;
+}
+
+#mainView_barContainer {
+    margin: 10px;
+    width: 90%;
+    border: 2px solid #0414a5;
+    border-radius: 20px;
+
+    font-size: 3.0em;
+    line-height: 2.0em;
+}
+
+a {
+    font-size: 3.5em;
+}
+
+.statsView_wrapper {
+    margin-top: -50px;
+}
+
+.statsView_wrapper img {
+    width: 50%;
+    border: 1px solid #0414a5;
+    border-radius: 20px;
+    -moz-box-shadow:    3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow:         3px 3px 5px 6px #ccc;
+    margin-bottom: 30px;
+}
+
+.statsView_wrapper p {
+    font-family: arial;
+    font-size: 2.0em;
+}
+
+.statsView_wrapper hr {
+    width: 80%;
+}
