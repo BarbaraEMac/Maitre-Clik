@@ -1,60 +1,85 @@
-@font-face {
- font-family: duchat;
- src: url("/static/files/DuChat.eot") /* EOT file for IE */
-}
-@font-face {
- font-family: duchat;
- src: url("/static/files/DuChat.ttf") /* TTF file for CSS3 browsers */
-}
+/** Styles for the Mobile App **/
 
+/** Whole Page Stuff **/
 html {
     width: 100%;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
+
+	background-color: #c1e2f1;
+    background-image: url(/static/imgs/bg1_mobile.jpg);
+    background-attachment: fixed;
+    background-repeat: repeat-x;
+    background-position: top left; 
 }
 
 body {
-    color: #031BA3;
-	background-color: white;
-    background-image: url(/static/imgs/background6_light2.jpg);
-    background-repeat: repeat;
-    background-position: center; 
-    
-    width: 100%;
-    
-    font-family: arial;
-    text-align: center;
     padding: 0px;
     margin: 0px;
-}
-
-#wrapper {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-
-	background-color: white;
-
-    padding: 10px;
+    width: 100%;
+    background-color: transparent;
+    
+    font-family: Helvetica;
+    text-align: center;
 }
 
 .title {
     width: 100%;
     margin: 0px;
-    padding: 35px 0px;
+    padding: 0px;
 
     font-size: 4.0em;
-    font-family: duchat;
-    line-height: 1.5em;
+    line-height: 2.0em;
 }
 
-#unregisteredUserView {
+button {
+    text-align: right;
+}
+
+p {
+    margin: 30px;
+    padding: 0px;
+    font-size: 2.0em;
+}
+label {
+    font-size: 2.0em;
+}
+input[type="text"] {
+    font-size: 2.0em;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+    -moz-box-shadow: inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow: inset 0 0 10px #000000;
+}
+
+#btmPanel {
+    background-color: #060C25;
+    padding-top: 10px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+.panelBtn {
+    margin: 0px;
+    margin-left: -2px;
+    margin-right: -2px;
+    border-radius: 0px;
+    font-size: 1.5em;
+
+    width: 50%;
+    text-align: center;
+}
+/** Onboard View **/
+#onboardView {
     height: 100%;
     width: 100%;
 }
 
-#vote_wrapper, #newUser_wrapper, #unregisteredUser_wrapper {
+#vote_wrapper, #newUser_wrapper, #onboard_wrapper {
     text-align: center;
     margin-top: -60px;
     font-size: 2.5em;
@@ -62,7 +87,6 @@ body {
 }
 
 .unregistered_user {
-    background-color: white;
     width: 80%;
     text-align: center;
     margin-left: auto;
@@ -127,22 +151,6 @@ body {
     padding: 0px;
     margin: 0px;
     margin-bottom: -50px;
-}
-
-button {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: inherit;
-    font-family: arial;
-    margin-top: 40px;
-
-    background-color: #32a0ed;
-    color: #031BA3;
-    border: 1px solid #031BA3;
-    border-radius: 20px;
-
-    cursor: pointer;
 }
 
 #thanksView_closeBtn {

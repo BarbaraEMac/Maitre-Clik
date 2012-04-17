@@ -4,7 +4,9 @@
 		<title>Maitre 'Clik - Mobile</title>
         
         <!-- CSS -->
-		<link rel="stylesheet" href="/static/css/mobile_styles.css">
+		<link rel="stylesheet" href="/static/css/reset.css">
+		<link rel="stylesheet" href="/static/css/common.css">
+		<link rel="stylesheet" href="/static/css/mobile.css">
 		<link rel="stylesheet" href="/static/css/jquery-ui-1.8.18.custom.css">
 
         <!-- JS -->
@@ -14,52 +16,103 @@
     </head>
 
     <body>
-        <div id="wrapper">
+        <!-- Onboard View -->
+        <div id="onboardView" style="display: none">
+            <div>
+                <h1 class="title">Whoa!</h1>
 
-            <!-- Unregistered User View -->
-            <div id="unregisteredUserView" style="display: none">
-                <h1 class="title">Who Are You?</h1>
+                <p>I don't believe we've met before, have we?</p>
 
-                <div id="unregisteredUser_wrapper">
-                </div>
+                <button class="limeBtn onboardBtn">Why no! Hello there!</button>
             </div>
-
-            <!-- New User View -->
-            <div id="newUserView" style="display: none">
+            <div style="display: none;">
                 <h1 class="title">Welcome!</h1>
 
-                <div id="newUser_wrapper">
-                    <form>
-                        <label for="newUser_name">Enter Your Full Name:</label>
-                        <br />
-                        <input type="text" name="newUser_name" id="newUser_name" />
-                    </form>
-                    <button id="newUser_submit"> Submit </button>
+                <p>This is Kik's meal tracking app!</p>
+                <p>Use this app at every mealtime to guarantee that you'll continue getting the best meals ever!</p>
+
+                <button class="limeBtn onboardBtn">Sounds Great!</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">Now ...</h1>
+
+                <p>Let's get to know each other better.</p>
+
+                <label for="onboard_firstName">First Name</label><br />
+                <input type="text" id="onboard_firstName" name="onboard_firstName" /><br />
+
+                <label for="onboard_lastName">Last Name</label><br />
+                <input type="text" id="onboard_lastName" name="onboard_lastName" /><br />
+
+                <button class="limeBtn onboardBtn">Next</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">Email?</h1>
+
+                <p>Psst! I can email you as soon as a meal is delivered!</p>
+                <p>You'll never get those sloppy seconds now ...</p>
+
+                <label for="onboard_email">Email</label><br />
+                <input type="text" id="onboard_email" name="onboard_email" /><br />
+
+                <p class="small">You can change this later.</p>
+                <button class="limeBtn onboardBtn">No, thanks.</button>
+                <button class="limeBtn onboardBtn">Yes, please!</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">All Done!</h1>
+
+                <p>
+                    The analytics bots are working hard to generate reports for 
+                    your trusty CEO, Tedward, and Wildcraft.
+                </p>
                 
-                </div>
+                <p class="error">Remember to Clik-In at every meal.</p>
+                
+                <p>Now you're ready to start eating!</p>
+
+                <button class="limeBtn" id="onboardSubmit">To The App!</button>
             </div>
+        </div>
 
-            <!-- Vote View -->
-            <div id="voteView" style="display: none">
-                <h1 class="title" id="voteView_title">Bon Appetit</h1>
+        <!-- Vote View -->
+        <div id="voteView" style="display: none">
+            <h1 class="title" id="voteView_title">Bon Appetit</h1>
 
-                <div id="voteView_wrapper">
-                    <h1>How awesome is this meal?</h1>
-                    
-                    <p id="voteView_amount">5/10</p>
-                    
-                    <div id="voteView_slider" style="max-width: 80%;"> </div>
-                    
-                    <button id="voteView_submit"> Submit </button>
-                </div>
-            </div>
-
-            <!-- Thanks View -->
-            <div id="thanksView" style="display: none">
+            <div id="voteView_wrapper">
+                <h1>How awesome is this meal?</h1>
+                
+                <p id="voteView_amount">5/10</p>
+                
+                <div id="voteView_slider" style="max-width: 80%;"> </div>
+                
+                <button id="voteView_submit"> Submit </button>
                 <h1 class="title">Merci!</h1>
 
                 <button id="thanksView_closeBtn">Until your next meal ...</button>
             </div>
+        </div>
+
+        <!-- Eating View -->
+        <div id="eatingView" style="display: none">
+            <h1 class="title">Who's Eating?</h1>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profileView" style="display: none">
+            <h1 class="title">Profile</h1>
+        </div>
+
+        <!-- Clik View -->
+        <div id="clikView" style="display: none">
+            <h1 class="title">Clik</h1>
+        </div>
+
+        <div id="btmPanel">
+            <button class="limeBtn panelBtn" id="voteViewBtn">    Vote </button>
+            <button class="limeBtn panelBtn" id="eatingViewBtn">  Who's Here? </button>
+            <button class="limeBtn panelBtn" id="profileViewBtn"> Profile </button>
+            <button class="limeBtn panelBtn" id="clikViewBtn">    Clik-In/Out </button>
         </div>
 
         <script>
@@ -67,30 +120,36 @@
                 
                 // User obj for current user. 
                 this.user = new function () {
-                    this.uuid  = "{{user.uuid}}";       // Unique # to id User on Server
-                    this.name  = "{{user.name}}";       // Full name ie. Foo Bar
-                    this.fname = "{{user_first_name}}"; // First name ie. Foo
-                    this.img   = "{{user.img}}";        // URL to img of User
+                    this.uuid      = "{{user.uuid}}";       // Unique # to id User on Server
+                    this.lastName  = "{{user.last_name}}";  // Last Name
+                    this.firstName = "{{user.first_name}}"; // First name 
+                    this.email     = "{{user.email}}";      // Email address
+                    this.img       = "{{user.img}}";        // URL to img of User
                 };
                 
                 // Views for the Mobile App
-                this.unregisteredUserView = $("#unregisteredUserView");
-                this.newUserView          = $("#newUserView");
-                this.voteView             = $("#voteView");
-                this.thanksView           = $("#thanksView");
+                this.currentView = $("#voteView");
 
                 this.init = function( ) {
                     // Add name and uuid to Client Obj
                     //Client.prototype.name = "";
                     //Client.prototype.uuid = "";
 
+                    $(".onboardBtn").click( function() { $(this).parent().slideUp( 400 ).next().slideDown(); } );
+                    $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
+
                     // Don't let people refresh the page if they hit Enter!
                     $("#newUser_wrapper > form").submit(function(){ return false; }); 
 
                     // Attach click handlers.
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
-                    $("#newUser_submit").click( function() { MaitreMobile.createUser(); } );
+                    $("#newUser_submit").click( function() { return; } );
                     $("#thanksView_closeBtn").click( function() { MaitreMobile.quit(); } ); 
+
+                    $("#voteViewBtn").click( function() { MaitreMobile.showVoteView(); } );
+                    $("#eatingViewBtn").click( function() { MaitreMobile.showEatingView(); } );
+                    $("#profileViewBtn").click( function() { MaitreMobile.showProfileView(); } );
+                    $("#clikViewBtn").click( function() { MaitreMobile.showClikView(); } );
                     
                     // Initialize the voting slider.
                     $( "#voteView_slider" ).slider( { value: 5,
@@ -101,24 +160,19 @@
                                                             $("#voteView_amount").html( ui.value + "/10" );
                                                         }
                                                     });
-
                     // Use server logic to determine which view to display.
-                    {% if ShowUnregisteredUserView %}
-                        this.showUnregisteredUserView();
+                    {% if ShowOnboardView %}
+                        this.showVoteView();
                     {% endif %}
                     {% if ShowVoteView %}
                         this.showVoteView();
                     {% endif %}
+                    this.showVoteView();
                 };
                 
                 this.run = function( ) {
                     /* Call this fcn to start running the App. */
                     this.init(); // Initialize the app.
-
-                    // When Clik is ready to serve events..
-                    clik.ready(function () {
-                        return;
-                    });
                 };
 
                 this.quit = function() {
@@ -129,78 +183,45 @@
 
 
                 // View Functions ----------------------------------------------
-                this.showUnregisteredUserView = function( ) {
-                    /* Show the "Unregistered User" View */
-                    
-                    // Build html for unregistered users
-                    var wrapper = $("#unregisteredUser_wrapper");
-                    wrapper.html('');
-
-                    {% for u in unregistered_users %}
-                        wrapper.append('<div class="unregistered_user" id="{{u.uuid}}"> \n\r' + 
-                                '\t<img class="profile_pic" src="{{ u.img }}" /> \n\r' +
-                                '\t<p class="profile_name">{{ u.name }}</p>\n\r' + 
-                                '</div>');
-                        
-                        $("#{{u.uuid}}").click( function() { MaitreMobile.registerUser( "{{u.uuid}}" ); });
-                   {% endfor %}
-                    
-                    // Add new user registration div.
-                    wrapper.append('<div class="unregistered_user profile_name" id="new_user_div">\n\r' + 
-                            'Not Here?</div>');
-
-                    $("#new_user_div").click( function() { MaitreMobile.showNewUserView(); } );
-                    
-                    // Hide all other views.
-                    this.newUserView.hide();
-                    this.voteView.hide();
-                    this.thanksView.hide();
-                    
-                    // Now, show the view div!
-                    this.unregisteredUserView.fadeIn();
+                this.showOnboardView = function( ) {
+                    /* Show the "Onboard" View */
+                    this.toggleView( "#onboardView" );  
                 };
                  
-                this.showNewUserView = function( ) {
-                    /* Show the "New User" View */
-                    
-                    // Hide all other views.
-                    this.unregisteredUserView.hide();
-                    this.voteView.hide();
-                    this.thanksView.hide();
-                    
-                    // Show new user view
-                    this.newUserView.fadeIn();
-                };
-
                 this.showVoteView = function() {
                     /* Show the "Vote" View */
                     // Update the title.
-                    $("#voteView_title").html("Bon Appetit, " + this.user.fname);
-
-                    // Hide all other views.
-                    this.unregisteredUserView.hide();
-                    this.newUserView.hide();
-                    this.thanksView.hide();
+                    $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
                     
-                    // Show vote view
-                    this.voteView.fadeIn();
-
+                    this.toggleView( "#voteView" );  
+                    
                     // Checkin
                     clik.send( 'checkin', { name  : this.user.name,
-                                            fname : this.user.fname,
+                                            firstName : this.user.firstName,
                                             uuid  : this.user.uuid,
                                             img   : this.user.img } );
                 };
 
-                this.showThanksView = function() {
-                    // Hide all other views.
-                    this.unregisteredUserView.hide();
-                    this.newUserView.hide();
-                    this.voteView.hide();
-                    
-                    // Show thanks view
-                    this.thanksView.fadeIn();
+                this.showProfileView = function() {
+                    this.toggleView( "#profileView" );  
                 };
+                this.showEatingView = function() {
+                    this.toggleView( "#eatingView" );  
+                };
+                this.showClikView = function() {
+                    this.toggleView( "#clikView" );  
+                };
+
+                this.toggleView = function( selector ) {
+                    this.currentView.hide();
+                    $("#"+this.currentView.attr('id')+"Btn").attr('class', 'limeBtn panelBtn');
+
+                    this.currentView = $( selector );
+
+                    $("#"+this.currentView.attr('id')+"Btn").attr('class', 'lightBlueBtn panelBtn');
+                    this.currentView.fadeIn();
+                };
+
 
 
 
@@ -215,7 +236,7 @@
                             success: function(response) {
                                 // Store User info for future use.
                                 MaitreMobile.user.name  = response.name;
-                                MaitreMobile.user.fname = response.first_name;
+                                MaitreMobile.user.firstName = response.first_name;
                                 MaitreMobile.user.img   = response.img;
                                 MaitreMobile.user.uuid  = response.uuid;
                                 
@@ -225,34 +246,33 @@
                         });
                 };
 
-                this.createUser = function( user_uuid ) {
+                this.createUser = function( ) {
                     /* Create a new User obj on the Server. */
 
-                    var nameVal = $("#newUser_name").val();
+                    var firstName = $("#onboard_firstName").val();
+                    var lastName  = $("#onboard_lastName").val();
+                    var email     = $("#onboard_email").val();
 
-                    // Full name must be of form "Foo Bar".
-                    // Show error if not in correct form.
-                    if ( !(/\w+ \w+/.test(nameVal)) ) {
-                       $("#newUser_wrapper > form > label").css('color', 'red');
-                    }
-                    else {
-                         // Tell the Server to make a new User.
-                         $.ajax({
-                                url: "{% url CreateUser %}",
-                                type: "POST",
-                                data: ({ name : nameVal } ),
-                                success: function(response) {
-                                    // Store User info for future use.
-                                    MaitreMobile.user.name  = response.name;
-                                    MaitreMobile.user.uuid  = response.uuid;
-                                    MaitreMobile.user.fname = response.first_name;
-                                    MaitreMobile.user.img   = response.img;
-                                    
-                                    // Go to Vote View.
-                                    MaitreMobile.showVoteView();
-                                },
-                            });
-                    }
+                    this.user.firstName = firstName;
+                    this.user.lastName  = lastName;
+                    this.user.email     = email;
+
+                     // Tell the Server to make a new User.
+                     $.ajax({
+                            url: "{% url CreateUser %}",
+                            type: "POST",
+                            data: ({ firstName : firstName,
+                                     lastName  : lastName,
+                                     email     : email } ),
+                            success: function(response) {
+                                // Store User info for future use.
+                                MaitreMobile.user.uuid  = response.uuid;
+                                MaitreMobile.user.img   = response.img;
+                                
+                                // Go to Vote View.
+                                MaitreMobile.showVoteView();
+                            },
+                        });
                 };
 
                 this.vote = function( vote ) {
@@ -263,7 +283,7 @@
 
                     // Tell Clik Desktop about the vote
                     clik.send( 'vote', { name       : this.user.name,
-                                         fname      : this.user.fname,
+                                         firstName  : this.user.firstName,
                                          uuid       : this.user.uuid,
                                          img        : this.user.img,
                                          vote_value : vote_val } );
@@ -273,7 +293,7 @@
                              data: ({ value : vote_val } ),
                              success: function(response) {
                                  // Go to Thanks View on successful vote.
-                                 MaitreMobile.showThanksView();
+                                 MaitreMobile.showProfileView();
                              },
                           });
                 };

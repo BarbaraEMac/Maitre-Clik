@@ -28,6 +28,11 @@ body {
 .error {
     color: red;
 }
+.small {
+    font-size: 0.5em;
+    margin: 0px;
+    margin-bottom: 5px;
+}
 ul {
     list-style-type: none;
     padding: 0px;
