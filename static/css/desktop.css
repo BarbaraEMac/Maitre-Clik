@@ -7,7 +7,7 @@ html {
     background-attachment: fixed;
     background-repeat: repeat-y;
     background-position: left; 
-    width: 1294px;
+    width: 100%;
 }
 
 #container {
@@ -16,14 +16,12 @@ html {
     float: left;
 }
 
-/** Left-Hand Side Stuff **/
-    .leftSide {
-        width: 59%;
+/** Right-Hand Stuff **/
+    #rightSide {
+        width: 39%;
         height: 100%;
         float: left;
-        padding: 10px;
     }
-
     #qrContainer {
         width: 70%;
         height: 70%;
@@ -32,12 +30,18 @@ html {
         margin-left: auto;
         margin-right: auto;
     }
+    #newMealViewBtn {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
 
-/** Right-Hand Stuff **/
-    #rightSide {
-        width: 39%;
+/** Left-Hand Side Stuff **/
+    .leftSide {
+        width: 59%;
         height: 100%;
         float: left;
+        padding: 10px;
     }
     .title {
         font-size: 6.0em;
@@ -126,4 +130,23 @@ html {
 
 .statsView_wrapper hr {
     width: 80%;
+}
+
+/** New Meal View **/
+#mealView p {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#newMealText {
+    width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-radius: 5px;
+    border: 1px solid #006D8D;
+
+    font-size: 2.0em;
+    font-family: Helvetica;
 }

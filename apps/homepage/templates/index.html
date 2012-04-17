@@ -107,8 +107,24 @@
                 </div>
             </div>
 
+            <!-- New Meal View -->
+            <div class="leftSide" id="mealView" style="display: none">
+                
+                <h1 class="title">New Meal</h1>
+                
+                <p>Please enter a brief description of the meal here and press 'Submit'. Everyone will be
+                emailed to let them know the food has arrived.</p>
+
+                <textarea name="newMealText" id="newMealText"> </textarea>
+            
+                <button class="limeBtn" id="newMealCancel"> Cancel </button>
+                <button class="limeBtn" id="newMealSubmit"> Submit Meal </button>
+            </div>
+
             <div id="rightSide" >
                 <img id="qrContainer" src="" style="display: inline" />
+
+                <button class="darkBlueBtn2" id="newMealViewBtn"> New Meal </button>
             </div>
 
         </div>
@@ -126,6 +142,9 @@
                     this.statsView = $("#statsView"); 
                     // A view of the people who are currently eating for this app
                     this.eatingView = $("#eatingView"); 
+                    // A view used by caterers to enter the new meal 
+                    this.mealView = $("#mealView"); 
+
                     // The view that is curently being displayed
                     this.currentView = this.mainView;
                     
@@ -151,6 +170,9 @@
                         $(".statsViewBtn").click( function() { MaitreDesktop.showStatsView(); } );
                         $(".mainViewBtn").click( function() { MaitreDesktop.showMainView(); } );
                         $(".eatingViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
+                        $("#newMealViewBtn").click( function() { MaitreDesktop.showMealView(); } );
+                        $("#newMealSubmit").click( function() { MaitreDesktop.submitMeal(); } );
+                        $("#newMealCancel").click( function() { MaitreDesktop.showMainView(); } );
 
                         // Setup timed resets to match cron update on server.
                         this.reset();
@@ -214,14 +236,6 @@
 
                         // Initialize the app.
                         this.init();
-                        
-                        // When Clik is ready to serve events..
-                        clik.on( 'ready', function () {
-                            var msg = "Hello World!";
-                            MaitreDesktop.updateStatusMsg( msg, '/static/imgs/cliklogo.jpg' );
-
-                            $("#qrContainer").attr( 'src', clik.clikCodeURL() );
-                        });
                     };
 
                     this.removeClikOverlay = function() {
@@ -238,21 +252,6 @@
                         }
                     };
 
-                    this.initReset = function() {
-                        /* Initialize timed resets to match cron update on server. */
-
-                        var now = new Date();
-                        var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
-                        if (millisTill10 < 0) {
-                             millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
-                        }
-                        var millisTill16 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 16, 0, 0, 0) - now;
-                        if (millisTill16 < 0) {
-                             millisTill16 += 86400000; // it's after 4pm, try 4pm tomorrow.
-                        }
-                        setTimeout( function(){ MaitreDesktop.reset(); }, Math.min(millisTill10, millisTill16) );
-                    };
-
                     this.reset = function() {
                         /* Reset the votes for the next meal. */
                         this.votes.voters   = [];
@@ -261,7 +260,7 @@
 
                         $("#mainView_barContainer").hide();
         
-                        this.initReset();
+                        this.showMainView();
                     };
 
                     this.updateStatusMsg = function( msg, img ) {
@@ -286,7 +285,7 @@
                     if ( url == undefined ) {
                         setTimeout( function(){ MaitreDesktop.waitForURL(); }, 300 );
                     } else {
-                            $("#qrContainer").attr( 'src', clik.clikCodeURL() );
+                        $("#qrContainer").attr( 'src', clik.clikCodeURL() );
                     }
                 };
 
@@ -321,6 +320,14 @@
                     this.currentView = this.eatingView;
                     this.currentView.fadeIn();
                 };
+                this.showMealView = function() {
+                    $("#newMealText").val("");
+
+                    this.currentView.hide();
+                    this.currentView = this.mealView;
+                    this.currentView.fadeIn();
+                };
+
                 
                 // Ajax Functions ----------------------------------------------
                 this.fetchStats = function( ) {
@@ -343,7 +350,23 @@
                             },
                         });
                 };
+                this.submitMeal = function( ) {
+                    /* Give the server details about this meal & 
+                       fire off emails to eaters! */
+                    var textElem = $("#newMealText");
+                    var meal     = textElem.val();
 
+                    textElem.val( "Thanks! Everyone's been notified! Until next meal ..." );
+
+                    $.ajax({
+                            url: "{% url CreateCheckin %}",
+                            type: "POST",
+                            data: ( { meal : meal } ),
+                            success: function(response) {
+                                setTimeout( function() {MaitreDesktop.reset();}, 5000 );
+                            },
+                        });
+                };
             };
 
             MaitreDesktop.run();
