@@ -1,12 +1,13 @@
 /** CSS for the Desktop portion of the app **/
 
 /** Whole Page Stuff **/
-body {
+html {
 	background-color: white;
-    background-image: url(/static/imgs/bg1_thin.jpg);
+    background-image: url(/static/imgs/bg7_thin.jpg);
     background-attachment: fixed;
     background-repeat: repeat-y;
-    background-position: center; 
+    background-position: left; 
+    width: 1294px;
 }
 
 #container {
@@ -16,47 +17,52 @@ body {
 }
 
 /** Left-Hand Side Stuff **/
-#leftSide {
-    width: 40%;
-    height: 100%;
-    float: left;
-}
+    .leftSide {
+        width: 59%;
+        height: 100%;
+        float: left;
+        padding: 10px;
+    }
 
-#qrContainer {
-    width: 100%;
-    height: 70%;
-    margin-top: 10%;
-    margin-bottom: 20%;
-}
+    #qrContainer {
+        width: 70%;
+        height: 70%;
+        margin-top: 15%;
+        margin-bottom: 15%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
 /** Right-Hand Stuff **/
-.rightSide {
-    width: 60%;
-    height: 100%;
-    float: left;
-}
-.title {
-    font-size: 6.0em;
-    margin: 10px;
-    padding: 0px;
-}
-.navButtons {
-    width: 100%;
-    margin: 0px;
-    padding: 0px;
-    text-align: right;
-}
+    #rightSide {
+        width: 39%;
+        height: 100%;
+        float: left;
+    }
+    .title {
+        font-size: 6.0em;
+        margin: 10px 0px 20px 0px;
+        padding: 0px;
+    }
+    .navButtons {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        text-align: left;
+    }
 
 /** Main View **/
     #list {
-        height: 500px;
-        padding: 10px;
+        height: 395px;
+        padding: 0px;
     }
     #list li {
-        width: 100%;
+        width: 96%;
         height: 55px;
         float: left;
         padding: 10px;
+        margin: 3px;
+        border-radius: 5px;
     }
     #list img {
         height: 55px;
@@ -75,7 +81,7 @@ body {
         margin-right: auto;
         float: none;
 
-        border: 2px solid #006D8D;
+        border: 2px solid #004e70;
         border-radius: 5px;
 
         font-size: 3.0em;

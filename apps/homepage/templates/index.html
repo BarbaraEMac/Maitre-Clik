@@ -33,15 +33,12 @@
         <div id="audio"></div>
 
         <div id="container">
-            <div id="leftSide" >
-                <img id="qrContainer" src="" style="display: inline" />
-            </div>
 
             <!-- Main View -->
-            <div class="rightSide" id="mainView">
+            <div class="leftSide" id="mainView">
                 <div class="navButtons">
-                    <button class="darkBlueBtn statsViewBtn">Stats</button>
-                    <button class="darkBlueBtn eatingViewBtn">Who's Eating?</button>
+                    <button class="limeBtn statsViewBtn">Stats</button>
+                    <button class="limeBtn eatingViewBtn">Who's Eating?</button>
                 </div>
                 
                 <h1 class="title">Bon Appetit!</h1>
@@ -61,11 +58,11 @@
             </div>
                         
             <!-- Stats View -->
-            <div class="rightSide" id="statsView" style="display: none">
+            <div class="leftSide" id="statsView" style="display: none">
                 
                 <div class="navButtons">
                     <button class="lightBlueBtn mainViewBtn">Main</button>
-                    <button class="darkBlueBtn eatingViewBtn">Who's Eating?</button>
+                    <button class="limeBtn eatingViewBtn">Who's Eating?</button>
                 </div>
                 
                 <h1 class="title">Statistics</h1>
@@ -96,11 +93,11 @@
             </div>
 
             <!-- Who's Eating View -->
-            <div class="rightSide" id="eatingView" style="display: none">
+            <div class="leftSide" id="eatingView" style="display: none">
                 
-                <div id="navButtons">
+                <div class="navButtons">
                     <button class="lightBlueBtn mainViewBtn">Main</button>
-                    <button class="darkBlueBtn statsViewBtn">Stats</button>
+                    <button class="limeBtn statsViewBtn">Stats</button>
                 </div>
                 
                 <h1 class="title">Who's Eating?</h1>
@@ -108,6 +105,10 @@
                 <div>
                     lotsa people eating
                 </div>
+            </div>
+
+            <div id="rightSide" >
+                <img id="qrContainer" src="" style="display: inline" />
             </div>
 
         </div>
