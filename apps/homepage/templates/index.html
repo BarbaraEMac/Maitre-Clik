@@ -51,7 +51,7 @@
                     <ul id="list" class="flip">
                         <li>
                             <img src="/static/imgs/cliklogo.jpg" />
-                            <p>Loading ...</p>
+                            <p>Clik-In</p>
                         </li>
                     </ul>
                 </div>
@@ -381,7 +381,7 @@
                        fire off emails to eaters! */
                     
                     var textElem = $("#newMealText");
-                    var meal     = textElem.val();
+                    var meal     = textElem.val().trim();
 
                     if ( meal.length == 0 ) {
                         $("#newMealError").fadeIn();
