@@ -108,14 +108,26 @@
             </div>
 
             <!-- New Meal View -->
-            <div class="leftSide" id="mealView" style="display: none">
+            <div id="mealView" style="display: none">
                 
                 <h1 class="title">New Meal</h1>
                 
                 <p>Please enter a brief description of the meal here and press 'Submit'. Everyone will be
                 emailed to let them know the food has arrived.</p>
 
-                <textarea name="newMealText" id="newMealText"> </textarea>
+                <br /><br />
+
+                <p class="error" id="newMealError" style="display: none;">
+                    Please enter today's menu.
+                </p>
+
+                <p id="newMealThanks" style="display: none">
+                    Thanks! Everyone's been notified!
+                    <br /><br />
+                    Until next meal ...
+                </p>
+
+                <textarea name="newMealText" id="newMealText"></textarea>
             
                 <button class="limeBtn" id="newMealCancel"> Cancel </button>
                 <button class="limeBtn" id="newMealSubmit"> Submit Meal </button>
@@ -309,20 +321,34 @@
                     this.currentView.hide();
                     this.currentView = this.statsView;
                     this.currentView.fadeIn();
+                    
+                    $("#rightSide").show();
                 };
                 this.showMainView = function() {
                     this.currentView.hide();
                     this.currentView = this.mainView;
                     this.currentView.fadeIn();
+                    
+                    $("#rightSide").show();
                 };
                 this.showEatingView = function() {
                     this.currentView.hide();
                     this.currentView = this.eatingView;
                     this.currentView.fadeIn();
+                    
+                    $("#rightSide").show();
                 };
                 this.showMealView = function() {
+  
                     $("#newMealText").val("");
-
+                    $("#newMealText").show("");
+                    $("#newMealThanks").hide("");
+                    $("#newMealError").hide("");
+                    $("#newMealCancel").show();
+                    $("#newMealSubmit").show();
+                    
+                    $("#rightSide").hide();
+                    
                     this.currentView.hide();
                     this.currentView = this.mealView;
                     this.currentView.fadeIn();
@@ -353,19 +379,32 @@
                 this.submitMeal = function( ) {
                     /* Give the server details about this meal & 
                        fire off emails to eaters! */
+                    
                     var textElem = $("#newMealText");
                     var meal     = textElem.val();
 
-                    textElem.val( "Thanks! Everyone's been notified!\r\n\r\nUntil next meal ..." );
+                    if ( meal.length == 0 ) {
+                        $("#newMealError").fadeIn();
+                    } else {
+                        $("#newMealError").hide();
+                        $("#newMealThanks").fadeIn();
 
-                    $.ajax({
-                            url: "{% url CreateMeal %}",
-                            type: "POST",
-                            data: ( { meal : meal } ),
-                            success: function(response) {
-                                setTimeout( function() {MaitreDesktop.reset();}, 5000 );
-                            },
-                        });
+                        textElem.hide();
+                        $("#newMealCancel").hide();
+                        $("#newMealSubmit").hide();
+
+                        $.ajax({
+                                url: "{% url CreateMeal %}",
+                                type: "POST",
+                                data: ( { meal_items : meal } ),
+                                success: function(response) {
+                                    setTimeout( function() {
+                                        MaitreDesktop.reset();
+                                      
+                                    }, 3500 );
+                                },
+                            });
+                    }
                 };
             };
 

@@ -9,21 +9,24 @@ from util.urihandler        import URIHandler
 
 class CreateMeal( URIHandler ):
     def post( self ):
-        # Update the current meal to become an old meal
-        type = 'DINNER'
+        items = self.request.get('meal_items').strip()
 
-        current_meal = Meal.get_current()
-        if current_meal:
-            current_meal.status = 'past_meal'
-            current_meal.put()
+        if items is not "":
+            # Update the current meal to become an old meal
+            type = 'DINNER'
 
-            if current_meal.type == "LUNCH":
-                type = "DINNER"
-            else:
-                type = "LUNCH"
+            current_meal = Meal.get_current()
+            if current_meal:
+                current_meal.status = 'past_meal'
+                current_meal.put()
 
-        # Create the new meal
-        new_meal = Meal.create( type, self.request.get('meal') )
+                if current_meal.type == "LUNCH":
+                    type = "DINNER"
+                else:
+                    type = "LUNCH"
+
+            # Create the new meal
+            new_meal = Meal.create( type, items )
 
 
 class LunchGenerator( URIHandler ):
