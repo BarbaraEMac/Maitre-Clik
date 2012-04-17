@@ -130,12 +130,12 @@ html {
 }
 
 /** New Meal View **/
-#mealView p {
-    width: 80%;
+#newMealView p {
+    width: 79%;
     margin-left: auto;
     margin-right: auto;
 }
-#newMealText {
+#newMealView textarea {
     width: 80%;
     display: block;
     margin-left: auto;
