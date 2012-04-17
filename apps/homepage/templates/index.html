@@ -17,7 +17,6 @@
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="/static/js/stroll.js"></script>
 		<script type="text/javascript" src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
-		<script type="text/javascript" src="/static/js/speakClient.js"></script>
         <script>
             // Common JS fcns.
             Array.prototype.has=function(v){
@@ -38,18 +37,16 @@
             <div class="leftSide" id="mainView">
                 <h1 class="title">Bon Appetit!</h1>
 
+                <h2 id="mainView_subtitle">Menu:</h2>
+
+                <p id="mainView_menu"></p>
+
+                <h2>Deliciousness Rate</h2>
+
                 <div id="mainView_barContainer" style="display: none">
                     <div id="mainView_yes"> 100% </div>
                 </div>
                 
-                <div id="mainView_msgContainer">
-                    <ul class="list flip" id="mainFeed">
-                        <li>
-                            <img src="/static/imgs/cliklogo.jpg" />
-                            <p>Clik-In before grabbing your food!</p>
-                        </li>
-                    </ul>
-                </div>
             </div>
                         
             <!-- Stats View -->
@@ -93,12 +90,17 @@
                 </ul>
             </div>
 
-            <!-- Who's Eating View -->
-            <div class="leftSide" id="eatingView" style="display: none">
-                <h1 class="title">Who's Eating?</h1>
+            <!-- Feed View -->
+            <div class="leftSide" id="feedView" style="display: none">
+                <h1 class="title">Feed</h1>
 
-                <div>
-                    lotsa people eating
+                <div id="feedView_feedContainer">
+                    <ul class="list flip" id="mainFeed">
+                        <li>
+                            <img src="/static/imgs/cliklogo.jpg" />
+                            <p>Clik-In before grabbing your food!</p>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -131,10 +133,10 @@
                 <img id="qrContainer" src="" style="display: inline" />
  
                 <div id="navButtons">
-                    <button class="limeBtn"      id="mainViewBtn">    Main </button>
-                    <button class="limeBtn"      id="statsViewBtn">   Statistics </button>
-                    <button class="limeBtn"      id="eatingViewBtn">  Who's Eating? </button>
-                    <button class="darkBlueBtn2" id="newMealViewBtn"> New Meal </button>
+                    <button class="lightBlueBtn" id="mainViewBtn">     Home </button>
+                    <button class="limeBtn"      id="statsViewBtn">    Statistics </button>
+                    <button class="limeBtn"      id="feedViewBtn">     Feed </button>
+                    <button class="darkBlueBtn2" id="newMealView_Btn"> New Meal </button>
                 </div>
             </div>
 
@@ -169,8 +171,8 @@
                         // Init Views -------------------------
                         $("#statsViewBtn").click( function() { MaitreDesktop.showStatsView(); } );
                         $("#mainViewBtn").click( function() { MaitreDesktop.showMainView(); } );
-                        $("#eatingViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
-                        $("#newMealViewBtn").click( function() { MaitreDesktop.showNewMealView(); } );
+                        $("#feedViewBtn").click( function() { MaitreDesktop.showEatingView(); } );
+                        $("#newMealView_Btn").click( function() { MaitreDesktop.showNewMealView(); } );
                         $("#newMealSubmit").click( function() { MaitreDesktop.submitMeal(); } );
                         $("#newMealCancel").click( function() { MaitreDesktop.showMainView(); } );
 
@@ -191,7 +193,7 @@
                             MaitreDesktop.welcome( user.name );
                             MaitreDesktop.checkinUser( user.uuid );
                             
-                            var msg = "" + user.fname + " is eating.";
+                            var msg = "" + user.fname + " is feed.";
                             MaitreDesktop.updateStatusMsg( msg, user.img );
                         });
 
@@ -200,8 +202,6 @@
                             if ( MaitreDesktop.votes.voters.has( msg.uuid ) ) {
                                 return;
                             }
-
-                            //speak("Mair see" + msg.name,  {wordgap: 3});
 
                             var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
                             MaitreDesktop.updateStatusMsg( text, msg.img );
@@ -231,8 +231,6 @@
                     this.run = function( ) {
                         /* The main fcn to run the application. 
                            Call this when you're ready to start! */
-
-                        //speak("Bonne Joooure. Juh map elle Fran swa", {wordgap:3} );
 
                         // Initialize the app.
                         this.init();
@@ -295,41 +293,34 @@
 
                     // If dinner time,
                     if( date.getHours() >= 16 ) { 
-                        speak( "Bonne Swar" + name, {wordgap:3} );
-
+                        return;
                     } else { // If lunch time
-                        speak( "Bonne Jooooure" + name, {wordgap:3} );
+                        return;
                     }
                 };
 
                 // View Toggles ------------------------------------------------
+                this.toggleView = function( selector ) {
+                    this.currentView.hide();
+                    $("#"+this.currentView.attr('id')+"Btn").attr('class', 'limeBtn');
+
+                    this.currentView = $( selector );
+
+                    $("#"+this.currentView.attr('id')+"Btn").attr('class', 'lightBlueBtn');
+                    this.currentView.fadeIn();
+                };
                 this.showStatsView = function() {
                     this.fetchStats();
 
-                    this.currentView.hide();
-                    $("#"+this.currentView.attr('id')+"Btn").show();
-                    
-                    this.currentView = $("#statsView");
-                    $("#"+this.currentView.attr('id')+"Btn").hide();
-                    this.currentView.fadeIn();
+                    this.toggleView( "#statsView" );                  
                 };
                 this.showMainView = function() {
-                    this.currentView.hide();
-                    $("#"+this.currentView.attr('id')+"Btn").show();
-                    this.currentView = $("#mainView");
-                    
-                    $("#"+this.currentView.attr('id')+"Btn").hide();
-                    this.currentView.fadeIn();
+                    this.toggleView("#mainView");
                     
                     $("#rightSide").show();
                 };
                 this.showEatingView = function() {
-                    this.currentView.hide();
-                    $("#"+this.currentView.attr('id')+"Btn").show();
-                    
-                    this.currentView = $("#eatingView");
-                    $("#"+this.currentView.attr('id')+"Btn").hide();
-                    this.currentView.fadeIn();
+                    this.toggleView("#feedView");
                 };
                 this.showNewMealView = function() {
                     $("#newMealText").val("");
@@ -341,10 +332,7 @@
                     
                     $("#rightSide").hide();
                     
-                    this.currentView.hide();
-                    $("#"+this.currentView.attr('id')+"Btn").show();
-                    this.currentView = $("#newMealView");
-                    this.currentView.fadeIn();
+                    this.toggleView("#newMealView");
                 };
 
                 
@@ -374,9 +362,9 @@
                        fire off emails to eaters! */
                     
                     var textElem = $("#newMealText");
-                    var meal     = textElem.val().trim();
+                    var menu     = textElem.val().trim();
 
-                    if ( meal.length == 0 ) {
+                    if ( menu.length == 0 ) {
                         $("#newMealError").fadeIn();
                     } else {
                         $("#newMealError").hide();
@@ -386,10 +374,19 @@
                         $("#newMealCancel").hide();
                         $("#newMealSubmit").hide();
 
+                        $("#mainView_menu").html( menu );
+
+                        var date = new Date();
+                        if( date.getHours() >= 16 ) {   // If dinner time,
+                            $("#mainView_subtitle").html( "Dinner Menu" );
+                        } else {                        // If lunch time,
+                            $("#mainView_subtitle").html( "Lunch Menu" );
+                        }
+
                         $.ajax({
                                 url: "{% url CreateMeal %}",
                                 type: "POST",
-                                data: ( { meal_items : meal } ),
+                                data: ( { meal_items : menu } ),
                                 success: function(response) {
                                     setTimeout( function() {
                                         MaitreDesktop.reset();
