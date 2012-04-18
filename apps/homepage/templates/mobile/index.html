@@ -12,7 +12,8 @@
         <!-- JS -->
         <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="http://v2.clikthis.com/js/latest/clik-mobile.min.js"></script>
+        <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+        <script src="http://cdn.clikthis.com/js/latest/clik-mobile.min.js"></script>
     </head>
 
     <body>
@@ -76,12 +77,14 @@
         </div>
 
         <!-- Vote View -->
-        <div id="voteView" style="display: none">
+        <div id="voteView">
             <h1 class="title" id="voteView_title">Bon Appetit</h1>
 
             <div id="voteView_wrapper">
                 <h1>How awesome is this meal?</h1>
                 
+                <input type="range" min="1" max="10" step="1" value="5" />
+
                 <p id="voteView_amount">5/10</p>
                 
                 <div id="voteView_slider" style="max-width: 80%;"> </div>
@@ -105,14 +108,23 @@
 
         <!-- Clik View -->
         <div id="clikView" style="display: none">
-            <h1 class="title">Clik</h1>
+            <div id="clikView_out">
+                <h1 class="title">Bye</h1>
+
+                <button id="clikView_outBtn">You've been cliked-out!</button>
+            </div>
+           <div id="clikView_in">
+                <h1 class="title">Hello!</h1>
+                <p> You must be cliked-in to view that content. </p>
+                <button id="clikView_inBtn">Clik-In</button>
+            </div>
         </div>
 
         <div id="btmPanel">
-            <button class="limeBtn panelBtn" id="voteViewBtn">    Vote </button>
-            <button class="limeBtn panelBtn" id="eatingViewBtn">  Who's Here? </button>
+            <button class="lightBlueBtn panelBtn" id="voteViewBtn">    Vote </button>
+            <button class="limeBtn panelBtn" id="eatingViewBtn">  Who? </button>
             <button class="limeBtn panelBtn" id="profileViewBtn"> Profile </button>
-            <button class="limeBtn panelBtn" id="clikViewBtn">    Clik-In/Out </button>
+            <button class="limeBtn panelBtn" id="clikViewBtn">    Clik-Out </button>
         </div>
 
         <script>
@@ -134,6 +146,8 @@
                     // Add name and uuid to Client Obj
                     //Client.prototype.name = "";
                     //Client.prototype.uuid = "";
+                    
+                    $(":range").rangeinput({ progress: true, max: 100 });
 
                     $(".onboardBtn").click( function() { $(this).parent().slideUp( 400 ).next().slideDown(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
@@ -143,23 +157,15 @@
 
                     // Attach click handlers.
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
-                    $("#newUser_submit").click( function() { return; } );
-                    $("#thanksView_closeBtn").click( function() { MaitreMobile.quit(); } ); 
 
-                    $("#voteViewBtn").click( function() { MaitreMobile.showVoteView(); } );
-                    $("#eatingViewBtn").click( function() { MaitreMobile.showEatingView(); } );
-                    $("#profileViewBtn").click( function() { MaitreMobile.showProfileView(); } );
-                    $("#clikViewBtn").click( function() { MaitreMobile.showClikView(); } );
+                    $("#voteViewBtn").click(     function() { MaitreMobile.showVoteView(); } );
+                    $("#eatingViewBtn").click(   function() { MaitreMobile.showEatingView(); } );
+                    $("#profileViewBtn").click(  function() { MaitreMobile.showProfileView(); } );
+                    $("#clikViewBtn").click(     function() { MaitreMobile.clikOut(); } );
                     
-                    // Initialize the voting slider.
-                    $( "#voteView_slider" ).slider( { value: 5,
-                                                      min: 1,
-                                                      max: 10,
-                                                      step: 1,
-                                                      slide: function( event, ui ) {
-                                                            $("#voteView_amount").html( ui.value + "/10" );
-                                                        }
-                                                    });
+                    $("#clikView_inBtn").click(  function() { MaitreMobile.clikIn(); } );
+                    $("#clikView_outBtn").click( function() { MaitreMobile.clikOut(); } );
+                    
                     // Use server logic to determine which view to display.
                     {% if ShowOnboardView %}
                         this.showVoteView();
@@ -167,7 +173,9 @@
                     {% if ShowVoteView %}
                         this.showVoteView();
                     {% endif %}
-                    this.showVoteView();
+
+                    clik.on('clikIn', function() { MaitreMobile.showVoteView(); } );
+                    clik.on('join', function(data) { if( clik.client.id != data ) { alert(data);} } );
                 };
                 
                 this.run = function( ) {
@@ -175,40 +183,72 @@
                     this.init(); // Initialize the app.
                 };
 
-                this.quit = function() {
-                    /* Close the Clik connection. */
+                this.clikIn = function() {
+                    /* Leave the conference */
+                    //clik.clikIn();
 
-                    clik.close();
+                    $("#clikViewBtn").html("Clik-Out");
+                    $("#clikViewBtn").click( function() { MaitreMobile.clikOut(); } );
                 };
+                this.clikOut = function() {
+                    /* Leave the conference */
+                    // clik.clikOut();
 
+                    $("#clikViewBtn").html("Clik-In");
+                    $("#clikViewBtn").click( function() { MaitreMobile.clikIn(); } );
+                };
 
                 // View Functions ----------------------------------------------
                 this.showOnboardView = function( ) {
                     /* Show the "Onboard" View */
-                    this.toggleView( "#onboardView" );  
+
+                    if ( clik.connected ) {
+                        $("#btmPanel").hide();
+
+                        this.toggleView( "#onboardView" );  
+                    } else {
+                        this.toggleView( "#clikView" );  
+                    }
                 };
-                 
                 this.showVoteView = function() {
                     /* Show the "Vote" View */
                     // Update the title.
-                    $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
                     
-                    this.toggleView( "#voteView" );  
-                    
-                    // Checkin
-                    clik.send( 'checkin', { name  : this.user.name,
-                                            firstName : this.user.firstName,
-                                            uuid  : this.user.uuid,
-                                            img   : this.user.img } );
-                };
+                    if ( clik.connected ) {
+                        $("#btmPanel").show();
 
+                        $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
+                    
+                        this.toggleView( "#voteView" );  
+                        
+                        // Checkin
+                        clik.send( 'checkin', { name  : this.user.name,
+                                                firstName : this.user.firstName,
+                                                uuid  : this.user.uuid,
+                                                img   : this.user.img } );
+                    } else {
+                        this.toggleView( "#clikView" );  
+                    }
+                };
                 this.showProfileView = function() {
                     this.toggleView( "#profileView" );  
                 };
                 this.showEatingView = function() {
-                    this.toggleView( "#eatingView" );  
+                    if( clik.connected ) {
+                        this.toggleView( "#eatingView" );  
+                    } else {
+                        this.toggleView( "#clikView" );  
+                    }
                 };
                 this.showClikView = function() {
+                    if( clik.connected ) {
+                        $("#clikView_in").hide();
+                        $("#clikView_out").show();
+                    } else {
+                        $("#clikView_in").show();
+                        $("#clikView_out").hide();
+                    }
+
                     this.toggleView( "#clikView" );  
                 };
 
@@ -221,9 +261,6 @@
                     $("#"+this.currentView.attr('id')+"Btn").attr('class', 'lightBlueBtn panelBtn');
                     this.currentView.fadeIn();
                 };
-
-
-
 
                 // Ajax Functions ----------------------------------------------
                 this.registerUser = function( user_uuid ) {
