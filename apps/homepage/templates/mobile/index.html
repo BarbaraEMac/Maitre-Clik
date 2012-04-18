@@ -51,7 +51,7 @@
                 <h1 class="title">Email?</h1>
 
                 <p>Psst! I can email you as soon as a meal is delivered!</p>
-                <p>You'll never get those sloppy seconds now ...</p>
+                <p>You'll never get sloppy seconds now ...</p>
 
                 <label for="onboard_email">Email</label><br />
                 <input type="text" id="onboard_email" name="onboard_email" /><br />
@@ -154,6 +154,9 @@
 
                     // Don't let people refresh the page if they hit Enter!
                     $("#newUser_wrapper > form").submit(function(){ return false; }); 
+
+                    // Attach key up handlers
+                    $("#onboard_firstName").keyup( function() { $("#onboard_email").val( $(this).val() + "@kik.com" ) } );
 
                     // Attach click handlers.
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
