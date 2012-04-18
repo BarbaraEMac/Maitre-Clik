@@ -263,26 +263,6 @@
                 };
 
                 // Ajax Functions ----------------------------------------------
-                this.registerUser = function( user_uuid ) {
-                    /* Register an existing user */
-
-                     $.ajax({
-                            url: "{% url RegisterUser %}",
-                            type: "POST",
-                            data: ({ user_uuid : user_uuid } ),
-                            success: function(response) {
-                                // Store User info for future use.
-                                MaitreMobile.user.name  = response.name;
-                                MaitreMobile.user.firstName = response.first_name;
-                                MaitreMobile.user.img   = response.img;
-                                MaitreMobile.user.uuid  = response.uuid;
-                                
-                                // Go to Vote View.
-                                MaitreMobile.showVoteView();
-                            },
-                        });
-                };
-
                 this.createUser = function( ) {
                     /* Create a new User obj on the Server. */
 
@@ -290,6 +270,7 @@
                     var lastName  = $("#onboard_lastName").val();
                     var email     = $("#onboard_email").val();
 
+                    // Cache this stuff!
                     this.user.firstName = firstName;
                     this.user.lastName  = lastName;
                     this.user.email     = email;

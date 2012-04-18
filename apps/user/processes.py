@@ -10,52 +10,21 @@ from util.helpers           import set_user_cookie
 from util.helpers           import url
 from util.urihandler        import URIHandler
 
-class RegisterUser( URIHandler ):
-    def post( self ):
-        user = User.get( self.request.get( 'user_uuid') )
-        
-        # Cache the User
-        self.db_user = user
-
-        # Register the User
-        user.register()
-
-        # Have to do this here to avoid a circular reference
-        set_user_cookie( self, user.uuid )
-
-        try:
-            first_name = user.name.split(' ')[0]
-        except:
-            first_name = user.name
-    
-        self.response.headers['Content-Type'] = "application/json"
-        self.response.out.write( json.dumps( { 'name'       : user.name, 
-                                               'first_name' : first_name,
-                                               'uuid'       : user.uuid,
-                                               'img'        : user.img } ) )
-
 class CreateUser( URIHandler ):
     def post( self ):
-        name = self.request.get( 'name' ).strip()
-        user = User.create( name )
+        first_name  = self.request.get( 'firstName' )
+        last_name   = self.request.get( 'lastName' )
+        email       = self.request.get( 'email' )
+        
+        user        = User.create( first_name, last_name, email )
 
         # Cache the User
         self.db_user = user
 
-        # Register the User
-        user.register()
-
         # Have to do this here to avoid a circular reference
         set_user_cookie( self, user.uuid )
-
-        try:
-            first_name = user.name.split(' ')[0]
-        except:
-            first_name = user.name
-
+        
         self.response.headers['Content-Type'] = "application/json"
-        self.response.out.write( json.dumps( { 'name'       : user.name, 
-                                               'first_name' : first_name,
-                                               'uuid'       : user.uuid,
-                                               'img'        : user.img } ) )
+        self.response.out.write( json.dumps( { 'uuid' : user.uuid,
+                                               'img'  : user.img } ) )
 

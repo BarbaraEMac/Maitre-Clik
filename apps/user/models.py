@@ -14,19 +14,25 @@ from util.model             import Model
 class User( Model ):
     """ The User Class
         Denotes a User of the "Maitre 'Clik" app.
-        Properties:
-            name - a string of 'first last' names
-            img  - a url to an image of the User
-            state - either 'unregistered' or 'registered'
     """
     
-    uuid    = db.StringProperty( indexed = True )
-    created = db.DateTimeProperty( auto_now_add = True, indexed=False )
+    uuid    = db.StringProperty    ( indexed = True )
+    created = db.DateTimeProperty  ( indexed = False, auto_now_add = True )
     
-    name = db.StringProperty( indexed = True )
-    img  = db.StringProperty( indexed = False, default = '/static/imgs/DefaultProfile.jpg' )
-
-    registration_state = db.StringProperty( default = 'unregistered', indexed = True )
+    # The User's first name
+    first_name  = db.StringProperty( indexed = False )
+    
+    # The User's last name
+    last_name   = db.StringProperty( indexed = False )
+    
+    # The User's email
+    email       = db.StringProperty( indexed = True )
+    
+    # URL to an image of this User
+    img         = db.StringProperty( indexed = False, default = '/static/imgs/DefaultProfile.jpg' )
+    
+    # True iff the User wants to receive an email when a meal arrives
+    notification = db.BooleanProperty( indexed = True, default = True )
 
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 
@@ -38,7 +44,7 @@ class User( Model ):
         return db.Query(User).filter('uuid =', uuid).get()
     
     @staticmethod
-    def create( name ):
+    def create( first_name, last_name, email ):
         """ Constructor for User class. 
             Input: name & img should both be strings.
             Output: returns the new User obj.
@@ -46,19 +52,20 @@ class User( Model ):
         
         uuid = generate_uuid( 10 )
 
-        user = User( key_name = "%s_%s" % (name.strip(), uuid),
-                     uuid     = uuid,
-                     name     = name )
+        # Santization lite lol
+        first_name = first_name.strip()
+        last_name  = last_name.strip()
+        email      = email.strip()
+
+        user = User( key_name     = "%s%s_%s" % (first_name, last_name, uuid),
+                     uuid         = uuid,
+                     first_name   = first_name,
+                     last_name    = last_name,
+                     email        = email,
+                     notification = (email is not "") )
         user.put()
         return user
 
-    def register( self ):
-        """ Register a new User. """
-        
-        logging.info("Resgistering %s %s" % (self.name, self.uuid ))
-        self.registration_state = 'registered'
-        self.put()
-
-    @staticmethod
-    def get_unregistered( ):
-        return User.all().filter( 'registration_state =', 'unregistered' )
+        @staticmethod
+        def get_notification_users():
+            return User.all().filter( 'notification =', True ).filter( 'email !=', '' )
