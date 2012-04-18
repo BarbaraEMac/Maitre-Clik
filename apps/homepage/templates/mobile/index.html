@@ -168,13 +168,13 @@
                     
                     // Use server logic to determine which view to display.
                     {% if ShowOnboardView %}
-                        this.showVoteView();
+                        this.showOnboardView();
                     {% endif %}
                     {% if ShowVoteView %}
                         this.showVoteView();
                     {% endif %}
 
-                    clik.on('clikIn', function() { MaitreMobile.showVoteView(); } );
+                    //clik.on('clikIn', function() { MaitreMobile.showVoteView(); } );
                     clik.on('join', function(data) { if( clik.client.id != data ) { alert(data);} } );
                 };
                 
@@ -202,13 +202,13 @@
                 this.showOnboardView = function( ) {
                     /* Show the "Onboard" View */
 
-                    if ( clik.connected ) {
+                    //if ( clik.connected ) {
                         $("#btmPanel").hide();
 
                         this.toggleView( "#onboardView" );  
-                    } else {
-                        this.toggleView( "#clikView" );  
-                    }
+                   // } else {
+                   //     this.toggleView( "#clikView" );  
+                   // }
                 };
                 this.showVoteView = function() {
                     /* Show the "Vote" View */

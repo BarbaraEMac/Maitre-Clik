@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 
 import logging
+from google.appengine.api   import taskqueue
 
 from apps.meal.models       import Meal
+from apps.user.models       import User
 
 from util.consts            import *
+from util.helpers           import url
 from util.urihandler        import URIHandler
 
 class CreateMeal( URIHandler ):
     def post( self ):
-        items = self.request.get('meal_items').strip()
+        menu = self.request.get('meal_items').strip()
 
-        if items is not "":
+        if menu is not "":
             # Update the current meal to become an old meal
             type = 'DINNER'
 
@@ -26,33 +29,13 @@ class CreateMeal( URIHandler ):
                     type = "LUNCH"
 
             # Create the new meal
-            new_meal = Meal.create( type, items )
+            new_meal = Meal.create( type, menu )
 
-
-class LunchGenerator( URIHandler ):
-    def get(self):
-        # Update the current meal to become an old meal
-        current_meal = Meal.get_current()
-        current_meal.status = 'past_meal'
-        current_meal.put()
-
-        # Create the new meal
-        new_meal = Meal.create( 'LUNCH', "" )
-
-        # Sanity check
-        if current_meal.type != 'DINNER':
-            logging.error("Meals are screwed up -> old:%s new: %s" % (current_meal.uuid, new_meal.uuid))
-
-class DinnerGenerator( URIHandler ):
-    def get(self):
-        # Update the current meal to become an old meal
-        current_meal = Meal.get_current()
-        current_meal.status = 'past_meal'
-        current_meal.put()
-
-        # Create the new meal
-        new_meal = Meal.create( 'DINNER', "" )
-        
-        # Sanity check
-        if current_meal.type != 'LUNCH':
-            logging.error("Meals are screwed up -> old:%s new: %s" % (current_meal.uuid, new_meal.uuid))
+            # Tell people the meal is here!!!
+            users = User.all().filter( 'notification =', True ).filter( 'email !=', '' )
+            for u in users:
+                taskqueue.add( queue_name = 'notificationEmail', 
+                               url        = url( 'NotifyUsers' ),
+                               params     = {'first_name' : u.first_name,
+                                             'email'      : u.email,
+                                             'menu'       : menu } )

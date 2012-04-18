@@ -66,6 +66,3 @@ class User( Model ):
         user.put()
         return user
 
-        @staticmethod
-        def get_notification_users():
-            return User.all().filter( 'notification =', True ).filter( 'email !=', '' )

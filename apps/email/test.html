@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <style>
+            html {
+                background-color: #c1e2f1;
+                background-image: url(http://clik-app.appspot.com/static/imgs/bg1_mobile.jpg);
+                background-attachment: fixed;
+                background-repeat: repeat-x;
+                background-position: top left; 
+                font-family: Helvetica;
+                text-align: left;
+            }
+            #error { color: red; }
+            #menu {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 30px;
+                padding: 20px;
+                border-radius: 5px;
+
+                background-color: #BCE072;
+                -moz-box-shadow: inset 0 0 10px #000000;
+                -webkit-box-shadow: inset 0 0 10px #000000;
+                box-shadow: inset 0 0 10px #000000;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Hi %s,</p>
+        <p>Your delicious food has arrived. You'll be eating:</p>
+        <p id='menu'>%s</p>
+        <p id='error'>Don't forget to Clik-In before you eat!</p>
+        <p>Enjoy!</p>
+    </body>
+</html>

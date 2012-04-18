@@ -11,7 +11,6 @@ class UserMaker( URIHandler ):
     def get( self ):
         users = User.all()
         for u in users:
-            u.registration_state = "unregistered"
             u.put()
 
         return

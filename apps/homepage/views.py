@@ -18,33 +18,13 @@ class ShowMobileApp(URIHandler):
 
         # If no User, force them to register so we know who they are!
         if not user:
-            template_values.update( self.unregistered_users_view() )
+            template_values.update( { 'ShowOnboardView' : 1 } )
 
         else:
-            template_values.update( self.vote_view( user ) )
+            template_values.update( { 'user'         : user,
+                                      'ShowVoteView' : 1 } )
 
         self.response.out.write(self.render_page('mobile/index.html', template_values))
-
-    def unregistered_users_view( self ):
-        logging.info('Unregistered')
-        # Otherwise, show a list of unregistered Users.
-        new_values = { 'unregistered_users' : User.get_unregistered(),
-                       'ShowUnregisteredUserView' : 1 }
-                        
-        return new_values
-
-    def vote_view( self, user ):
-        # Otherwise, show a list of unregistered Users.
-        try:
-            first_name = user.name.split(' ')[0]
-        except:
-            first_name = user.name
-
-        new_values = { 'user'            : user,
-                       'user_first_name' : first_name,
-                       'ShowVoteView'    : 1 }
-                        
-        return new_values
 
 class ShowDesktopPage(URIHandler):
     def get(self, page):

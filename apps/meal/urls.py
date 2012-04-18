@@ -5,9 +5,6 @@ from apps.meal.views     import *
 
 urlpatterns = [
 
-    (r'/meal/create',    CreateMeal),
-    
-    (r'/meal/generateLunch',    LunchGenerator),
-    (r'/meal/generateDinner',   DinnerGenerator),
+    (r'/meal/create',    CreateMeal)
     
 ]
