@@ -281,7 +281,7 @@
                     $.ajax({ url: "{% url UpdateUser %}",
                              type: "POST",
                              data: ({ email            : email,
-                                      notification_yes : "yes" } ),
+                                      notification_yes : yes } ),
                              success: function(response) {
                                  $("#profileView_thanks").show();
                                  setTimeout( function(){$("#profileView_thanks").hide();}, 3000 );
@@ -416,10 +416,10 @@
             <fieldset style="width: 183px; margin-left: auto; margin-right: auto;" data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
                 <legend>Receive notification emails?</legend>
 
-                <input type="radio" name="notification" id="notif_yes" value="Yes" checked="checked" /> 
+                <input type="radio" name="notification" id="notif_yes" value="Yes" {% if user.notification %}checked="checked"{% endif %}/> 
                 <label for="notif_yes">Yes</label>
                 
-                <input type="radio" name="notification" id="notif_no" value="No"> 
+                <input type="radio" name="notification" id="notif_no" value="No" {% if not user.notification %}checked="checked"{% endif %}> 
                 <label for="notif_no">No</label>
             </fieldset>
 

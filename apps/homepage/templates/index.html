@@ -191,11 +191,8 @@
                         // Setup timed resets to match cron update on server.
                         this.reset();
 
-                        // Remove that pesky Clik overlay ...
-                        // TODO: Stop pesky overlay from running in the first place ..
-                        setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
                         setTimeout( function() { MaitreDesktop.waitForURL(); }, 300 );
-
+                        setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
                         // Init clik event handlers ------------
                         clik.on('checkin', function ( data ) {
 
@@ -257,6 +254,17 @@
                         this.init();
                     };
 
+                    this.reset = function() {
+                        /* Reset the votes for the next meal. */
+                        this.checkedin      = [];
+                        this.voters         = [];
+                        this.votes.sum      = 0;
+                        this.votes.numVotes = 0;
+
+                        $("#mainView_barContainer").hide();
+        
+                        this.showMainView();
+                    };
                     this.removeClikOverlay = function() {
                         /* When Clik loads, it triggers an overlay to display by default.
                            I don't want this to show, so let's remove it when it's in the 
@@ -269,18 +277,6 @@
                         } else {
                             setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
                         }
-                    };
-
-                    this.reset = function() {
-                        /* Reset the votes for the next meal. */
-                        this.checkedin      = [];
-                        this.voters         = [];
-                        this.votes.sum      = 0;
-                        this.votes.numVotes = 0;
-
-                        $("#mainView_barContainer").hide();
-        
-                        this.showMainView();
                     };
 
                     this.addToFeed = function( msg, img ) {

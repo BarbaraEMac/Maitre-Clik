@@ -57,6 +57,6 @@ class UpdateUser( URIHandler ):
 
         if user:
             user.email        = self.request.get('email').strip()
-            user.notification = self.request.get('notification_yes')
+            user.notification = (self.request.get('notification_yes') is 'true')
 
             user.put()
