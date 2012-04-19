@@ -40,11 +40,13 @@
 
                 <p>Let's get to know each other better.</p>
 
-                <label for="onboard_firstName">First Name</label><br />
-                <input type="text" id="onboard_firstName" name="onboard_firstName" /><br />
-
-                <label for="onboard_lastName">Last Name</label><br />
-                <input type="text" id="onboard_lastName" name="onboard_lastName" /><br />
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="onboard_firstName">First Name</label><br />
+                    <input type="text" id="onboard_firstName" name="onboard_firstName" placeholder="First Name" /><br />
+                    
+                    <label for="onboard_lastName">Last Name</label><br />
+                    <input type="text" id="onboard_lastName" name="onboard_lastName" placeholder="Last Name" /><br />
+                </div>
 
                 <button class="limeBtn onboardBtn" data-enhance=false>Next</button>
             </div>
@@ -54,9 +56,10 @@
                 <p>Psst! I can email you as soon as a meal is delivered!</p>
                 <p>You'll never get sloppy seconds now ...</p>
 
-                <label for="onboard_email">Email</label><br />
-                <input type="text" id="onboard_email" name="onboard_email" /><br />
-
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="onboard_email">Email</label><br />
+                    <input type="text" id="onboard_email" name="onboard_email" placeholder="Email" /><br />
+                </div>
                 <p class="small">You can change this later.</p>
                 <button class="limeBtn onboardBtn" data-enhance=false>No, thanks.</button>
                 <button class="limeBtn onboardBtn" data-enhance=false>Yes, please!</button>
@@ -120,7 +123,7 @@
                 <label for="notif_no">No</label>
             </fieldset>
 
-            <button class="limeBtn" id="profileView_btn" data-enhance=false>Update</button>
+            <button class="limeBtn" id="profileView_submit" data-enhance=false>Update</button>
 
             </div>
         </div>
@@ -168,7 +171,7 @@
                     
                     // $(":range").rangeinput({ progress: true, max: 100 });
 
-                    $(".onboardBtn").click( function() { $(this).parent().slideUp( 400 ).next().slideDown(); } );
+                    $(".onboardBtn").click( function() { $(this).parent().hide().next().show(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
 
                     // Don't let people refresh the page if they hit Enter!
@@ -179,6 +182,7 @@
 
                     // Attach click handlers.
                     $("#voteView_submit").click( function() { MaitreMobile.vote(); } );
+                    $("#profileView_submit").click( function() { MaitreMobile.updateUser(); } );
 
                     $("#voteViewBtn").click(     function() { MaitreMobile.showVoteView(); } );
                     $("#eatingViewBtn").click(   function() { MaitreMobile.showEatingView(); } );
@@ -340,6 +344,24 @@
                                  MaitreMobile.showProfileView();
                              },
                           });
+                };
+
+                this.updateUser = function() {
+                    var email = $("#profileView_email").val();
+                    var email = $("#profileView_email").val();
+                    
+                    // Tell server
+                    $.ajax({ url: "{% url DoVote %}",
+                             type: "POST",
+                             data: ({ email : email,
+                                      notification : "" } ),
+                             success: function(response) {
+                                 // Go to Thanks View on successful vote.
+                                 MaitreMobile.showProfileView();
+                             },
+                          });
+
+
                 };
             };
             MaitreMobile.run();
