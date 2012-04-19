@@ -12,21 +12,17 @@ from util.urihandler        import URIHandler
 
 class CreateMeal( URIHandler ):
     def post( self ):
-        menu = self.request.get('meal_items').strip()
+        menu   = self.request.get('menu').strip()
+        type   = self.request.get('type').upper()
+        rating = self.request.get('rating')
 
         if menu is not "":
             # Update the current meal to become an old meal
-            type = 'DINNER'
-
             current_meal = Meal.get_current()
             if current_meal:
                 current_meal.status = 'past_meal'
+                current_meal.rating = int( rating )
                 current_meal.put()
-
-                if current_meal.type == "LUNCH":
-                    type = "DINNER"
-                else:
-                    type = "LUNCH"
 
             # Create the new meal
             new_meal = Meal.create( type, menu )

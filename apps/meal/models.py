@@ -34,6 +34,9 @@ class Meal( Model ):
     # Will either hold "current_meal" or "past_meal" 
     status = db.StringProperty      ( indexed = True, default='current_meal' )
 
+    # Voter's rating for this meal; in range [0, 100]
+    rating = db.IntegerProperty     ( indexed = True, default=0 )
+
     def __init__(self, *args, **kwargs):
         self._memcache_key = kwargs['uuid'] if 'uuid' in kwargs else None 
         super(Meal, self).__init__(*args, **kwargs)
@@ -60,7 +63,7 @@ class Meal( Model ):
         meal.put()
         return meal
 
-
     @staticmethod
     def get_current( ):
         return Meal.all().filter( 'status =', 'current_meal' ).get()
+

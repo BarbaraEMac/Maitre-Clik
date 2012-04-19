@@ -164,6 +164,8 @@
 
                             this.percent = function() {
                                 // Returns an Int of the percentage of votes for current meal
+                                if ( this.numVotes == 0 ) { return 0; }
+
                                 return Math.round( 10 * (this.sum / this.numVotes) );
                             };
                         };
@@ -361,12 +363,12 @@
 
                         $("#mainView_menu").html( menu );
 
+                        // Update title
                         var date = new Date();
-                        if( date.getHours() >= 16 ) {   // If dinner time,
-                            $("#mainView_subtitle").html( "Dinner Menu" );
-                        } else {                        // If lunch time,
-                            $("#mainView_subtitle").html( "Lunch Menu" );
-                        }
+                        var type = '';
+                        if( date.getHours() >= 16 ) { type = 'Dinner'; } 
+                        else { type = 'Lunch'; }
+                        $("#mainView_subtitle").html( type + "Menu" );
 
                         this.addToFeed( 'New meal! Thanks Wildcraft!', '/static/imgs/cliklogo.jpg' );
 
@@ -377,7 +379,9 @@
                         $.ajax({
                                 url: "{% url CreateMeal %}",
                                 type: "POST",
-                                data: ( { meal_items : menu } ),
+                                data: ( { menu   : menu,
+                                          type   : type,
+                                          rating : this.votes.percent() } ),
                                 success: function(response) {
                                     setTimeout( function() {
                                         MaitreDesktop.reset();

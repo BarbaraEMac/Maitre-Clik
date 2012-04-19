@@ -250,8 +250,7 @@
                     /* Assign a numerical value in range [1, 10] to the
                        current meal. 1 = bad, 10 = best. */
 
-                    alert('voting');
-                    if ( this.voted == true ) { alert('vote exit'); return; } // Vote once per meal
+                    if ( this.voted == true ) { return; } // Vote once per meal
 
                     var vote_val = $( "#voteView_slider" ).val();
 
