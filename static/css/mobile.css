@@ -140,11 +140,17 @@ input[type="text"] {
     -webkit-box-shadow: inset 0 0 10px #000000;
     box-shadow: inset 0 0 10px #000000;
 }
+.ui-field-contain div.ui-slider {
+    width: 80%;
+}
 input[type="range"] {
 width: 80%;
 height: 20px;
 font-size: 3.0em;
 }
+ input.ui-slider-input {
+        display : none !important;
+    }
 
 #btmPanel {
     background-color: #001936;
@@ -249,12 +255,6 @@ font-size: 3.0em;
 #voteView_amount {
     font-size: 2.5em;
     color: red;
-    padding: 0px;
-    margin: 0px;
-}
-
-#thanksView_closeBtn {
-    width: 80%;
 }
 
 #new_user_div {

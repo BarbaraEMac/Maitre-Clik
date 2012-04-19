@@ -36,6 +36,10 @@
                     // Exit early if we've done this already!
                     if( this.inited ) { return; }
 
+                    $( "#voteView_slider" ).change( function() {
+                        $("#voteView_amount").html( $(this).val() + "/10" );
+                    });
+
                     $(".onboardBtn").click( function() { $(this).parent().hide().next().show(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
 
@@ -98,7 +102,7 @@
                     //if ( clik.connected ) {
                         $("#btmPanel").hide();
 
-                        this.toggleView( "#onboardView" );  
+                        this.toggleView( "#voteView" );  
                    // } else {
                    //     this.toggleView( "#clikView" );  
                    // }
@@ -208,7 +212,8 @@
                              data: ({ value : vote_val } ),
                              success: function(response) {
                                  // Go to Thanks View on successful vote.
-                                 MaitreMobile.showProfileView();
+
+                                 $("#voteView_vote").hide().next().show();
                              },
                           });
                 };
@@ -304,19 +309,23 @@
 
         <!-- Vote View -->
         <div id="voteView" style="display: none;">
-            <h1 class="title" id="voteView_title">Bon Appetit</h1>
-
-            <div id="voteView_wrapper">
-                <h1>How awesome is this meal?</h1>
+            <div id="voteView_vote">
+                <h1 class="title">How awesome is this meal?</h1>
                 
-                <input type="range" name="slider" id="voteView_slider" value="6" min="1" max="10" data-highlight="true" />
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="voteView_slider" class="ui-hidden-accessible"></label>
+                    <input type="range" name="slider" id="voteView_slider" value="6" min="1" max="10" data-highlight="true" />
+                </div>
 
                 <p id="voteView_amount">5/10</p>
                 
-                <button id="voteView_submit" data-enhance=false> Submit </button>
+                <button class="limeBtn" id="voteView_submit" data-enhance=false> Submit </button>
+            </div>
+
+            <div id="voteView_thanks" style="display: none;">
                 <h1 class="title">Merci!</h1>
 
-                <button id="thanksView_closeBtn" data-enhance=false>Until your next meal ...</button>
+                <p>Until your next meal ...</p>
             </div>
         </div>
 
