@@ -7,4 +7,5 @@ urlpatterns = [
     # Processes
     (r'/user/create',         CreateUser),
     (r'/user/notify',         NotifyUsers),
+    (r'/user/update',         UpdateUser),
 ]

@@ -15,143 +15,11 @@
         <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script src="/static/js/jquery.mobile-1.1.0.js"></script>
         <script src="http://cdn.clikthis.com/js/latest/clik-mobile.min.js"></script>
-    </head>
 
-    <body>
-        <!-- Onboard View -->
-        <div id="onboardView" style="display: none">
-            <div data-enhance=false>
-                <h1 class="title">Whoa!</h1>
-
-                <p>I don't believe we've met before, have we?</p>
-
-                <button class="limeBtn onboardBtn" data-enhance=false>Why no! Hello there!</button>
-            </div>
-            <div style="display: none;">
-                <h1 class="title">Welcome!</h1>
-
-                <p>This is Kik's meal tracking app!</p>
-                <p>Use this app at every mealtime to guarantee that you'll continue getting the best meals ever!</p>
-
-                <button class="limeBtn onboardBtn" data-enhance=false>Sounds Great!</button>
-            </div>
-            <div style="display: none;">
-                <h1 class="title">Now ...</h1>
-
-                <p>Let's get to know each other better.</p>
-
-                <div data-role="fieldcontain" class="ui-hide-label">
-                    <label for="onboard_firstName">First Name</label><br />
-                    <input type="text" id="onboard_firstName" name="onboard_firstName" placeholder="First Name" /><br />
-                    
-                    <label for="onboard_lastName">Last Name</label><br />
-                    <input type="text" id="onboard_lastName" name="onboard_lastName" placeholder="Last Name" /><br />
-                </div>
-
-                <button class="limeBtn onboardBtn" data-enhance=false>Next</button>
-            </div>
-            <div style="display: none;">
-                <h1 class="title">Email?</h1>
-
-                <p>Psst! I can email you as soon as a meal is delivered!</p>
-                <p>You'll never get sloppy seconds now ...</p>
-
-                <div data-role="fieldcontain" class="ui-hide-label">
-                    <label for="onboard_email">Email</label><br />
-                    <input type="text" id="onboard_email" name="onboard_email" placeholder="Email" /><br />
-                </div>
-                <p class="small">You can change this later.</p>
-                <button class="limeBtn onboardBtn" data-enhance=false>No, thanks.</button>
-                <button class="limeBtn onboardBtn" data-enhance=false>Yes, please!</button>
-            </div>
-            <div style="display: none;">
-                <h1 class="title">All Done!</h1>
-
-                <p>
-                    The analytics bots are working hard to generate reports for 
-                    your trusty CEO, Tedward, and Wildcraft.
-                </p>
-                
-                <p class="error">Remember to Clik-In at every meal.</p>
-                
-                <p>Now you're ready to start eating!</p>
-
-                <button class="limeBtn" id="onboardSubmit" data-enhance=false>To The App!</button>
-            </div>
-        </div>
-
-        <!-- Vote View -->
-        <div id="voteView">
-            <h1 class="title" id="voteView_title">Bon Appetit</h1>
-
-            <div id="voteView_wrapper">
-                <h1>How awesome is this meal?</h1>
-                
-                <!-- <input type="range" min="1" max="10" step="1" value="5" /> -->
-
-                <p id="voteView_amount">5/10</p>
-                
-                <div id="voteView_slider" style="max-width: 80%;"> </div>
-                
-                <button id="voteView_submit" data-enhance=false> Submit </button>
-                <h1 class="title">Merci!</h1>
-
-                <button id="thanksView_closeBtn" data-enhance=false>Until your next meal ...</button>
-            </div>
-        </div>
-
-        <!-- Eating View -->
-        <div id="eatingView" style="display: none">
-            <h1 class="title">Who's Eating?</h1>
-        </div>
-
-        <!-- Profile View -->
-        <div id="profileView" style="display: none">
-            <h1 class="title">Profile</h1>
-
-            <p id="profileView_name">{{user.first_name}} {{user.last_name}}</p>
-
-            <input type="text" id="profileView_email" value="{{user.email}}" />
-
-            <fieldset style="width: 183px; margin-left: auto; margin-right: auto;" data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
-                <legend>Receive notification emails?</legend>
-
-                <input type="radio" name="notification" id="notif_yes" value="Yes" checked="checked" /> 
-                <label for="notif_yes">Yes</label>
-                
-                <input type="radio" name="notification" id="notif_no" value="No"> 
-                <label for="notif_no">No</label>
-            </fieldset>
-
-            <button class="limeBtn" id="profileView_submit" data-enhance=false>Update</button>
-
-            </div>
-        </div>
-
-        <!-- Clik View -->
-        <div id="clikView" style="display: none">
-            <div id="clikView_out">
-                <h1 class="title">Bye</h1>
-
-                <button id="clikView_outBtn" data-enhance=false>You've been cliked-out!</button>
-            </div>
-           <div id="clikView_in">
-                <h1 class="title">Hello!</h1>
-                <p> You must be cliked-in to view that content. </p>
-                <button id="clikView_inBtn" data-enhance=false>Clik-In</button>
-            </div>
-        </div>
-
-        <div id="btmPanel">
-            <button class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
-            <button class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
-            <button class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false>   Profile </button>
-            <button class="limeBtn panelBtn" id="clikViewBtn" data-enhance=false>      Clik-Out </button>
-        </div>
-
-        <script>
+       <script>
             var MaitreMobile = new function() {
-                
+                this.inited = false; // Stpid hack
+
                 // User obj for current user. 
                 this.user = new function () {
                     this.uuid      = "{{user.uuid}}";       // Unique # to id User on Server
@@ -165,11 +33,8 @@
                 this.currentView = $("#voteView");
 
                 this.init = function( ) {
-                    // Add name and uuid to Client Obj
-                    //Client.prototype.name = "";
-                    //Client.prototype.uuid = "";
-                    
-                    // $(":range").rangeinput({ progress: true, max: 100 });
+                    // Exit early if we've done this already!
+                    if( this.inited ) { return; }
 
                     $(".onboardBtn").click( function() { $(this).parent().hide().next().show(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
@@ -202,6 +67,8 @@
 
                     //clik.on('clikIn', function() { MaitreMobile.showVoteView(); } );
                     clik.on('join', function(data) { if( clik.client.id != data ) { alert(data);} } );
+
+                    this.inited = true;
                 };
                 
                 this.run = function( ) {
@@ -327,7 +194,7 @@
                     /* Assign a numerical value in range [1, 10] to the
                        current meal. 1 = bad, 10 = best. */
 
-                    var vote_val = $( "#voteView_slider" ).slider( "value" );
+                    var vote_val = $( "#voteView_slider" ).val();
 
                     // Tell Clik Desktop about the vote
                     clik.send( 'vote', { name       : this.user.name,
@@ -348,23 +215,160 @@
 
                 this.updateUser = function() {
                     var email = $("#profileView_email").val();
-                    var email = $("#profileView_email").val();
-                    
+                    var yes   = $("#notif_yes").attr('checked') != undefined;
+
                     // Tell server
-                    $.ajax({ url: "{% url DoVote %}",
+                    $.ajax({ url: "{% url UpdateUser %}",
                              type: "POST",
-                             data: ({ email : email,
-                                      notification : "" } ),
+                             data: ({ email            : email,
+                                      notification_yes : "yes" } ),
                              success: function(response) {
+                                 $("#profileView_thanks").show();
+                                 setTimeout( function(){$("#profileView_thanks").hide();}, 3000 );
+
                                  // Go to Thanks View on successful vote.
                                  MaitreMobile.showProfileView();
                              },
                           });
-
-
                 };
             };
-            MaitreMobile.run();
+
+            clik.on('ready', function() {
+                MaitreMobile.init();
+            });
         </script>
+    </head>
+
+    <body>
+        <!-- Onboard View -->
+        <div id="onboardView" style="display: none">
+            <div data-enhance=false>
+                <h1 class="title">Whoa!</h1>
+
+                <p>I don't believe we've met before, have we?</p>
+
+                <button class="limeBtn onboardBtn" data-enhance=false>Why no! Hello there!</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">Welcome!</h1>
+
+                <p>This is Kik's meal tracking app!</p>
+                <p>Use this app at every mealtime to guarantee that you'll continue getting the best meals ever!</p>
+
+                <button class="limeBtn onboardBtn" data-enhance=false>Sounds Great!</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">Now ...</h1>
+
+                <p>Let's get to know each other better.</p>
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="onboard_firstName">First Name</label><br />
+                    <input type="text" id="onboard_firstName" name="onboard_firstName" placeholder="First Name" /><br />
+                    
+                    <label for="onboard_lastName">Last Name</label><br />
+                    <input type="text" id="onboard_lastName" name="onboard_lastName" placeholder="Last Name" /><br />
+                </div>
+
+                <button class="limeBtn onboardBtn" data-enhance=false>Next</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">Email?</h1>
+
+                <p>Psst! I can email you as soon as a meal is delivered!</p>
+                <p>You'll never get sloppy seconds now ...</p>
+
+                <div data-role="fieldcontain" class="ui-hide-label">
+                    <label for="onboard_email">Email</label><br />
+                    <input type="text" id="onboard_email" name="onboard_email" placeholder="Email" /><br />
+                </div>
+                <p class="small">You can change this later.</p>
+                <button class="limeBtn onboardBtn" data-enhance=false>No, thanks.</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Yes, please!</button>
+            </div>
+            <div style="display: none;">
+                <h1 class="title">All Done!</h1>
+
+                <p>
+                    The analytics bots are working hard to generate reports for 
+                    your trusty CEO, Tedward, and Wildcraft.
+                </p>
+                
+                <p class="error">Remember to Clik-In at every meal.</p>
+                
+                <p>Now you're ready to start eating!</p>
+
+                <button class="limeBtn" id="onboardSubmit" data-enhance=false>To The App!</button>
+            </div>
+        </div>
+
+        <!-- Vote View -->
+        <div id="voteView" style="display: none;">
+            <h1 class="title" id="voteView_title">Bon Appetit</h1>
+
+            <div id="voteView_wrapper">
+                <h1>How awesome is this meal?</h1>
+                
+                <input type="range" name="slider" id="voteView_slider" value="6" min="1" max="10" data-highlight="true" />
+
+                <p id="voteView_amount">5/10</p>
+                
+                <button id="voteView_submit" data-enhance=false> Submit </button>
+                <h1 class="title">Merci!</h1>
+
+                <button id="thanksView_closeBtn" data-enhance=false>Until your next meal ...</button>
+            </div>
+        </div>
+
+        <!-- Eating View -->
+        <div id="eatingView" style="display: none">
+            <h1 class="title">Who's Eating?</h1>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profileView" style="display: none">
+            <h1 class="title">Profile</h1>
+
+            <p id="profileView_name">{{user.first_name}} {{user.last_name}}</p>
+
+            <input type="text" id="profileView_email" value="{{user.email}}" />
+
+            <fieldset style="width: 183px; margin-left: auto; margin-right: auto;" data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
+                <legend>Receive notification emails?</legend>
+
+                <input type="radio" name="notification" id="notif_yes" value="Yes" checked="checked" /> 
+                <label for="notif_yes">Yes</label>
+                
+                <input type="radio" name="notification" id="notif_no" value="No"> 
+                <label for="notif_no">No</label>
+            </fieldset>
+
+            <p id="profileView_thanks" style="display:none">Updated. Thanks!</p>
+
+            <button class="limeBtn" id="profileView_submit" data-enhance=false>Update</button>
+
+            </div>
+        </div>
+
+        <!-- Clik View -->
+        <div id="clikView" style="display: none">
+            <div id="clikView_out">
+                <h1 class="title">Bye</h1>
+
+                <button id="clikView_outBtn" data-enhance=false>You've been cliked-out!</button>
+            </div>
+           <div id="clikView_in">
+                <h1 class="title">Hello!</h1>
+                <p> You must be cliked-in to view that content. </p>
+                <button id="clikView_inBtn" data-enhance=false>Clik-In</button>
+            </div>
+        </div>
+
+        <div id="btmPanel" style="display: none">
+            <button class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
+            <button class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
+            <button class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false>   Profile </button>
+            <button class="limeBtn panelBtn" id="clikViewBtn" data-enhance=false>      Clik-Out </button>
+        </div>
     </body>
 </html>

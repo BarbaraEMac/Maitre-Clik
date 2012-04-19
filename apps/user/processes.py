@@ -51,3 +51,12 @@ class NotifyUsers( URIHandler ):
         # Send out that email! 
         Email.meal_notification( email, first_name, meal.menu )
 
+class UpdateUser( URIHandler ):
+    def post( self ):
+        user = self.get_user()
+
+        if user:
+            user.email        = self.request.get('email').strip()
+            user.notification = self.request.get('notification_yes')
+
+            user.put()
