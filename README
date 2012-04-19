@@ -42,7 +42,7 @@ TODOs:
 2. Reduce # of ajax calls from client.
     - Can aggregate calls by storing data in JS
 
-3. Update UI.
+3. Update UI. DONE
     - Desktop UI can be beautified.
     - Mobile UI needs to look more like a native app.
     - CSS should be cleaned up.
