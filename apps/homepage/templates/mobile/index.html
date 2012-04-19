@@ -2,29 +2,30 @@
 <html lang='en'>
 	<head>
 		<title>Maitre 'Clik - Mobile</title>
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
         <!-- CSS -->
 		<link rel="stylesheet" href="/static/css/reset.css">
+		<link rel="stylesheet" href="/static/css/jquery-ui-1.8.18.custom.css">
+        <link rel="stylesheet" href="/static/css/jquery.mobile-1.1.0.css" />
 		<link rel="stylesheet" href="/static/css/common.css">
 		<link rel="stylesheet" href="/static/css/mobile.css">
-		<link rel="stylesheet" href="/static/css/jquery-ui-1.8.18.custom.css">
 
         <!-- JS -->
         <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-        <script src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+        <script src="/static/js/jquery.mobile-1.1.0.js"></script>
         <script src="http://cdn.clikthis.com/js/latest/clik-mobile.min.js"></script>
     </head>
 
     <body>
         <!-- Onboard View -->
         <div id="onboardView" style="display: none">
-            <div>
+            <div data-enhance=false>
                 <h1 class="title">Whoa!</h1>
 
                 <p>I don't believe we've met before, have we?</p>
 
-                <button class="limeBtn onboardBtn">Why no! Hello there!</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Why no! Hello there!</button>
             </div>
             <div style="display: none;">
                 <h1 class="title">Welcome!</h1>
@@ -32,7 +33,7 @@
                 <p>This is Kik's meal tracking app!</p>
                 <p>Use this app at every mealtime to guarantee that you'll continue getting the best meals ever!</p>
 
-                <button class="limeBtn onboardBtn">Sounds Great!</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Sounds Great!</button>
             </div>
             <div style="display: none;">
                 <h1 class="title">Now ...</h1>
@@ -45,7 +46,7 @@
                 <label for="onboard_lastName">Last Name</label><br />
                 <input type="text" id="onboard_lastName" name="onboard_lastName" /><br />
 
-                <button class="limeBtn onboardBtn">Next</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Next</button>
             </div>
             <div style="display: none;">
                 <h1 class="title">Email?</h1>
@@ -57,8 +58,8 @@
                 <input type="text" id="onboard_email" name="onboard_email" /><br />
 
                 <p class="small">You can change this later.</p>
-                <button class="limeBtn onboardBtn">No, thanks.</button>
-                <button class="limeBtn onboardBtn">Yes, please!</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>No, thanks.</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Yes, please!</button>
             </div>
             <div style="display: none;">
                 <h1 class="title">All Done!</h1>
@@ -72,7 +73,7 @@
                 
                 <p>Now you're ready to start eating!</p>
 
-                <button class="limeBtn" id="onboardSubmit">To The App!</button>
+                <button class="limeBtn" id="onboardSubmit" data-enhance=false>To The App!</button>
             </div>
         </div>
 
@@ -83,16 +84,16 @@
             <div id="voteView_wrapper">
                 <h1>How awesome is this meal?</h1>
                 
-                <input type="range" min="1" max="10" step="1" value="5" />
+                <!-- <input type="range" min="1" max="10" step="1" value="5" /> -->
 
                 <p id="voteView_amount">5/10</p>
                 
                 <div id="voteView_slider" style="max-width: 80%;"> </div>
                 
-                <button id="voteView_submit"> Submit </button>
+                <button id="voteView_submit" data-enhance=false> Submit </button>
                 <h1 class="title">Merci!</h1>
 
-                <button id="thanksView_closeBtn">Until your next meal ...</button>
+                <button id="thanksView_closeBtn" data-enhance=false>Until your next meal ...</button>
             </div>
         </div>
 
@@ -104,6 +105,24 @@
         <!-- Profile View -->
         <div id="profileView" style="display: none">
             <h1 class="title">Profile</h1>
+
+            <p id="profileView_name">{{user.first_name}} {{user.last_name}}</p>
+
+            <input type="text" id="profileView_email" value="{{user.email}}" />
+
+            <fieldset style="width: 183px; margin-left: auto; margin-right: auto;" data-role="controlgroup" data-type="horizontal" data-role="fieldcontain">
+                <legend>Receive notification emails?</legend>
+
+                <input type="radio" name="notification" id="notif_yes" value="Yes" checked="checked" /> 
+                <label for="notif_yes">Yes</label>
+                
+                <input type="radio" name="notification" id="notif_no" value="No"> 
+                <label for="notif_no">No</label>
+            </fieldset>
+
+            <button class="limeBtn" id="profileView_btn" data-enhance=false>Update</button>
+
+            </div>
         </div>
 
         <!-- Clik View -->
@@ -111,20 +130,20 @@
             <div id="clikView_out">
                 <h1 class="title">Bye</h1>
 
-                <button id="clikView_outBtn">You've been cliked-out!</button>
+                <button id="clikView_outBtn" data-enhance=false>You've been cliked-out!</button>
             </div>
            <div id="clikView_in">
                 <h1 class="title">Hello!</h1>
                 <p> You must be cliked-in to view that content. </p>
-                <button id="clikView_inBtn">Clik-In</button>
+                <button id="clikView_inBtn" data-enhance=false>Clik-In</button>
             </div>
         </div>
 
         <div id="btmPanel">
-            <button class="lightBlueBtn panelBtn" id="voteViewBtn">    Vote </button>
-            <button class="limeBtn panelBtn" id="eatingViewBtn">  Who? </button>
-            <button class="limeBtn panelBtn" id="profileViewBtn"> Profile </button>
-            <button class="limeBtn panelBtn" id="clikViewBtn">    Clik-Out </button>
+            <button class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
+            <button class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
+            <button class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false>   Profile </button>
+            <button class="limeBtn panelBtn" id="clikViewBtn" data-enhance=false>      Clik-Out </button>
         </div>
 
         <script>
@@ -147,7 +166,7 @@
                     //Client.prototype.name = "";
                     //Client.prototype.uuid = "";
                     
-                    $(":range").rangeinput({ progress: true, max: 100 });
+                    // $(":range").rangeinput({ progress: true, max: 100 });
 
                     $(".onboardBtn").click( function() { $(this).parent().slideUp( 400 ).next().slideDown(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
@@ -262,7 +281,7 @@
                     this.currentView = $( selector );
 
                     $("#"+this.currentView.attr('id')+"Btn").attr('class', 'lightBlueBtn panelBtn');
-                    this.currentView.fadeIn();
+                    this.currentView.show();
                 };
 
                 // Ajax Functions ----------------------------------------------
@@ -277,6 +296,10 @@
                     this.user.firstName = firstName;
                     this.user.lastName  = lastName;
                     this.user.email     = email;
+
+                    // Update the profile page.
+                    $("#profileView_name").html( firstName + " " + lastName );
+                    $("#profileView_email").val( email );
 
                      // Tell the Server to make a new User.
                      $.ajax({
@@ -319,7 +342,6 @@
                           });
                 };
             };
-
             MaitreMobile.run();
         </script>
     </body>

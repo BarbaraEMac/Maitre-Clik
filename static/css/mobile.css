@@ -120,13 +120,22 @@ label {
     font-size: 2.0em;
 }
 input[type="text"] {
+    display: block;
     font-size: 2.0em;
     width: 80%;
+
+    border-radius: 5px;
+    border: 1px solid #AAA;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 30px;
+    padding: .4em;
 
+    text-shadow: 0  1px 0 white;
+    background-image: none;
+    outline: 0;
+    -webkit-appearance: none;
     -moz-box-shadow: inset 0 0 10px #000000;
     -webkit-box-shadow: inset 0 0 10px #000000;
     box-shadow: inset 0 0 10px #000000;
