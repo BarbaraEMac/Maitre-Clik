@@ -29,8 +29,6 @@
     </head>
 
     <body>
-        <div id="audio"></div>
-
         <div id="container">
 
             <!-- Main View -->
@@ -140,6 +138,10 @@
                 </div>
             </div>
 
+            <div id="eatingList" style="display: none;">
+                <li></li>
+            </div>
+
         </div>
             
             <script>
@@ -152,10 +154,11 @@
                     // The view that is curently being displayed
                     this.currentView = $("#mainView");
                     
+                    this.voters   = []; // List of uuids for people who have already voted.
+                    
                     // A 'vote' struct to keep track of the votes for current meal
                     this.votes     = new function() 
                         {
-                            this.voters   = []; // List of uuids for people who have already voted.
                             this.sum      = 0;  // Sum total of the votes
                             this.numVotes = 0;  // Number of votes cast
 
@@ -185,46 +188,49 @@
                         setTimeout( function() { MaitreDesktop.waitForURL(); }, 300 );
 
                         // Init clik event handlers ------------
-                        clik.on('connect', function () {
-                            return;
+                        clik.on('checkin', function ( data ) {
+                            // Update event feed
+                            var msg = "" + data.firstName + " is eating.";
+                            MaitreDesktop.addToFeed( msg, data.img );
+
+                            // Add User's info to eater list.
+                            var li = $( document.createElement( 'li' ) );
+                            li.attr( 'id', data.clik_id );
+                            li.attr( 'class', 'eatingListElem' );
+                            li.html( '<p>' + data.user_name + '</p>' );
+
+                            li.insertBefore( "#eatingList :first" );
+
+                            // Give Users the list of people eating.
+                            clik.send( 'eaterList', { list : $("#eatingList").html() } );
                         });
 
-                        clik.on('checkin', function ( user ) {
-                            MaitreDesktop.welcome( user.name );
-                            MaitreDesktop.checkinUser( user.uuid );
-                            
-                            var msg = "" + user.fname + " is feed.";
-                            MaitreDesktop.updateStatusMsg( msg, user.img );
-                        });
-
-                        clik.on('vote', function ( msg ) {
+                        clik.on('vote', function ( data ) {
                             // Only let eaters vote ONCE per meal.
-                            if ( MaitreDesktop.votes.voters.has( msg.uuid ) ) {
-                                return;
-                            }
+                            if ( MaitreDesktop.voters.has( data.uuid ) ) { return; }
 
-                            var text = "" + msg.fname + " voted! " + msg.vote_value + "/10!!";
-                            MaitreDesktop.updateStatusMsg( text, msg.img );
+                            // Update feed.
+                            var text = "" + data.firstName + " voted! " + data.voteValue + "/10!!";
+                            MaitreDesktop.addToFeed( text, data.img );
 
                             // Increment votes
-                            MaitreDesktop.votes.voters.push( msg.uuid );
-                            MaitreDesktop.votes.sum      += parseInt( msg.vote_value );
+                            MaitreDesktop.voters.push( data.uuid );
+                            MaitreDesktop.votes.sum      += parseInt( data.voteValue );
                             MaitreDesktop.votes.numVotes += 1;
 
+                            // Update UI.
                             var per = MaitreDesktop.votes.percent();
                             $("#mainView_barContainer").show();
                             $("#mainView_yes").width("" + per + "%" );
                             $("#mainView_yes").html("" + per + "%" );
                         });
                         
-                        clik.on('join', function() {
-                            return; // 'checkin' will be triggered instead
-                        });
-
                         // A user has left the conference
-                        clik.on('leave', function () {
+                        clik.on('leave', function (data) {
                             var msg = "Someone has left the building.";
-                            MaitreDesktop.updateStatusMsg( msg, '/static/imgs/cliklogo.jpg' );
+                            MaitreDesktop.addToFeed( msg, '/static/imgs/cliklogo.jpg' );
+
+                            $("#"+ data).remove();
                         });
                     };
 
@@ -252,7 +258,7 @@
 
                     this.reset = function() {
                         /* Reset the votes for the next meal. */
-                        this.votes.voters   = [];
+                        this.voters         = [];
                         this.votes.sum      = 0;
                         this.votes.numVotes = 0;
 
@@ -261,7 +267,7 @@
                         this.showMainView();
                     };
 
-                    this.updateStatusMsg = function( msg, img ) {
+                    this.addToFeed = function( msg, img ) {
                         /* Given an input string representing a new status,
                            update the status msg divs contents. */
                         var foo = $( document.createElement( 'li' ) );
@@ -271,7 +277,7 @@
                         var li = img + p;
                         foo.html( li );
                         
-                        foo.insertBefore( "#list :first" );
+                        foo.insertBefore( "#mainFeed :first" );
 
                         // Now, update the CSS animation for each li.
                         Stroll.bind( document.getElementById( 'mainFeed' ) );
@@ -284,18 +290,6 @@
                         setTimeout( function(){ MaitreDesktop.waitForURL(); }, 300 );
                     } else {
                         $("#qrContainer").attr( 'src', clik.clikCodeURL() );
-                    }
-                };
-
-                this.welcome = function( name ) {
-                    /* Welcome a new User to the app. */
-                    var date = new Date();
-
-                    // If dinner time,
-                    if( date.getHours() >= 16 ) { 
-                        return;
-                    } else { // If lunch time
-                        return;
                     }
                 };
 
@@ -347,16 +341,7 @@
                             },
                         });
                 };
-                this.checkinUser = function( user_uuid ) {
-                    /* Create a Checkin obj on the server for the given user. */
-                     $.ajax({
-                            url: "{% url CreateCheckin %}",
-                            type: "POST",
-                            data: ( { user_uuid : user_uuid } ),
-                            success: function(response) {
-                            },
-                        });
-                };
+
                 this.submitMeal = function( ) {
                     /* Give the server details about this meal & 
                        fire off emails to eaters! */
@@ -383,6 +368,12 @@
                             $("#mainView_subtitle").html( "Lunch Menu" );
                         }
 
+                        this.addToFeed( 'New meal! Thanks Wildcraft!', '/static/imgs/cliklogo.jpg' );
+
+                        // Tell anyone currently cliked-in.
+                        clik.send( 'newMeal', { } );
+                        
+                        // Tell the server.
                         $.ajax({
                                 url: "{% url CreateMeal %}",
                                 type: "POST",

@@ -18,11 +18,13 @@
 
        <script>
             var MaitreMobile = new function() {
-                this.inited = false; // Stpid hack
+                this.inited    = false; // Stpid hack
+                this.checkedin = false; // true iff User has checked in for current meal
+                this.voted     = false; // true iff User has voted for the current meal
 
                 // User obj for current user. 
                 this.user = new function () {
-                    this.uuid      = "{{user.uuid}}";       // Unique # to id User on Server
+                    this.uuid      = clik.client.id; //"{{user.uuid}}";       // Unique # to id User on Server
                     this.lastName  = "{{user.last_name}}";  // Last Name
                     this.firstName = "{{user.first_name}}"; // First name 
                     this.email     = "{{user.email}}";      // Email address
@@ -39,8 +41,8 @@
                     var h = 82; //$("#C").outerWidth();
                     var f = (g - h) /2;
 
-                    $("#A").width( (f+6) + "px" ); 
-                    $("#B").width( (g-h-f+6) + "px" ); 
+                    $("#voteViewBtn").width( (f+6) + "px" ); 
+                    $("#eatingViewBtn").width( (g-h-f+6) + "px" ); 
 
                     $( "#voteView_slider" ).change( function() {
                         $("#voteView_amount").html( $(this).val() + "/10" );
@@ -66,6 +68,7 @@
                     
                     $("#clikView_inBtn").click(  function() { MaitreMobile.clikIn(); } );
                     $("#clikView_outBtn").click( function() { MaitreMobile.clikOut(); } );
+                    $(".clikOutBtn").click( function() { MaitreMobile.clikOut(); } );
                     
                     // Use server logic to determine which view to display.
                     {% if ShowOnboardView %}
@@ -75,8 +78,29 @@
                         this.showVoteView();
                     {% endif %}
 
-                    //clik.on('clikIn', function() { MaitreMobile.showVoteView(); } );
-                    clik.on('join', function(data) { if( clik.client.id != data ) { alert(data);} } );
+                    // Init Clik handlers.
+                    clik.on('eaterList', function(data) {
+                        // Update the eater list html
+                        $("#eatingFeed").html( data.list );
+                    });
+
+                    clik.on('leave', function(data) {
+                        $("#"+ data).remove();
+                    });
+
+                    clik.on('newMeal', function(data) {
+                        MaitreMobile.reset();
+                        MaitreMobile.showVoteView();
+
+                        alert("A new meal has arrived. Come eat!");
+                    });
+
+                    clik.on('clikIn', function(data) {
+                        MaitreMobile.checkinUser();
+
+                        // Go to vote screen
+                        MaitreMobile.showVoteView();
+                    });
 
                     this.inited = true;
                 };
@@ -87,7 +111,6 @@
                 };
 
                 this.clikIn = function() {
-                    /* Leave the conference */
                     //clik.clikIn();
 
                     $("#clikViewBtn").html("Clik-Out");
@@ -99,6 +122,39 @@
 
                     $("#clikViewBtn").html("Clik-In");
                     $("#clikViewBtn").click( function() { MaitreMobile.clikIn(); } );
+                };
+                this.checkinUser = function( ) {
+                    /* Create a Checkin obj on the server for the given user. */
+    
+                    if( this.checkedin == true ) { return; } // Only once per meal.
+                
+                    clik.send( 'checkin', { name      : this.user.name,
+                                            firstName : this.user.firstName,
+                                            uuid      : this.user.uuid,
+                                            img       : this.user.img,
+                                            clik_id   : clik.client.id } );
+
+                     $.ajax({
+                            url: "{% url CreateCheckin %}",
+                            type: "POST",
+                            data: ( { user_uuid : this.user.uuid } ),
+                            success: function(response) {
+                            },
+                        });
+
+                     this.checkedin = true;
+                };
+                this.reset = function() {
+                    this.voted     = false;
+                    this.checkedin = false;
+
+                    // Clean up views
+                    $("#voteView_vote").show().next().hide();
+                    $(".eatingFeedElem").remove();
+                    $( "#voteView_slider" ).val('5');
+
+                    // Now, clik OUT
+                    clik.clikOut();
                 };
 
                 // View Functions ----------------------------------------------
@@ -113,20 +169,12 @@
                 };
                 this.showVoteView = function() {
                     /* Show the "Vote" View */
-                    // Update the title.
-                    
                     if ( clik.connected ) {
                         $("#topPanel").show();
 
                         $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
                     
                         this.toggleView( "#voteView" );  
-                        
-                        // Checkin
-                        clik.send( 'checkin', { name  : this.user.name,
-                                                firstName : this.user.firstName,
-                                                uuid  : this.user.uuid,
-                                                img   : this.user.img } );
                     } else {
                         this.toggleView( "#clikView" );  
                     }
@@ -202,6 +250,9 @@
                     /* Assign a numerical value in range [1, 10] to the
                        current meal. 1 = bad, 10 = best. */
 
+                    alert('voting');
+                    if ( this.voted == true ) { alert('vote exit'); return; } // Vote once per meal
+
                     var vote_val = $( "#voteView_slider" ).val();
 
                     // Tell Clik Desktop about the vote
@@ -209,7 +260,7 @@
                                          firstName  : this.user.firstName,
                                          uuid       : this.user.uuid,
                                          img        : this.user.img,
-                                         vote_value : vote_val } );
+                                         voteValue  : vote_val } );
                     // Tell server
                     $.ajax({ url: "{% url DoVote %}",
                              type: "POST",
@@ -220,6 +271,8 @@
                                  $("#voteView_vote").hide().next().show();
                              },
                           });
+
+                    this.voted = true;
                 };
 
                 this.updateUser = function() {
@@ -326,7 +379,7 @@
                 
                 <div data-role="fieldcontain" class="ui-hide-label">
                     <label for="voteView_slider" class="ui-hidden-accessible"></label>
-                    <input type="range" name="slider" id="voteView_slider" value="6" min="1" max="10" data-highlight="true" />
+                    <input type="range" name="slider" id="voteView_slider" value="5" min="1" max="10" data-highlight="true" />
                 </div>
 
                 <button class="limeBtn" id="voteView_submit" data-enhance=false> Submit </button>
@@ -336,12 +389,23 @@
                 <h1 class="title">Merci!</h1>
 
                 <p>Until your next meal ...</p>
+                
+                <button class="limeBtn clikOutBtn" data-enhance=false> Clik-Out </button>
             </div>
         </div>
 
         <!-- Eating View -->
         <div id="eatingView" style="display: none">
             <h1 class="title">Who's Eating?</h1>
+
+            <div id="feedView_feedContainer">
+                <ul class="list" id="eatingFeed">
+                    <li>
+                        You!
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
         <!-- Profile View -->
