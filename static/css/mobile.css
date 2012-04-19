@@ -152,20 +152,11 @@ font-size: 3.0em;
     }
 
 #topPanel {
-    background-color: #001936;
-    background-image: -moz-linear-gradient(bottom, #1e3754, #000018);
-    background-image: -ms-linear-gradient(bottom, #1e3754, #000018);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000018), to(#1e3754));
-    background-image: -webkit-linear-gradient(bottom, #1e3754, #000018);
-    background-image: -o-linear-gradient(bottom, #1e3754, #000018);
-    background-image: linear-gradient(bottom, #1e3754, #000018);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e3754', endColorstr='#000018', GradientType=0);
-    border-color: #001936 #000018 #000018 #001936;
-    border-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.25);
-
+    background-color: #000018;
+    border: 1px solid #001936;
     padding: 0px;
     width: 100%;
-    height: 100px;
+    height: 72px;
 }
 .panelBtn {
     margin: 0px;

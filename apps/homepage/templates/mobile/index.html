@@ -39,8 +39,8 @@
                     var h = 82; //$("#C").outerWidth();
                     var f = (g - h) /2;
 
-                    $("#A").width( (f+4) + "px" ); 
-                    $("#B").width( (g-h-f+4) + "px" ); 
+                    $("#A").width( (f+6) + "px" ); 
+                    $("#B").width( (g-h-f+6) + "px" ); 
 
                     $( "#voteView_slider" ).change( function() {
                         $("#voteView_amount").html( $(this).val() + "/10" );
@@ -250,9 +250,9 @@
 
     <body>
         <div id="topPanel">
-            <button id="A" class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
-            <button id="B" class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
-            <button id="C" class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false><img src="/static/imgs/gear2.png" /></button>
+            <button class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
+            <button class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
+            <button class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false><img src="/static/imgs/gear2.png" /></button>
         </div>
         
         <!-- Onboard View -->
@@ -322,13 +322,13 @@
             <div id="voteView_vote">
                 <h1 class="title">How awesome is this meal?</h1>
                 
+                <p id="voteView_amount">5/10</p>
+                
                 <div data-role="fieldcontain" class="ui-hide-label">
                     <label for="voteView_slider" class="ui-hidden-accessible"></label>
                     <input type="range" name="slider" id="voteView_slider" value="6" min="1" max="10" data-highlight="true" />
                 </div>
 
-                <p id="voteView_amount">5/10</p>
-                
                 <button class="limeBtn" id="voteView_submit" data-enhance=false> Submit </button>
             </div>
 
