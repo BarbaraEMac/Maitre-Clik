@@ -9,7 +9,6 @@ html {
     background-attachment: fixed;
     background-repeat: repeat-x;
     background-position: top left; 
-    padding-bottom: 110px; /**footer**/
 }
 
 body {
@@ -103,8 +102,8 @@ body {
     margin: 0px;
     padding: 0px;
 
-    font-size: 4.0em;
-    line-height: 2.0em;
+    font-size: 3.0em;
+    line-height: 1.0em;
 }
 
 button {
@@ -152,34 +151,36 @@ font-size: 3.0em;
         display : none !important;
     }
 
-#btmPanel {
+#topPanel {
     background-color: #001936;
-    background-image: -moz-linear-gradient(top, #1e3754, #000018);
-    background-image: -ms-linear-gradient(top, #1e3754, #000018);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1e3754), to(#000018));
-    background-image: -webkit-linear-gradient(top, #1e3754, #000018);
-    background-image: -o-linear-gradient(top, #1e3754, #000018);
-    background-image: linear-gradient(top, #1e3754, #000018);
+    background-image: -moz-linear-gradient(bottom, #1e3754, #000018);
+    background-image: -ms-linear-gradient(bottom, #1e3754, #000018);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000018), to(#1e3754));
+    background-image: -webkit-linear-gradient(bottom, #1e3754, #000018);
+    background-image: -o-linear-gradient(bottom, #1e3754, #000018);
+    background-image: linear-gradient(bottom, #1e3754, #000018);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e3754', endColorstr='#000018', GradientType=0);
     border-color: #001936 #000018 #000018 #001936;
     border-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.25);
 
-    padding-top: 10px;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    height: 102px;
+    padding: 0px;
+    width: 100%;
+    height: 100px;
 }
 .panelBtn {
     margin: 0px;
     margin-left: -2px;
     margin-right: -2px;
     border-radius: 0px;
-    font-size: 1.5em;
+    font-size: 2.0em;
+    height: 70px;
 
-    width: 50%;
     text-align: center;
+    float: left;
+}
+.panelBtn img {
+    display: block;
+    height: 60px;
 }
 /** Onboard View **/
 #onboardView {
@@ -241,9 +242,6 @@ font-size: 3.0em;
     margin-right: auto;
 }
 
-#voteView_title {
-    font-size: 3.0em;
-}
 #voteView_slider {
     margin-left: auto;
     margin-right: auto;

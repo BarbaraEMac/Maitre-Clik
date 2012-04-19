@@ -35,6 +35,12 @@
                 this.init = function( ) {
                     // Exit early if we've done this already!
                     if( this.inited ) { return; }
+                    var g = $("body").width();
+                    var h = 82; //$("#C").outerWidth();
+                    var f = (g - h) /2;
+
+                    $("#A").width( (f+4) + "px" ); 
+                    $("#B").width( (g-h-f+4) + "px" ); 
 
                     $( "#voteView_slider" ).change( function() {
                         $("#voteView_amount").html( $(this).val() + "/10" );
@@ -100,8 +106,6 @@
                     /* Show the "Onboard" View */
 
                     //if ( clik.connected ) {
-                        $("#btmPanel").hide();
-
                         this.toggleView( "#voteView" );  
                    // } else {
                    //     this.toggleView( "#clikView" );  
@@ -112,7 +116,7 @@
                     // Update the title.
                     
                     if ( clik.connected ) {
-                        $("#btmPanel").show();
+                        $("#topPanel").show();
 
                         $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
                     
@@ -245,6 +249,12 @@
     </head>
 
     <body>
+        <div id="topPanel">
+            <button id="A" class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
+            <button id="B" class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
+            <button id="C" class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false><img src="/static/imgs/gear2.png" /></button>
+        </div>
+        
         <!-- Onboard View -->
         <div id="onboardView" style="display: none">
             <div data-enhance=false>
@@ -373,11 +383,5 @@
             </div>
         </div>
 
-        <div id="btmPanel" style="display: none">
-            <button class="lightBlueBtn panelBtn" id="voteViewBtn" data-enhance=false> Vote </button>
-            <button class="limeBtn panelBtn" id="eatingViewBtn" data-enhance=false>    Who? </button>
-            <button class="limeBtn panelBtn" id="profileViewBtn" data-enhance=false>   Profile </button>
-            <button class="limeBtn panelBtn" id="clikViewBtn" data-enhance=false>      Clik-Out </button>
-        </div>
     </body>
 </html>
