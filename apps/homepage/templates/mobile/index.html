@@ -24,7 +24,7 @@
 
                 // User obj for current user. 
                 this.user = new function () {
-                    this.uuid      = clik.client.id; //"{{user.uuid}}";       // Unique # to id User on Server
+                    this.uuid      = "{{user.uuid}}";       // Unique # to id User on Server
                     this.lastName  = "{{user.last_name}}";  // Last Name
                     this.firstName = "{{user.first_name}}"; // First name 
                     this.email     = "{{user.email}}";      // Email address
@@ -38,7 +38,7 @@
                     // Exit early if we've done this already!
                     if( this.inited ) { return; }
                     var g = $("body").width();
-                    var h = 82; //$("#C").outerWidth();
+                    var h = 82; 
                     var f = (g - h) /2;
 
                     $("#voteViewBtn").width( (f+6) + "px" ); 
