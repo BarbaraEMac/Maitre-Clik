@@ -1,6 +1,6 @@
 indexes:
 - kind: User
   properties:
-  - name: registration_state
-  - name: name
+  - name: notification
+  - name: email
 

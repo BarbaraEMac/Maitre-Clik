@@ -17,7 +17,7 @@ use_library('django', '0.96')
 def main():
     old_len = 0
     new_len = 0
-    reload_uris = True #memcache.get('reload_uris')
+    reload_uris  = memcache.get('reload_uris')
     import_error = False
     
     try:

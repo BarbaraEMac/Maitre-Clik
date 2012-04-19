@@ -3,12 +3,7 @@
 /** Whole Page Stuff **/
 html {
     width: 100%;
-
 	background-color: #c1e2f1;
-    background-image: url(/static/imgs/bg1_mobile.jpg);
-    background-attachment: fixed;
-    background-repeat: repeat-x;
-    background-position: top left; 
 }
 
 body {
@@ -99,7 +94,7 @@ body {
 
 .title {
     width: 100%;
-    margin: 0px;
+    margin: 30px 0px;
     padding: 0px;
 
     font-size: 3.0em;
@@ -113,14 +108,14 @@ button {
 p {
     margin: 30px;
     padding: 0px;
-    font-size: 2.0em;
+    font-size: 1.5em;
 }
 label {
-    font-size: 2.0em;
+    font-size: 1.5em;
 }
 input[type="text"] {
     display: block;
-    font-size: 2.0em;
+    font-size: 1.5em;
     width: 80%;
 
     border-radius: 5px;
@@ -143,9 +138,9 @@ input[type="text"] {
     width: 80%;
 }
 input[type="range"] {
-width: 80%;
-height: 20px;
-font-size: 3.0em;
+    width: 80%;
+    height: 20px;
+    font-size: 3.0em;
 }
  input.ui-slider-input {
         display : none !important;
@@ -179,60 +174,6 @@ font-size: 3.0em;
     width: 100%;
 }
 
-#vote_wrapper, #newUser_wrapper, #onboard_wrapper {
-    text-align: center;
-    margin-top: -60px;
-    font-size: 2.5em;
-    line-height: 1.5em;
-}
-
-.unregistered_user {
-    width: 80%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    -webkit-box-shadow: inset 0px 1px 10px black;
-    -moz-box-shadow: inset 0px 1px 10px black;
-    box-shadow: inset 0px 1px 10px black;
-}
-
-.unregistered_user a {
-    text-decoration: none;
-}
-
-.profile_pic {
-    margin-left: auto;
-    margin-right: auto;
-    width: 75%;
-    max-width: 75%;
-    border-radius: 20px;
-}
-
-.profile_name {
-    color: #031BA3;
-    padding: 0px;
-}
-
-#newUser_wrapper form {
-    padding: 10px;
-}
-
-#newUser_wrapper input[type="text"] {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#newUser_wrapper #name {
-    width: 60%;
-    margin: 10px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 #voteView_slider {
     margin-left: auto;
     margin-right: auto;
@@ -244,8 +185,4 @@ font-size: 3.0em;
 #voteView_amount {
     font-size: 2.5em;
     color: red;
-}
-
-#new_user_div {
-    line-height: 2.5em;
 }

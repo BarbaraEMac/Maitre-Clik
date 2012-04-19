@@ -35,9 +35,9 @@
             <div class="leftSide" id="mainView">
                 <h1 class="title">Bon Appetit!</h1>
 
-                <h2 id="mainView_subtitle">Menu</h2>
+                <h2 id="mainView_subtitle">{{meal.type|title}} Menu</h2>
 
-                <p id="mainView_menu"></p>
+                <p id="mainView_menu">{{meal.menu}}</p>
 
                 <h2>Deliciousness Rate</h2>
 
@@ -106,8 +106,14 @@
             <div id="newMealView" style="display: none">
                 <h1 class="title">New Meal</h1>
                 
-                <p>Please enter a brief description of the meal here and press 'Submit'. Everyone will be
-                emailed to let them know the food has arrived.</p>
+                <p>
+                    Please enter a brief description of the meal here and press 'Submit'. Everyone will be
+                    emailed to let them know the food has arrived.
+                </p>
+                <br />
+                <p>
+                    ex. Braised chicken in a mushroom and bacon sauce with a mixed green salad.
+                </p>
 
                 <br />
 
@@ -154,7 +160,8 @@
                     // The view that is curently being displayed
                     this.currentView = $("#mainView");
                     
-                    this.voters   = []; // List of uuids for people who have already voted.
+                    this.checkedin = []; // List of uuids for people who checked in.
+                    this.voters    = []; // List of uuids for people who have already voted.
                     
                     // A 'vote' struct to keep track of the votes for current meal
                     this.votes     = new function() 
@@ -191,15 +198,20 @@
 
                         // Init clik event handlers ------------
                         clik.on('checkin', function ( data ) {
+
+                            if ( MaitreDesktop.checkedin.has( data.uuid ) ) { return; }
+
+                            MaitreDesktop.checkedin.push( data.uuid );
+
                             // Update event feed
-                            var msg = "" + data.firstName + " is eating.";
+                            var msg = data.firstName + " is eating.";
                             MaitreDesktop.addToFeed( msg, data.img );
 
                             // Add User's info to eater list.
                             var li = $( document.createElement( 'li' ) );
                             li.attr( 'id', data.clik_id );
                             li.attr( 'class', 'eatingListElem' );
-                            li.html( '<p>' + data.user_name + '</p>' );
+                            li.html( '<p>' + data.firstName + '</p>' );
 
                             li.insertBefore( "#eatingList :first" );
 
@@ -211,12 +223,13 @@
                             // Only let eaters vote ONCE per meal.
                             if ( MaitreDesktop.voters.has( data.uuid ) ) { return; }
 
+                            MaitreDesktop.voters.push( data.uuid );
+                            
                             // Update feed.
                             var text = "" + data.firstName + " voted! " + data.voteValue + "/10!!";
                             MaitreDesktop.addToFeed( text, data.img );
 
                             // Increment votes
-                            MaitreDesktop.voters.push( data.uuid );
                             MaitreDesktop.votes.sum      += parseInt( data.voteValue );
                             MaitreDesktop.votes.numVotes += 1;
 
@@ -260,6 +273,7 @@
 
                     this.reset = function() {
                         /* Reset the votes for the next meal. */
+                        this.checkedin      = [];
                         this.voters         = [];
                         this.votes.sum      = 0;
                         this.votes.numVotes = 0;
@@ -368,13 +382,15 @@
                         var type = '';
                         if( date.getHours() >= 16 ) { type = 'Dinner'; } 
                         else { type = 'Lunch'; }
-                        $("#mainView_subtitle").html( type + "Menu" );
+                        $("#mainView_subtitle").html( type + " Menu" );
 
                         this.addToFeed( 'New meal! Thanks Wildcraft!', '/static/imgs/cliklogo.jpg' );
 
                         // Tell anyone currently cliked-in.
                         clik.send( 'newMeal', { } );
                         
+                        setTimeout( function() { MaitreDesktop.reset(); }, 3500 );
+
                         // Tell the server.
                         $.ajax({
                                 url: "{% url CreateMeal %}",
@@ -383,10 +399,7 @@
                                           type   : type,
                                           rating : this.votes.percent() } ),
                                 success: function(response) {
-                                    setTimeout( function() {
-                                        MaitreDesktop.reset();
-                                      
-                                    }, 3500 );
+                                    return;
                                 },
                             });
                     }

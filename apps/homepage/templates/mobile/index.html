@@ -51,9 +51,6 @@
                     $(".onboardBtn").click( function() { $(this).parent().hide().next().show(); } );
                     $("#onboardSubmit").click( function() { MaitreMobile.createUser(); } );
 
-                    // Don't let people refresh the page if they hit Enter!
-                    $("#newUser_wrapper > form").submit(function(){ return false; }); 
-
                     // Attach key up handlers
                     $("#onboard_firstName").keyup( function() { $("#onboard_email").val( $(this).val() + "@kik.com" ) } );
 
@@ -126,10 +123,10 @@
                 this.checkinUser = function( ) {
                     /* Create a Checkin obj on the server for the given user. */
     
+                    if( this.user.firstName == "" ) { return; }
                     if( this.checkedin == true ) { return; } // Only once per meal.
                 
-                    clik.send( 'checkin', { name      : this.user.name,
-                                            firstName : this.user.firstName,
+                    clik.send( 'checkin', { firstName : this.user.firstName,
                                             uuid      : this.user.uuid,
                                             img       : this.user.img,
                                             clik_id   : clik.client.id } );
@@ -161,20 +158,21 @@
                 this.showOnboardView = function( ) {
                     /* Show the "Onboard" View */
 
-                    //if ( clik.connected ) {
-                        this.toggleView( "#voteView" );  
-                   // } else {
-                   //     this.toggleView( "#clikView" );  
-                   // }
+                    $("#topPanel").hide();
+                    this.toggleView( "#onboardView" );  
                 };
                 this.showVoteView = function() {
                     /* Show the "Vote" View */
                     if ( clik.connected ) {
-                        $("#topPanel").show();
+                        if ( this.user.firstName == "" ) {
+                            this.showOnboardView();
+                        } else {
+                            $("#topPanel").show();
 
-                        $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
-                    
-                        this.toggleView( "#voteView" );  
+                            $("#voteView_title").html("Bon Appetit, " + this.user.firstName);
+                        
+                            this.toggleView( "#voteView" );  
+                        }
                     } else {
                         this.toggleView( "#clikView" );  
                     }
@@ -240,6 +238,8 @@
                                 MaitreMobile.user.uuid  = response.uuid;
                                 MaitreMobile.user.img   = response.img;
                                 
+                                MaitreMobile.checkinUser();
+                                
                                 // Go to Vote View.
                                 MaitreMobile.showVoteView();
                             },
@@ -251,27 +251,26 @@
                        current meal. 1 = bad, 10 = best. */
 
                     if ( this.voted == true ) { return; } // Vote once per meal
+                    this.voted = true;
 
                     var vote_val = $( "#voteView_slider" ).val();
 
                     // Tell Clik Desktop about the vote
-                    clik.send( 'vote', { name       : this.user.name,
-                                         firstName  : this.user.firstName,
+                    clik.send( 'vote', { firstName  : this.user.firstName,
                                          uuid       : this.user.uuid,
                                          img        : this.user.img,
                                          voteValue  : vote_val } );
+                    
+                    // Go to Thanks View on successful vote.
+                    $("#voteView_vote").hide().next().show();
+                    
                     // Tell server
                     $.ajax({ url: "{% url DoVote %}",
                              type: "POST",
                              data: ({ value : vote_val } ),
                              success: function(response) {
-                                 // Go to Thanks View on successful vote.
-
-                                 $("#voteView_vote").hide().next().show();
                              },
                           });
-
-                    this.voted = true;
                 };
 
                 this.updateUser = function() {
@@ -319,8 +318,8 @@
             <div style="display: none;">
                 <h1 class="title">Welcome!</h1>
 
-                <p>This is Kik's meal tracking app!</p>
-                <p>Use this app at every mealtime to guarantee that you'll continue getting the best meals ever!</p>
+                <p>This is Kik's mealtime app!</p>
+                <p>Clik-in at every mealtime to guarantee that you'll continue getting the best meals!</p>
 
                 <button class="limeBtn onboardBtn" data-enhance=false>Sounds Great!</button>
             </div>
@@ -340,9 +339,9 @@
                 <button class="limeBtn onboardBtn" data-enhance=false>Next</button>
             </div>
             <div style="display: none;">
-                <h1 class="title">Email?</h1>
+                <h1 class="title">Notification</h1>
 
-                <p>Psst! I can email you as soon as a meal is delivered!</p>
+                <p>As soon as Wildcraft delivers your meal, you'll be notified.</p>
                 <p>You'll never get sloppy seconds now ...</p>
 
                 <div data-role="fieldcontain" class="ui-hide-label">
@@ -350,8 +349,7 @@
                     <input type="text" id="onboard_email" name="onboard_email" placeholder="Email" /><br />
                 </div>
                 <p class="small">You can change this later.</p>
-                <button class="limeBtn onboardBtn" data-enhance=false>No, thanks.</button>
-                <button class="limeBtn onboardBtn" data-enhance=false>Yes, please!</button>
+                <button class="limeBtn onboardBtn" data-enhance=false>Great Feature!</button>
             </div>
             <div style="display: none;">
                 <h1 class="title">All Done!</h1>

@@ -1956,7 +1956,7 @@ textarea.ui-mini { height: 45px; }
 	.ui-field-contain .ui-input-search { width: 50%; }
 	.ui-hide-label input.ui-input-text, 
 	.ui-hide-label textarea.ui-input-text, 
-	.ui-hide-label .ui-input-search { padding: .4em; width: 97%; } 
+	.ui-hide-label .ui-input-search { padding: .4em; width: 80%; } 
 	.ui-input-search input.ui-input-text { width: 98%; /*echos rule from above*/ }
 }
 .ui-listview { margin: 0; counter-reset: listnumbering; }
