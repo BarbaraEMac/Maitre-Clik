@@ -285,5 +285,5 @@ var MaitreMobile = new function() {
 
 // Let's run this thing when the DOM is ready!!
 clik.on('ready', function() {
-    MaitreMobile.init();
+    MaitreMobile.run();
 });
