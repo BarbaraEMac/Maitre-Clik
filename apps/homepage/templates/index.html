@@ -14,7 +14,6 @@
 
         <!-- JS -->
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="/static/js/stroll.js"></script>
 		<script type="text/javascript" src="http://cdn.clikthis.com/js/latest/clik-desktop.min.js"></script>
         <script>
             // Common JS fcns.
@@ -56,7 +55,7 @@
             <div class="leftSide" id="statsView" style="display: none">
                 <h1 class="title">Statistics</h1>
 
-                <ul class="list flip" id="statsFeed">
+                <ul class="list" id="statsFeed">
                     <li>
                         <img src="/static/imgs/ChrisBest.jpg" />
                         <p>Most Satisfied: Chris Best</p>
@@ -98,7 +97,7 @@
                 <h1 class="title">Feed</h1>
 
                 <div id="feedView_feedContainer">
-                    <ul class="list flip" id="mainFeed">
+                    <ul class="list" id="mainFeed">
                         <li>
                             <img src="/static/imgs/cliklogo.jpg" />
                             <p>Clik-In before grabbing your food!</p>
@@ -297,9 +296,6 @@
                         foo.html( li );
                         
                         foo.insertBefore( "#mainFeed :first" );
-
-                        // Now, update the CSS animation for each li.
-                        Stroll.bind( document.getElementById( 'mainFeed' ) );
                     };
 
                 this.waitForURL = function() {
