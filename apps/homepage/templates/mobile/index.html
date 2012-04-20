@@ -150,6 +150,10 @@
                     /* Show the "Onboard" View */
 
                     $("#topPanel").hide();
+
+                    $("#onboardView").children().hide();
+                    $("#onboardView_first").show();
+                    
                     this.toggleView( "#onboardView" );  
                 };
                 this.showVoteView = function() {
@@ -288,7 +292,7 @@
         
         <!-- Onboard View -->
         <div id="onboardView" style="display: none">
-            <div data-enhance=false>
+            <div id="onboardView_first" data-enhance=false>
                 <h1 class="title">Whoa!</h1>
 
                 <p>I don't believe we've met before, have we?</p>
