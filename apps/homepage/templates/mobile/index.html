@@ -61,10 +61,7 @@
                     $("#voteViewBtn").click(     function() { MaitreMobile.showVoteView(); } );
                     $("#eatingViewBtn").click(   function() { MaitreMobile.showEatingView(); } );
                     $("#profileViewBtn").click(  function() { MaitreMobile.showProfileView(); } );
-                    $("#clikViewBtn").click(     function() { MaitreMobile.clikOut(); } );
                     
-                    $("#clikView_inBtn").click(  function() { MaitreMobile.clikIn(); } );
-                    $("#clikView_outBtn").click( function() { MaitreMobile.clikOut(); } );
                     $(".clikOutBtn").click( function() { MaitreMobile.clikOut(); } );
                     
                     // Use server logic to determine which view to display.
@@ -109,16 +106,10 @@
 
                 this.clikIn = function() {
                     //clik.clikIn();
-
-                    $("#clikViewBtn").html("Clik-Out");
-                    $("#clikViewBtn").click( function() { MaitreMobile.clikOut(); } );
                 };
                 this.clikOut = function() {
                     /* Leave the conference */
                     // clik.clikOut();
-
-                    $("#clikViewBtn").html("Clik-In");
-                    $("#clikViewBtn").click( function() { MaitreMobile.clikIn(); } );
                 };
                 this.checkinUser = function( ) {
                     /* Create a Checkin obj on the server for the given user. */
@@ -174,7 +165,7 @@
                             this.toggleView( "#voteView" );  
                         }
                     } else {
-                        this.toggleView( "#clikView" );  
+                        this.clikIn();
                     }
                 };
                 this.showProfileView = function() {
@@ -184,21 +175,10 @@
                     if( clik.connected ) {
                         this.toggleView( "#eatingView" );  
                     } else {
-                        this.toggleView( "#clikView" );  
+                        this.clikIn();
                     }
                 };
-                this.showClikView = function() {
-                    if( clik.connected ) {
-                        $("#clikView_in").hide();
-                        $("#clikView_out").show();
-                    } else {
-                        $("#clikView_in").show();
-                        $("#clikView_out").hide();
-                    }
-
-                    this.toggleView( "#clikView" );  
-                };
-
+                
                 this.toggleView = function( selector ) {
                     this.currentView.hide();
                     $("#"+this.currentView.attr('id')+"Btn").attr('class', 'limeBtn panelBtn');
@@ -396,7 +376,7 @@
             <h1 class="title">Who's Eating?</h1>
 
             <div id="feedView_feedContainer">
-                <ul class="list" id="eatingFeed">
+                <ul id="eatingFeed">
                     <li>
                         You!
                     </li>
@@ -427,20 +407,6 @@
 
             <button class="limeBtn" id="profileView_submit" data-enhance=false>Update</button>
 
-            </div>
-        </div>
-
-        <!-- Clik View -->
-        <div id="clikView" style="display: none">
-            <div id="clikView_out">
-                <h1 class="title">Bye</h1>
-
-                <button id="clikView_outBtn" data-enhance=false>You've been cliked-out!</button>
-            </div>
-           <div id="clikView_in">
-                <h1 class="title">Hello!</h1>
-                <p> You must be cliked-in to view that content. </p>
-                <button id="clikView_inBtn" data-enhance=false>Clik-In</button>
             </div>
         </div>
 

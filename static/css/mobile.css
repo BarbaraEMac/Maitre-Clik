@@ -2,21 +2,17 @@
 
 /** Whole Page Stuff **/
 html {
-    width: 100%;
-	background-color: #c1e2f1;
 }
 
 body {
+	background-color: white;
     padding: 0px;
     margin: 0px;
     width: 100%;
-    background-color: transparent;
     
     font-family: Helvetica;
     text-align: center;
 }
-
-/* height is now larger than width  */
 
 /* slider root element */
 .slider {
@@ -185,4 +181,15 @@ input[type="range"] {
 #voteView_amount {
     font-size: 2.5em;
     color: red;
+}
+
+ul {
+    height: 100%;
+    overflow-y: visible;
+}
+
+ul li {
+    border-radius: 5px;
+    margin-bottom: 10px;
+    line-height: 1.0em;
 }

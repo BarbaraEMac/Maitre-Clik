@@ -19,7 +19,7 @@ body {
     color: red;
 }
 .small {
-    font-size: 0.5em;
+    font-size: 0.8em;
     margin: 0px;
     margin-bottom: 5px;
 }
@@ -236,14 +236,16 @@ ul {
 	overflow-y: scroll;
 }
 	ul li {
-		position: relative;
-		background: #eee;
-		color: #252525;
-		font-size: 18px;
-		z-index: 2;
+        position: relative;
+        background: #e6f3f9;
+        font-size: 1.2em;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2px;
 	}
 	ul li:nth-child(odd) {
-		background: #fff;
+        background: #e4f3c6;
 	}
 .wave li {
     -webkit-transition: all 600ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
