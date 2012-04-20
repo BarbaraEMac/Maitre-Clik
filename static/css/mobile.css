@@ -188,6 +188,10 @@ input.ui-slider-input {
     color: red;
 }
 
+#voteView_submit {
+    margin-top: 50px;
+}
+
 ul {
     height: 100%;
     overflow-y: visible;
