@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang='en'>
 	<head>
 		<title>Maitre 'Clik - Desktop</title>
@@ -30,6 +29,12 @@
 
     <body>
         <div id="container">
+            
+            <div id="navButtons">
+                <button class="lightBlueBtn" id="mainViewBtn">  Home </button>
+                <button class="limeBtn"      id="statsViewBtn"> Statistics </button>
+                <button class="limeBtn"      id="feedViewBtn">  Feed </button>
+            </div>
 
             <!-- Main View -->
             <div class="leftSide" id="mainView">
@@ -135,13 +140,10 @@
 
             <div id="rightSide" >
                 <img id="qrContainer" src="" style="display: inline" />
- 
-                <div id="navButtons">
-                    <button class="lightBlueBtn" id="mainViewBtn">     Home </button>
-                    <button class="limeBtn"      id="statsViewBtn">    Statistics </button>
-                    <button class="limeBtn"      id="feedViewBtn">     Feed </button>
-                    <button class="darkBlueBtn2" id="newMealView_Btn"> New Meal </button>
-                </div>
+                
+                <p id="instructions">Welcome Kik! Please Clik-In before grabbing your food!</p>
+                
+                <button class="darkBlueBtn2" id="newMealView_Btn"> New Meal </button>
             </div>
 
             <div id="eatingList" style="display: none;">
@@ -190,6 +192,8 @@
 
                         // Setup timed resets to match cron update on server.
                         this.reset();
+
+                        this.newMealBtnTimer();
 
                         setTimeout( function() { MaitreDesktop.waitForURL(); }, 300 );
                         setTimeout( function() { MaitreDesktop.removeClikOverlay(); }, 300 );
@@ -262,6 +266,9 @@
                         this.votes.numVotes = 0;
 
                         $("#mainView_barContainer").hide();
+                        $("#newMealView_Btn").hide();
+
+                        $("#instructions").html( "Welcome Kik! Please Clik-In before grabbing your food!" );
         
                         this.showMainView();
                     };
@@ -304,6 +311,22 @@
                         $("#qrContainer").attr( 'src', clik.clikCodeURL() );
                     }
                 };
+                
+                this.newMealBtnTimer = function() {
+                    /* Initialize timed resets to match cron update on server. */
+
+                    var now = new Date();
+                    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0) - now;
+                    if (millisTill10 < 0) {
+                         millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+                    }
+                    var millisTill16 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 16, 0, 0, 0) - now;
+                    if (millisTill16 < 0) {
+                         millisTill16 += 86400000; // it's after 4pm, try 4pm tomorrow.
+                    }
+                    setTimeout( function(){ MaitreDesktop.showNewMealBtn(); }, Math.min(millisTill10, millisTill16) );
+                };
+
 
                 // View Toggles ------------------------------------------------
                 this.toggleView = function( selector ) {
@@ -323,6 +346,7 @@
                 this.showMainView = function() {
                     this.toggleView("#mainView");
                     
+                    $("#navButtons").show();
                     $("#rightSide").show();
                 };
                 this.showEatingView = function() {
@@ -335,10 +359,17 @@
                     $("#newMealError").hide("");
                     $("#newMealCancel").show();
                     $("#newMealSubmit").show();
+
+                    $("#navButtons").hide();
                     
                     $("#rightSide").hide();
                     
                     this.toggleView("#newMealView");
+                };
+                this.showNewMealBtn = function() {
+                    $("#instructions").html( "Welcome Wildcraft! After you've finished setting up the meal, please press 'New Meal' to notify everyone at Kik!" );
+
+                    $("#newMealView_Btn").show();
                 };
 
                 

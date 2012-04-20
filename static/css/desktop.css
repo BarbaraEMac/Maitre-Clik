@@ -2,18 +2,13 @@
 
 /** Whole Page Stuff **/
 html {
-	background-color: white;
-    background-image: url(/static/imgs/bg7_thin.jpg);
-    background-attachment: fixed;
-    background-repeat: repeat-y;
-    background-position: left; 
-    width: 100%;
 }
 
 #container {
     width: 100%;
     height: 100%;
     float: left;
+	background-color: white;
 }
 
 h2 {
@@ -21,7 +16,7 @@ h2 {
     width: 100%;
     padding-top: 30px;
     margin-bottom: 30px;
-    text-shadow: #004e70 3px 2px 10px;
+    text-shadow: grey 3px 2px 10px;
 }
 
 /** Right-Hand Stuff **/
@@ -38,13 +33,34 @@ h2 {
         margin-left: auto;
         margin-right: auto;
     }
-    #navButtons {
-        margin: 0px;
+    #instructions {
+        margin-top: 30px;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    
+/** Left-Hand Side Stuff **/
+    .leftSide {
+        width: 59%;
+        height: 100%;
+        float: left;
+        padding: 10px;
+    }
+    .title {
+        font-size: 6.0em;
+        margin: 10px 0px 20px 0px;
         padding: 0px;
-        text-align: left;
-        position:fixed;
-        bottom: 10px;
-        right: 10px;
+    }
+    #navButtons {
+        width: 59%;
+        margin: 10px 10px 0px 10px;
+        padding: 0px;
+        }
+    #mainViewBtn {
+        float: left;
+    }
+    #feedViewBtn {
         float: right;
     }
     .list {
@@ -69,18 +85,6 @@ h2 {
         padding-left: 10px;
     }
 
-/** Left-Hand Side Stuff **/
-    .leftSide {
-        width: 59%;
-        height: 100%;
-        float: left;
-        padding: 10px;
-    }
-    .title {
-        font-size: 6.0em;
-        margin: 10px 0px 20px 0px;
-        padding: 0px;
-    }
     
 /** Main View **/
 
@@ -95,9 +99,9 @@ h2 {
         border-radius: 5px;
 
         background-color: #BCE072;
-        -moz-box-shadow: inset 0 0 10px #000000;
-        -webkit-box-shadow: inset 0 0 10px #000000;
-        box-shadow: inset 0 0 10px #000000;
+        -moz-box-shadow: 0 0 10px #000000;
+        -webkit-box-shadow: 0 0 10px #000000;
+        box-shadow: 0 0 10px #000000;
     }
 
     #mainView_barContainer {
@@ -136,6 +140,7 @@ h2 {
 /** New Meal View **/
     #newMealView p {
         width: 79%;
+        font-size: 1.5em;
         margin-left: auto;
         margin-right: auto;
     }
