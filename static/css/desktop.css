@@ -21,28 +21,31 @@ h2 {
 
 /** Right-Hand Stuff **/
     #rightSide {
-        width: 39%;
+        width: 49%;
         height: 100%;
         float: left;
     }
     #qrContainer {
-        width: 70%;
-        height: 70%;
-        margin-top: 15%;
-        margin-bottom: 15%;
+        width: 742px;
+        height: 742px;
+        margin-top: -110px;
+        margin-bottom: 30px;
         margin-left: auto;
         margin-right: auto;
     }
     #instructions {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: 30px;
-        font-size: 1.5em;
+        font-size: 1.7em;
         margin-bottom: 10px;
     }
 
     
 /** Left-Hand Side Stuff **/
     .leftSide {
-        width: 59%;
+        width: 49%;
         height: 100%;
         float: left;
         padding: 10px;
@@ -53,27 +56,28 @@ h2 {
         padding: 0px;
     }
     #navButtons {
-        width: 59%;
-        margin: 10px 10px 0px 10px;
+        width: 49%;
+        margin: 100px 00px 75px 00px;
         padding: 0px;
         font-size: 0.8em;
     }
     #mainViewBtn {
-        float: left;
+        margin-right: 40px;
     }
     #feedViewBtn {
-        float: right;
+        margin-left: 40px;
     }
     .list {
-        height: 395px;
+        height: 650px;
         padding: 0px;
     }
     .list li {
-        width: 96%;
+        width: 80%;
         height: 55px;
-        float: left;
         padding: 10px;
         margin: 3px;
+        margin-left: auto;
+        margin-right: auto;
         border-radius: 5px;
     }
     .list img {
@@ -126,7 +130,10 @@ h2 {
         text-align: center;
         border-radius: 2px;
     }
-
+/** Stats View **/
+    #statsFeed {
+        overflow-y: hidden;
+    }
 /** Feed View **/    
     #feedView_feedContainer {
         width: 100%;
