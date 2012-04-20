@@ -251,7 +251,7 @@ var MaitreDesktop = new function() {
         /* Grab the most recent stats obj from the server. */
 
          $.ajax({
-                url: "{% url FetchStats %}",
+                url: "/stats/fetch",
                 type: "GET",
                 data: ( { } ),
                 success: function(response) {
@@ -294,7 +294,7 @@ var MaitreDesktop = new function() {
 
             // Tell the server.
             $.ajax({
-                    url: "{% url CreateMeal %}",
+                    url: "/meal/create",
                     type: "POST",
                     data: ( { menu   : menu,
                               type   : type,

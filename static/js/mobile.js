@@ -184,7 +184,7 @@ var MaitreMobile = new function() {
                                 clik_id   : clik.client.id } );
 
         // Tell server!
-        $.ajax({ url     : "{% url CreateCheckin %}",
+        $.ajax({ url     : "/checkin/create",
                  type    : "POST",
                  data    : ( { user_uuid : this.user.uuid } ),
                  success : function(response) {
@@ -210,7 +210,7 @@ var MaitreMobile = new function() {
 
          // Tell the Server to make a new User.
          $.ajax({
-                url: "{% url CreateUser %}",
+                url: "/user/create",
                 type: "POST",
                 data: ({ firstName : firstName,
                          lastName  : lastName,
@@ -248,7 +248,7 @@ var MaitreMobile = new function() {
         $("#voteView_vote").hide().next().show();
         
         // Tell server
-        $.ajax({ url: "{% url DoVote %}",
+        $.ajax({ url: "/vote/createVote",
                  type: "POST",
                  data: ({ value : vote_val } ),
                  success: function(response) {
@@ -267,7 +267,7 @@ var MaitreMobile = new function() {
         var yes   = $("#notif_yes").attr('checked') != undefined;
 
         // Tell server
-        $.ajax({ url: "{% url UpdateUser %}",
+        $.ajax({ url: "/user/update",
                  type: "POST",
                  data: ({ email            : email,
                           notification_yes : yes } ),
